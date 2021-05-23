@@ -1,0 +1,10 @@
+backend/generator.js
+backend/lastNames.json
+backend/firstNames.json
+backend/twl-words.txt
+backend/movies.json
+frontend/build
+frontend/node_modules
+backend/node_modules
+frontend/package-lock.json
+backend/package-lock.json
