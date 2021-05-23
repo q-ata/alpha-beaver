@@ -12,6 +12,8 @@ const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
 const Base = require("./Base");
+const bcrypt = require("bcryptjs");
+
 
 global.logger = {
   log: (msg, type, color = "reset") => {
@@ -98,6 +100,21 @@ class School extends Base {
     return (await this.getClasses(filter, {...options, limit: 1}))[0];
   }
 
+  async createAccount(username, plaintext, id) {
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(plaintext, salt);
+    this.models.AccountModel.create({username, password, id});
+    return id;
+  }
+  
+  async validateAccount(user, pass) {
+  
+    // Load hash from your password DB.
+    const query = await this.models.AccountModel.findOne({username: user}).exec();
+    const hash = await bcrypt.compare(pass, query.password);
+    return hash ? query.id : -1;
+  }
+
   async validate() {
     const allUsers = await this.getUsers(null);
     const set = new Set();
@@ -120,9 +137,77 @@ class School extends Base {
     if (set.size === roles.length) logger.info("All role IDs are unique.");
     else logger.error(`Duplicate role IDs found, total of ${roles.length} entries with ${set.size} unique IDs.`);
 
-
   }
 
+  randomString(length) {
+    const result = [];
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; ++i) {
+      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+
+    return result.join("");
+  }
+
+  async generateToken(refreshToken, userID, schoolID) {
+    const jwt = require('jsonwebtoken');
+
+    const query = await this.models.AccountModel.findOne({id: userID}).exec();
+
+    // Invalid userID
+    if (! query) {
+      return false;
+    }
+
+    for (let rToken of query.refreshTokens) {
+      const hash = await bcrypt.compare(refreshToken, rToken);
+
+      // Invalid refreshToken
+      if (! hash) {
+        continue;
+      }
+
+      // Temporary secret key
+      const privateKey = process.env.SECRET_KEY;
+      const expirationTime = 15 * 60; // 15 minutes
+
+      // Generate JWT token
+      var token = jwt.sign({
+        user: userID,
+        school: schoolID
+      }, privateKey, { expiresIn: expirationTime });
+
+      // return JWT token
+      return token;
+    }
+
+    return false;
+  }
+
+  validateToken(token) {
+    const jwt = require('jsonwebtoken');
+
+    // Temporary secret key
+    const privateKey = process.env.SECRET_KEY;
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, privateKey);
+    }
+    catch (err) {
+      console.log(err);
+      return false;
+    }
+
+    if (! decoded.user || ! decoded.school) {
+      logger.error("we're screwed");
+      return false;
+    }
+
+    return decoded;
+  }
 }
 
 const util = require("util");
@@ -139,35 +224,22 @@ const delay = (interval) => {
   });
 };
 
+
 const f = async () => {
+  
   const s = new School("0016");
   await s.init();
 
-  const data = await s.models.AccountModel.find();
-  console.log(data);
-
-  /*
-  await s.validate();
 
 
-  //console.log(s);
-  const u = await s.getUsers({firstName: {$regex: "T"}}, {limit: 3});
-  u.forEach((a) => a.print());
-  console.log((new Error()).stack)
-  // const c = await s.getClass(u.classes[0]);
-  // console.log(c);
-  // const st = await u.getStanding();
-  /*
-  let totalPerms = 0;
-  //console.log(`Override perms: ${format(u.perms.overrides)}`);
-  totalPerms |= u.perms.overrides;
-  for (const roleId of u.perms.roles) {
-    const role = await s.getRole(roleId);
-    totalPerms |= role.perms;
-    //console.log(`Role perms: ${format(role.perms)}`);
-    //console.log(`Override perms: ${format(totalPerms)}`);
-  }
-  const c = await s.getClass(1);
-  //console.log(c);*/
+  const token = await s.generateToken("hello", 100, "0016");
+  const decoded = s.validateToken(token);
+
+  console.log(token);
+  console.log(decoded);
+
+  // const data = await s.models.AccountModel.find().exec();
 };
+
+
 f();
