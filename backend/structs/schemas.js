@@ -43,7 +43,8 @@ const standingSchema = new mongoose.Schema({
 const accountSchema = new mongoose.Schema({
   username: String,
   password: String,
-  id: Number
+  id: Number,
+  refreshTokens: [String],
 }, {collection: "accounts"});
 
 module.exports = {

@@ -138,6 +138,76 @@ class School extends Base {
     else logger.error(`Duplicate role IDs found, total of ${roles.length} entries with ${set.size} unique IDs.`);
 
   }
+
+  randomString(length) {
+    const result = [];
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; ++i) {
+      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+
+    return result.join("");
+  }
+
+  async generateToken(refreshToken, userID, schoolID) {
+    const jwt = require('jsonwebtoken');
+
+    const query = await this.models.AccountModel.findOne({id: userID}).exec();
+
+    // Invalid userID
+    if (! query) {
+      return false;
+    }
+
+    for (let rToken of query.refreshTokens) {
+      const hash = await bcrypt.compare(refreshToken, rToken);
+
+      // Invalid refreshToken
+      if (! hash) {
+        continue;
+      }
+
+      // Temporary secret key
+      const privateKey = process.env.SECRET_KEY;
+      const expirationTime = 15 * 60; // 15 minutes
+
+      // Generate JWT token
+      var token = jwt.sign({
+        user: userID,
+        school: schoolID
+      }, privateKey, { expiresIn: expirationTime });
+
+      // return JWT token
+      return token;
+    }
+
+    return false;
+  }
+
+  validateToken(token) {
+    const jwt = require('jsonwebtoken');
+
+    // Temporary secret key
+    const privateKey = process.env.SECRET_KEY;
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, privateKey);
+    }
+    catch (err) {
+      console.log(err);
+      return false;
+    }
+
+    if (! decoded.user || ! decoded.school) {
+      logger.error("we're screwed");
+      return false;
+    }
+
+    return decoded;
+  }
 }
 
 const util = require("util");
@@ -156,15 +226,18 @@ const delay = (interval) => {
 
 
 const f = async () => {
+  
   const s = new School("0016");
   await s.init();
 
-  const data = await s.models.AccountModel.find();
-  console.log(data);
+  const token = await s.generateToken("hello", 100, "0016");
+  const decoded = s.validateToken(token);
 
-  await s.createAccount("RyanChen1", "123", 1);
+  console.log(token);
+  console.log(decoded);
 
-  const id = await s.validateAccount("RyanChen1", "123");
-  console.log(id);
+  // const data = await s.models.AccountModel.find().exec();
 };
+
+
 f();
