@@ -12,6 +12,8 @@ const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
 const Base = require("./Base");
+const bcrypt = require('bcryptjs');
+
 
 global.logger = {
   log: (msg, type, color = "reset") => {
@@ -98,6 +100,31 @@ class School extends Base {
     return (await this.getClasses(filter, {...options, limit: 1}))[0];
   }
 
+  async createAccount(user, pass, id) {
+  
+    const bcrypt = require('bcryptjs');
+    const salt = await bcrypt.genSalt(10);
+    const hashedPW = await bcrypt.hash(pass, salt);
+
+    this.models.AccountModel.create({username: user, password: hashedPW, id: id});
+    return id;
+  }
+  
+  async validateAccount(user, pass) {
+  
+    // Load hash from your password DB.
+    const query = await this.models.AccountModel.findOne({username: user});
+    const hash = await bcrypt.compare(pass, query.password)
+
+    if (hash) {
+      // Return student id
+      return query.id;
+    }
+  
+    // Rejected
+    return -1;
+  }
+
   async validate() {
     const allUsers = await this.getUsers(null);
     const set = new Set();
@@ -120,9 +147,7 @@ class School extends Base {
     if (set.size === roles.length) logger.info("All role IDs are unique.");
     else logger.error(`Duplicate role IDs found, total of ${roles.length} entries with ${set.size} unique IDs.`);
 
-
   }
-
 }
 
 const util = require("util");
@@ -139,12 +164,18 @@ const delay = (interval) => {
   });
 };
 
+
 const f = async () => {
   const s = new School("0016");
   await s.init();
 
   const data = await s.models.AccountModel.find();
   console.log(data);
+
+  await s.createAccount("RyanChen1", "yes", 1);
+
+  const id = await s.validateAccount("RyanChen1", "yes");
+  console.log(id);
 
   /*
   await s.validate();
