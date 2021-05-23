@@ -12,7 +12,7 @@ const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
 const Base = require("./Base");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 
 global.logger = {
@@ -100,29 +100,19 @@ class School extends Base {
     return (await this.getClasses(filter, {...options, limit: 1}))[0];
   }
 
-  async createAccount(user, pass, id) {
-  
-    const bcrypt = require('bcryptjs');
+  async createAccount(username, plaintext, id) {
     const salt = await bcrypt.genSalt(10);
-    const hashedPW = await bcrypt.hash(pass, salt);
-
-    this.models.AccountModel.create({username: user, password: hashedPW, id: id});
+    const password = await bcrypt.hash(plaintext, salt);
+    this.models.AccountModel.create({username, password, id});
     return id;
   }
   
   async validateAccount(user, pass) {
   
     // Load hash from your password DB.
-    const query = await this.models.AccountModel.findOne({username: user});
-    const hash = await bcrypt.compare(pass, query.password)
-
-    if (hash) {
-      // Return student id
-      return query.id;
-    }
-  
-    // Rejected
-    return -1;
+    const query = await this.models.AccountModel.findOne({username: user}).exec();
+    const hash = await bcrypt.compare(pass, query.password);
+    return hash ? query.id : -1;
   }
 
   async validate() {
@@ -172,33 +162,9 @@ const f = async () => {
   const data = await s.models.AccountModel.find();
   console.log(data);
 
-  await s.createAccount("RyanChen1", "yes", 1);
+  await s.createAccount("RyanChen1", "123", 1);
 
-  const id = await s.validateAccount("RyanChen1", "yes");
+  const id = await s.validateAccount("RyanChen1", "123");
   console.log(id);
-
-  /*
-  await s.validate();
-
-
-  //console.log(s);
-  const u = await s.getUsers({firstName: {$regex: "T"}}, {limit: 3});
-  u.forEach((a) => a.print());
-  console.log((new Error()).stack)
-  // const c = await s.getClass(u.classes[0]);
-  // console.log(c);
-  // const st = await u.getStanding();
-  /*
-  let totalPerms = 0;
-  //console.log(`Override perms: ${format(u.perms.overrides)}`);
-  totalPerms |= u.perms.overrides;
-  for (const roleId of u.perms.roles) {
-    const role = await s.getRole(roleId);
-    totalPerms |= role.perms;
-    //console.log(`Role perms: ${format(role.perms)}`);
-    //console.log(`Override perms: ${format(totalPerms)}`);
-  }
-  const c = await s.getClass(1);
-  //console.log(c);*/
 };
 f();
