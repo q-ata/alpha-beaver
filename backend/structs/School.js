@@ -230,8 +230,6 @@ const f = async () => {
   const s = new School("0016");
   await s.init();
 
-
-
   const token = await s.generateToken("hello", 100, "0016");
   const decoded = s.validateToken(token);
 
