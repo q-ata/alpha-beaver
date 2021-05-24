@@ -31,7 +31,7 @@ a, a:hover, a:click, a:visited {
 .dash-page .corner-icon {
   width: 104px;
   height: 104px;
-  background-image: url("");
+  background-image: url("https://pbs.twimg.com/media/Emq4JSRXcAAZD9B.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   overflow: hidden;
@@ -129,7 +129,7 @@ a, a:hover, a:click, a:visited {
   font-weight: normal;
   line-height: 20px;
   border: 1px solid;
-  background-image: url("");
+  background-image: url("https://pbs.twimg.com/media/Emq4JSRXcAAZD9B.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   overflow: hidden;

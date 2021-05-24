@@ -33,23 +33,25 @@
 }
 
 .login-page .login-section .login-field {
-  display: block;
+  display: inline-block;
   margin: 0 auto;
-  height: 30px;
-  width: 60%;
+  height: 26px;
+  width: 40%;
   min-width: 100px;
   max-width: 200px;
   font-size: 16px;
+  padding-left: 8px;
 }
 
 .login-page .username-label,
 .login-page .password-label,
 .login-page .select-school-label {
-  display: block;
+  display: inline-block;
   text-align: left;
   padding: 6px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-size: 18px;
+  width: 100px;
 }
 
 .login-page .remember-me {
@@ -60,7 +62,6 @@
 .login-page .remember-me-box {
   min-width: 20px;
   width: auto;
-  height: 20px;
   float: left;
   margin-right: 10px;
   transform: scale(1.1);
@@ -72,9 +73,10 @@
 }
 
 .login-page .invalid-password {
-  color:red;
-  font-size: 11px;
-  display:block;
+  color: red;
+  font-size: 16px;
+  display: block;
+  padding-top: 10px;
 }
 
 .login-page .remember-me-box:checked {
@@ -89,7 +91,8 @@
   padding: 14px;
   font-size: 20px;
   margin-top: 6px;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   background-color: rgb(143, 9, 9);;
   text-decoration: none;
   color: white;

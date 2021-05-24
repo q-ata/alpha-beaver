@@ -1,3 +1,5 @@
+import React from "react";
+import PropTypes from "prop-types";
 
 const Course = ({name, desc, img}) => {
   return (
@@ -15,6 +17,12 @@ const Course = ({name, desc, img}) => {
     </div>
   );
 
-}
+};
+
+Course.propTypes = {
+  name: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  img: PropTypes.string
+};
 
 export default Course;

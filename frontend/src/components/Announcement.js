@@ -1,3 +1,5 @@
+import React from "react";
+import PropTypes from "prop-types";
 
 const Announcement = ({course, announce, date}) => {
 
@@ -13,6 +15,12 @@ const Announcement = ({course, announce, date}) => {
     </li>
   );
 
+};
+
+Announcement.propTypes = {
+  course: PropTypes.string.isRequired,
+  announce: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired
 };
 
 export default Announcement;

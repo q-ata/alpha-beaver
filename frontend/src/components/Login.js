@@ -1,9 +1,9 @@
+import React from "react";
 import {Link, useHistory} from "react-router-dom";
 import "../styles/login.css";
 import {useEffect, useState} from "react";
 import AsyncSelect from "react-select/async";
 import Cookies from "js-cookie";
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 
 const delay = (interval) => {
   return new Promise((resolve) => {
@@ -17,16 +17,16 @@ const selectStyle = {
   menu: (provided) => ({
     ...provided,
     marginTop: 0
- }),
- option: (provided, {isFocused}) => ({
-   ...provided,
-   backgroundColor: isFocused ? "lightgrey" : "white",
-   color: "black"
- }),
- singleValue: (provided) => ({
-   ...provided,
-  width: "90%"
- })
+  }),
+  option: (provided, {isFocused}) => ({
+    ...provided,
+    backgroundColor: isFocused ? "lightgrey" : "white",
+    color: "black"
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    width: "90%"
+  })
 };
 
 const Login = () => {
@@ -95,17 +95,17 @@ const Login = () => {
     <div className="login-page content">
 
       <div className="top-bar">
-        Big Learn
+        AlphaBeaver
       </div>
       <div className="content-container">
 
         <div className="login-section">
-          <label for="username" className="username-label">Username</label>
-          <input type="text" className="login-field" value={username} onChange={(e) => setUsername(e.target.value)}/>
-          <label for="password" className="password-label">Password</label>
+          <label htmlFor="username" className="username-label">Username</label>
+          <input type="text" className="login-field" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
+          <label htmlFor="password" className="password-label">Password</label>
           <input type="password" className="login-field" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <span className="invalid-password" style={{display: showError ? "block" : "none"}}>Incorrect Username or Password</span>
           <div className="remember-me">
-            <span className="invalid-password" style={{display: showError ? "block" : "none"}}>Incorrect Username or Password</span>
             <input type="checkbox" className="remember-me-box" />
             <span className="remember-me-label">Remember Me</span>
           </div>
@@ -134,7 +134,7 @@ const Login = () => {
       </div>
 
     </div>
-  )
-}
+  );
+};
 
 export default Login;

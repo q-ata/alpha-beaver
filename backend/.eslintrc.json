@@ -1,17 +1,40 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaVersion": 12
-  },
-  "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "windows"],
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"]
-  }
+    "env": {
+        "node": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "globals": {
+        "logger": true,
+        "error": true
+    },
+    "rules": {
+        "indent": [
+            "error",
+            2
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "space-unary-ops": [
+            "error",
+            {
+              "words": true,
+              "nonwords": false
+            }
+        ]
+    }
 }
