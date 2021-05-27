@@ -4,7 +4,8 @@ const schoolSchema = new mongoose.Schema({
   name: String,
   emblem: String,
   id: String,
-  freeRegister: Boolean
+  freeRegister: Boolean,
+  requireName: Boolean
 }, {collection: "meta"});
 
 const roleSchema = new mongoose.Schema({

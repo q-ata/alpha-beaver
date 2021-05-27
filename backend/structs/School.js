@@ -28,6 +28,7 @@ class School extends Base {
     this.name = schoolData.name;
     this.emblem = schoolData.emblem;
     this.freeRegister = schoolData.freeRegister;
+    this.requireName = schoolData.requireName;
     this.users = new UserCacheManager(this);
     this.roles = new RoleCacheManager(this);
     this.classes = new ClassCacheManager(this);
@@ -95,6 +96,7 @@ class School extends Base {
   
   async validateAccount(user, pass) {
     const query = await this.models.AccountModel.findOne({username: user}).exec();
+    if (!query) return -1;
     const hash = await bcrypt.compare(pass, query.password);
     return hash ? query.id : -1;
   }
@@ -135,38 +137,13 @@ class School extends Base {
     return result.join("");
   }
 
-  async generateToken(refreshToken, userID, schoolID) {
+  async validateRefreshToken(rToken, user) {
+    const res = await this.models.AccountModel.findOne({id: user}, {refreshTokens: 1}).exec();
+    return res.refreshTokens.some((t) => bcrypt.compareSync(rToken, t));
+  }
 
-    const query = await this.models.AccountModel.findOne({id: userID}).exec();
-
-    // Invalid userID
-    if (!query) {
-      return false;
-    }
-
-    for (let rToken of query.refreshTokens) {
-      const hash = await bcrypt.compare(refreshToken, rToken);
-
-      // Invalid refreshToken
-      if (!hash) {
-        continue;
-      }
-
-      // Temporary secret key
-      const privateKey = process.env.SECRET_KEY;
-      const expirationTime = 15 * 60; // 15 minutes
-
-      // Generate JWT token
-      var token = jwt.sign({
-        user: userID,
-        school: schoolID
-      }, privateKey, { expiresIn: expirationTime });
-
-      // return JWT token
-      return token;
-    }
-
-    return false;
+  generateToken(user, school) {
+    return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 900});
   }
 
   validateToken(token) {

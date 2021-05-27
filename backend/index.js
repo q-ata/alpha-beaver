@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 require("colors");
 const mongoose = require("mongoose");
@@ -11,14 +12,21 @@ process.env.BUILD_PATH = path.join(__dirname, "..", "frontend", "build");
 const School = require("./structs/School");
 const app = express();
 global.logger = {
+  level: 1,
+  setLevel: function(level) {
+    this.level = level;
+  },
   log: (msg, type, color = "reset") => {
     console.log(`[${type[color]}]: ${msg[color]}`);
   },
   def: function(msg) {
-    this.log(msg, "INFO");
+    this.log(msg, "INFO", "brightWhite");
   },
   info: function(msg) {
     this.log(msg, "INFO", "green");
+  },
+  debug: function(msg) {
+    this.level > 1 && this.log(msg, "DEBUG", "brightYellow");
   },
   warn: function(msg) {
     this.log(msg, "WARN", "yellow");
@@ -30,8 +38,10 @@ global.logger = {
 global.error = (msg) => {
   return {error: true, msg};
 };
+logger.setLevel(2);
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(process.env.BUILD_PATH));
 
