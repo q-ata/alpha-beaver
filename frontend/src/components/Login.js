@@ -1,90 +1,55 @@
+import React from "react";
 import {Link, useHistory} from "react-router-dom";
+import "../styles/form.css";
 import "../styles/login.css";
 import {useEffect, useState} from "react";
-import AsyncSelect from "react-select/async";
 import Cookies from "js-cookie";
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import SchoolSearch from "./SchoolSearch";
 
-const delay = (interval) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, interval);
-  });
-};
-
-const selectStyle = {
-  menu: (provided) => ({
-    ...provided,
-    marginTop: 0
- }),
- option: (provided, {isFocused}) => ({
-   ...provided,
-   backgroundColor: isFocused ? "lightgrey" : "white",
-   color: "black"
- }),
- singleValue: (provided) => ({
-   ...provided,
-  width: "90%"
- })
-};
 
 const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [lastSearch, setLastSearch] = useState(Date.now());
+  const [rememberMe, setRememberMe] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [selectedSchool, setSelectedSchool] = useState(
-    Cookies.get("school-id") ? JSON.parse(Cookies.get("school-id")) : ""
-  );
-  const [emblem, setEmblem] = useState(
-    Cookies.get("school-emblem") ? JSON.parse(Cookies.get("school-emblem")) : ""
-  );
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState("");
 
   useEffect(() => {
     document.title = "Login";
   });
 
-  const getSchoolList = async (q) => {
-    if (Date.now() - lastSearch < 1000) await delay(1000 - Date.now() + lastSearch);
-    const schoolList = await fetch(`http://159.89.127.1:3000/schools?q=${q}`);
-    const data = await schoolList.json();
-    setLastSearch(Date.now());
-    const ret = data.schools.map((s) => {
-      return {value: s.id, label: s.name};
-    });
-    return ret;
-  };
-
-  const changeSchool = (s) => {
-    setSelectedSchool(s);
-    const fetchEmblem = async () => {
-      const emResult = await fetch(`http://159.89.127.1:3000/emblem?q=${s.value}`);
-      const urlObj = await emResult.json();
-      setEmblem(urlObj.url);
-    };
-    fetchEmblem();
-  };
-
   const h = useHistory();
   const submitLogin = (e) => {
     e.preventDefault();
+    if (!selectedSchool.label.length) {
+      setErrorMessage("No school selected!");
+      setShowError(true);
+      return;
+    }
+    setShowError(false);
     const getToken = async () => {
-      const res = await fetch("http://159.89.127.1:3000/api/login", {
+      const res = await fetch("http://localhost:8000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           username,
-          password
+          password,
+          school: selectedSchool,
+          rememberMe
         })
       });
       const data = await res.json();
-      if (data.error) return setShowError(true);
+      if (data.error) {
+        setErrorMessage(data.msg);
+        setShowError(true);
+        return;
+      }
 
-      Cookies.set("auth-token", data, {sameSite: "Lax"});
+      Cookies.set("auth_token", data.token, {sameSite: "Strict"});
       
       h.push("/dashboard");
     };
@@ -92,49 +57,33 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page content">
+    <div className="login-page form-page content">
 
       <div className="top-bar">
-        Big Learn
+        AlphaBeaver - Login
       </div>
       <div className="content-container">
 
-        <div className="login-section">
-          <label for="username" className="username-label">Username</label>
-          <input type="text" className="login-field" value={username} onChange={(e) => setUsername(e.target.value)}/>
-          <label for="password" className="password-label">Password</label>
-          <input type="password" className="login-field" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <div className="form-section">
+          <label htmlFor="username" className="form-label">Username</label>
+          <input type="text" className="form-field" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
+          <label htmlFor="password" className="form-label">Password</label>
+          <input type="password" className="form-field" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <span className="error-message" style={{display: showError ? "block" : "none"}}>{errorMessage}</span>
           <div className="remember-me">
-            <span className="invalid-password" style={{display: showError ? "block" : "none"}}>Incorrect Username or Password</span>
-            <input type="checkbox" className="remember-me-box" />
+            <input type="checkbox" className="remember-me-box" onChange={() => setRememberMe(!rememberMe)} />
             <span className="remember-me-label">Remember Me</span>
           </div>
-          <Link className="login" to="#" onClick={submitLogin}>Login</Link>
+          <Link className="submit-form" to="#" onClick={submitLogin}>Login</Link>
         </div>
 
-        <div className="school-section">
-          <AsyncSelect cacheOptions defaultOptions
-            styles={selectStyle}
-            loadOptions={getSchoolList}
-            formatOptionLabel={(data) => {
-              return (
-                <div className="school-option">
-                  <span className="school-name-option" dangerouslySetInnerHTML={{ __html: data.label }} />
-                  <span className="school-id-option" dangerouslySetInnerHTML={{ __html: `#${data.value}` }} />
-                </div>
-              );
-            }}
-            value={selectedSchool}
-            onChange={changeSchool}
-          />
-          <img className="emblem" src={emblem} alt="" />
-
-        </div>
+        <SchoolSearch onChange={setSelectedSchool} />
+        <Link className="go-prereq" to="/register" onClick="">Register</Link>
 
       </div>
 
     </div>
-  )
-}
+  );
+};
 
 export default Login;

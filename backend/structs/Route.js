@@ -4,7 +4,7 @@ class Route {
     this.path = path;
   }
 
-  async execute(req, res) {
+  async execute() {
 
   }
 }

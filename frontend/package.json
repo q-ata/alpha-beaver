@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,8 +9,9 @@
     "js-cookie": "^2.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -36,5 +37,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-plugin-react": "^7.23.2"
   }
 }

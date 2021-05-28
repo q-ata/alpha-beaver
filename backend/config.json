@@ -1,0 +1,6 @@
+{
+  "env": {
+    "DB_PATH": "mongodb://localhost:27017",
+    "PORT": 8000
+  }
+}

@@ -4,36 +4,17 @@ const {
   userSchema,
   classSchema,
   standingSchema,
-  accountSchema
+  accountSchema,
+  counterSchema
 } = require("./schemas");
-require("colors");
 const mongoose = require("mongoose");
 const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
 const Base = require("./Base");
 const bcrypt = require("bcryptjs");
-
-
-global.logger = {
-  log: (msg, type, color = "reset") => {
-    console.log(`[${type[color]}]: ${msg[color]}`);
-  },
-  def: function(msg) {
-    this.log(msg, "INFO");
-  },
-  info: function(msg) {
-    this.log(msg, "INFO", "green");
-  },
-  warn: function(msg) {
-    this.log(msg, "WARN", "yellow");
-  },
-  error: function(msg) {
-    this.log(msg, "ERROR", "red");
-  }
-};
-// Disable eslint errors.
-let logger = global.logger;
+const jwt = require("jsonwebtoken");
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
 
 class School extends Base {
   constructor(id) {
@@ -46,20 +27,23 @@ class School extends Base {
     const schoolData = await this.models.SchoolModel.findOne({id: `${this.id}`}).exec();
     this.name = schoolData.name;
     this.emblem = schoolData.emblem;
+    this.freeRegister = schoolData.freeRegister;
+    this.requireName = schoolData.requireName;
     this.users = new UserCacheManager(this);
     this.roles = new RoleCacheManager(this);
     this.classes = new ClassCacheManager(this);
   }
 
   async setConnection() {
-    const connection = await mongoose.createConnection(`mongodb://localhost:27017/${this.id}`, {useNewUrlParser: true, useUnifiedTopology: true});
+    const connection = await mongoose.createConnection(`${process.env.DB_PATH}/${this.id}`, {useNewUrlParser: true, useUnifiedTopology: true});
     this.models = {
       SchoolModel: connection.model("SchoolModel", schoolSchema),
       UserModel: connection.model("UserModel", userSchema),
       RoleModel: connection.model("RoleModel", roleSchema),
       ClassModel: connection.model("ClassModel", classSchema),
       StandingModel: connection.model("StandingModel", standingSchema),
-      AccountModel: connection.model("AccountModel", accountSchema)
+      AccountModel: connection.model("AccountModel", accountSchema),
+      CounterModel: connection.model("CounterModel", counterSchema)
     };
 
     this.connection = connection;
@@ -100,17 +84,19 @@ class School extends Base {
     return (await this.getClasses(filter, {...options, limit: 1}))[0];
   }
 
-  async createAccount(username, plaintext, id) {
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(plaintext, salt);
-    this.models.AccountModel.create({username, password, id});
+  async createAccount(username, plaintext, firstName = "", lastName = "") {
+    const password = await bcrypt.hash(plaintext, 10);
+    const data = await this.models.CounterModel.findOne({collec: "users"}, {next: 1}).exec();
+    const id = data.next;
+    await this.models.AccountModel.create({username, password, id, refreshToken: [], expires: 0});
+    await this.models.UserModel.create({id, firstName, lastName, classes: [], perms: {overrides: 0, roles: []}});
+    await this.models.CounterModel.updateOne({collec: "users"}, {next: id + 1});
     return id;
   }
   
   async validateAccount(user, pass) {
-  
-    // Load hash from your password DB.
     const query = await this.models.AccountModel.findOne({username: user}).exec();
+    if (!query) return -1;
     const hash = await bcrypt.compare(pass, query.password);
     return hash ? query.id : -1;
   }
@@ -141,55 +127,27 @@ class School extends Base {
 
   randomString(length) {
     const result = [];
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|';
-    const charactersLength = characters.length;
+    
+    const charactersLength = CHARACTERS.length;
 
     for (let i = 0; i < length; ++i) {
-      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+      result.push(CHARACTERS.charAt(Math.floor(Math.random() * charactersLength)));
     }
 
     return result.join("");
   }
 
-  async generateToken(refreshToken, userID, schoolID) {
-    const jwt = require('jsonwebtoken');
+  async validateRefreshToken(rToken, user) {
+    const res = await this.models.AccountModel.findOne({id: user}, {refreshTokens: 1}).exec();
+    return res.refreshTokens.some((t) => bcrypt.compareSync(rToken, t));
+  }
 
-    const query = await this.models.AccountModel.findOne({id: userID}).exec();
-
-    // Invalid userID
-    if (! query) {
-      return false;
-    }
-
-    for (let rToken of query.refreshTokens) {
-      const hash = await bcrypt.compare(refreshToken, rToken);
-
-      // Invalid refreshToken
-      if (! hash) {
-        continue;
-      }
-
-      // Temporary secret key
-      const privateKey = process.env.SECRET_KEY;
-      const expirationTime = 15 * 60; // 15 minutes
-
-      // Generate JWT token
-      var token = jwt.sign({
-        user: userID,
-        school: schoolID
-      }, privateKey, { expiresIn: expirationTime });
-
-      // return JWT token
-      return token;
-    }
-
-    return false;
+  generateToken(user, school) {
+    return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 900});
   }
 
   validateToken(token) {
-    const jwt = require('jsonwebtoken');
 
-    // Temporary secret key
     const privateKey = process.env.SECRET_KEY;
 
     let decoded;
@@ -201,7 +159,7 @@ class School extends Base {
       return false;
     }
 
-    if (! decoded.user || ! decoded.school) {
+    if (!decoded.user || !decoded.school) {
       logger.error("we're screwed");
       return false;
     }
@@ -210,34 +168,4 @@ class School extends Base {
   }
 }
 
-const util = require("util");
-
-const print = (msg) => {
-  console.log(util.inspect(msg, {depth: null}));
-};
-
-const delay = (interval) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, interval);
-  });
-};
-
-
-const f = async () => {
-  
-  const s = new School("0016");
-  await s.init();
-
-  const token = await s.generateToken("hello", 100, "0016");
-  const decoded = s.validateToken(token);
-
-  console.log(token);
-  console.log(decoded);
-
-  // const data = await s.models.AccountModel.find().exec();
-};
-
-
-f();
+module.exports = School;

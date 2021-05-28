@@ -1,55 +1,10 @@
-.login-page .top-bar {
-  font-size: 48px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  padding: 12px;
-  background-color: rgb(143, 9, 9);
-  color:white;
-  width: 100%;
-  height: 72px;
-}
-
 .login-page .content {
   display: flex;
   flex-direction: column;
 }
 
-.login-page .content-container {
-  background-color: white;
-  width: 400px;
-  margin: 0 auto;
-  border: 4px solid;
-  border-color: rgb(143, 9, 9);
-  margin-top: 20vh;
-  padding: 30px;
-}
-
-.login-page .login-section, .login-page .school-section {
+.login-page .school-section {
   align-items: center;
-}
-
-.login-page .login-section {
-  text-align: center;
-  width: 100%;
-}
-
-.login-page .login-section .login-field {
-  display: block;
-  margin: 0 auto;
-  height: 30px;
-  width: 60%;
-  min-width: 100px;
-  max-width: 200px;
-  font-size: 16px;
-}
-
-.login-page .username-label,
-.login-page .password-label,
-.login-page .select-school-label {
-  display: block;
-  text-align: left;
-  padding: 6px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 18px;
 }
 
 .login-page .remember-me {
@@ -60,7 +15,6 @@
 .login-page .remember-me-box {
   min-width: 20px;
   width: auto;
-  height: 20px;
   float: left;
   margin-right: 10px;
   transform: scale(1.1);
@@ -71,39 +25,12 @@
   cursor: pointer;
 }
 
-.login-page .invalid-password {
-  color:red;
-  font-size: 11px;
-  display:block;
-}
-
 .login-page .remember-me-box:checked {
   background-color: lime;
 }
 
 .login-page .remember-me-label {
   float: left;
-}
-
-.login-page .login {
-  padding: 14px;
-  font-size: 20px;
-  margin-top: 6px;
-  width: 100%;
-  background-color: rgb(143, 9, 9);;
-  text-decoration: none;
-  color: white;
-  margin-bottom: 5px;
-  display: block;
-  border-radius: 4px;
-}
-
-.login-page .login:hover {
-  background-color: rgb(83, 17, 17);
-}
-
-.login-page .login:active {
-  background-color: rgb(143, 9, 9);
 }
 
 .login-page .school-name,
@@ -120,15 +47,4 @@
   display: inline-block;
   max-width: 80%;
   overflow: hidden;
-}
-
-.login-page .school-id-option {
-  font-size: 12px;
-  color: grey;
-  float: right;
-  margin-top: 3px;
-}
-
-.login-page .emblem {
-  width: 100%;
 }
