@@ -2,6 +2,7 @@ import React from "react";
 import {useEffect, useState} from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
+import EventCalendar from "./Calendar";
 import "../styles/dashboard.css";
 
 const getCourses = async () => {
@@ -114,7 +115,7 @@ const Dashboard = () => {
           </div>
           <div className="rs-bar">
             <div className="calendar">
-              <img src="https://cdn.vertex42.com/calendars/2021/April-2021-calendar.png" alt="calendar" />
+              <EventCalendar />
             </div>
             <div className="announcements">
               <div className="announce-header">

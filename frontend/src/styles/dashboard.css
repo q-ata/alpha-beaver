@@ -211,9 +211,10 @@ a, a:hover, a:click, a:visited {
   }
 }
 
-.dash-page .calendar img {
+.dash-page .calendar {
   width: 100%;
-  margin-top: 10px;
+  height: 250px;
+  font-size: 10px;
 }
 
 .dash-page .announce-header {
