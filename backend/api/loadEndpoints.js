@@ -7,6 +7,7 @@ const loadEndpoints = (folder) => {
   const endpoints = [];
   for (const file of files) {
     if (!file.endsWith(".js")) continue;
+    logger.info(`Loaded endpoint ${file}`);
     endpoints.push(require(path.join(dest, file)));
   }
   return endpoints;

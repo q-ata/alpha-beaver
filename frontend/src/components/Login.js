@@ -14,7 +14,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedSchool, setSelectedSchool] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState({});
 
   useEffect(() => {
     document.title = "Login";
@@ -23,7 +23,7 @@ const Login = () => {
   const h = useHistory();
   const submitLogin = (e) => {
     e.preventDefault();
-    if (!selectedSchool.label.length) {
+    if (!selectedSchool.label) {
       setErrorMessage("No school selected!");
       setShowError(true);
       return;
@@ -38,7 +38,7 @@ const Login = () => {
         body: JSON.stringify({
           username,
           password,
-          school: selectedSchool,
+          school: selectedSchool.value.id,
           rememberMe
         })
       });
@@ -78,7 +78,7 @@ const Login = () => {
         </div>
 
         <SchoolSearch onChange={setSelectedSchool} />
-        <Link className="go-prereq" to="/register" onClick="">Register</Link>
+        <Link className="go-prereq" to="/register">Register</Link>
 
       </div>
 

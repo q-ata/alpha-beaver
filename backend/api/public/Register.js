@@ -17,7 +17,8 @@ class Register extends Route {
     const firstName = body.firstName || "";
     const lastName = body.lastName || "";
     if (school.requireName && (!firstName.length || !lastName.length)) return res.status(400).json(error("No first and/or last name provided."));
-    return res.status(200).json({msg: "ok!"});
+    const exists = await school.models.AccountModel.findOne({username: body.username}).exec();
+    if (exists) return res.status(401).json(error("That username is already taken."));
     const id = await school.createAccount(body.username, body.password, firstName, lastName);
     logger.debug(`Created account with id ${id}`);
     res.status(200).json({id});

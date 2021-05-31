@@ -4,6 +4,7 @@ const {
   userSchema,
   classSchema,
   standingSchema,
+  announcementSchema,
   accountSchema,
   counterSchema
 } = require("./schemas");
@@ -11,9 +12,9 @@ const mongoose = require("mongoose");
 const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
+const AnnouncementCacheManager = require("./AnnouncementCacheManager");
 const Base = require("./Base");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
 
 class School extends Base {
@@ -32,6 +33,7 @@ class School extends Base {
     this.users = new UserCacheManager(this);
     this.roles = new RoleCacheManager(this);
     this.classes = new ClassCacheManager(this);
+    this.announcements = new AnnouncementCacheManager(this);
   }
 
   async setConnection() {
@@ -42,6 +44,7 @@ class School extends Base {
       RoleModel: connection.model("RoleModel", roleSchema),
       ClassModel: connection.model("ClassModel", classSchema),
       StandingModel: connection.model("StandingModel", standingSchema),
+      AnnouncementModel: connection.model("AnnouncementModel", announcementSchema),
       AccountModel: connection.model("AccountModel", accountSchema),
       CounterModel: connection.model("CounterModel", counterSchema)
     };
@@ -84,11 +87,15 @@ class School extends Base {
     return (await this.getClasses(filter, {...options, limit: 1}))[0];
   }
 
+  async getAnnouncements(filter = null, options) {
+    return await this.getItem("announcements", filter, options);
+  }
+
   async createAccount(username, plaintext, firstName = "", lastName = "") {
     const password = await bcrypt.hash(plaintext, 10);
     const data = await this.models.CounterModel.findOne({collec: "users"}, {next: 1}).exec();
     const id = data.next;
-    await this.models.AccountModel.create({username, password, id, refreshToken: [], expires: 0});
+    await this.models.AccountModel.create({username, password, id, refreshTokens: [], expires: 0});
     await this.models.UserModel.create({id, firstName, lastName, classes: [], perms: {overrides: 0, roles: []}});
     await this.models.CounterModel.updateOne({collec: "users"}, {next: id + 1});
     return id;
@@ -140,31 +147,6 @@ class School extends Base {
   async validateRefreshToken(rToken, user) {
     const res = await this.models.AccountModel.findOne({id: user}, {refreshTokens: 1}).exec();
     return res.refreshTokens.some((t) => bcrypt.compareSync(rToken, t));
-  }
-
-  generateToken(user, school) {
-    return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 900});
-  }
-
-  validateToken(token) {
-
-    const privateKey = process.env.SECRET_KEY;
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, privateKey);
-    }
-    catch (err) {
-      console.log(err);
-      return false;
-    }
-
-    if (!decoded.user || !decoded.school) {
-      logger.error("we're screwed");
-      return false;
-    }
-
-    return decoded;
   }
 }
 
