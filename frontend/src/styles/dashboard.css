@@ -217,6 +217,55 @@ a, a:hover, a:click, a:visited {
   font-size: 10px;
 }
 
+.modal {
+  position: absolute;
+  background-color: #FFF;
+  z-index: 99 !important;
+  padding: 10px;
+  width:120px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.event-time {
+  font-size: 7px;
+  color: #a9a9a9;
+}
+
+.modal-button {
+  top: -7px;
+  right: -7px;
+  position: absolute;
+  background-color: #FF605C;
+  border: 2px solid;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  text-align:center;
+  border-radius: 50px;
+  border-style: hidden;
+  color: #FFF;
+}
+
+.modal-button:hover {
+  cursor:pointer;
+}
+
+.event-container {
+  padding: 7px;
+  margin-bottom: 5px;
+  border-style: hidden hidden hidden solid;
+  border-left-width: 4px;
+  border-color: #000;
+  background-color: #F8F8FF;
+}
+
+.event-container:hover {
+  cursor:pointer;
+}
+
 .dash-page .announce-header {
   border-bottom: 1px solid grey;
   text-rendering: optimizeLegibility;
