@@ -1,11 +1,27 @@
 import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { format, parse, startOfWeek, getDay } from "date-fns";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
 import { useEffect, useState } from "react";
+import "../styles/calendar.css";
 
-const localizer = momentLocalizer(moment);
+const locales = {
+  "en-US": require("date-fns/locale/en-US"),
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
+
+const formats = {
+  weekdayFormat: (date, culture, localizer) => localizer.format(date, "EEE", culture)
+};
 
 const events = [
   {
@@ -162,6 +178,7 @@ const EventCalendar = () => {
         startAccessor="start"
         endAccessor="end"
         selectable={true}
+        formats={formats}
       />
       {
         isOpen ?
