@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 class Endpoint {
   constructor(method, path, func) {
     this.method = method;
@@ -21,7 +23,29 @@ const resolve = (api, cPath, endpoints) => {
   }
 };
 
-const eps = [];
-const api = require("./api/api_config.json");
-resolve(api, "", eps);
-console.log(eps);
+const generateToken = (user, school) => {
+  return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 900});
+};
+
+const validateToken = (token) => {
+
+  const privateKey = process.env.SECRET_KEY;
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, privateKey);
+  }
+  catch (err) {
+    console.log(err);
+    return false;
+  }
+
+  if (!decoded.user || !decoded.school) {
+    logger.error(`INVALID JWT PAYLOAD: ${token}`);
+    return false;
+  }
+
+  return decoded;
+};
+
+module.exports = {resolve, generateToken, validateToken};
