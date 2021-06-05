@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
 import "../styles/dashboard.css";
+import "../styles/nav-bar.css";
 
 const getCourses = async () => {
   const url = new URL("http://159.89.127.1:3000/api/user");
@@ -35,7 +36,7 @@ const getAnnouncements = async () => {
 };
 
 const Dashboard = () => {
-
+  
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
   
