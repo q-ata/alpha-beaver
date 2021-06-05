@@ -1,38 +1,38 @@
 a, a:hover, a:click, a:visited {
-    border:none;
-    outline:none;
-    text-decoration:none;
-    color:inherit;
-    -webkit-tap-highlight-color: white;
+  border:none;
+  outline:none;
+  text-decoration:none;
+  color:inherit;
+  -webkit-tap-highlight-color: white;
 }
 
 .course-page {
-    display: flex;
-    line-height: 1.5;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  line-height: 1.5;
+  height: 100%;
+  width: 100%;
 }
 
 .big-box {
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin-left: 150px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-left: 150px;
 }
 
 .course-page .header {
-    width: 100%;
-    font-size: 30px;
+  width: 100%;
+  font-size: 30px;
 }
 
 .middle-section {
-    float: left;
-    background-color: rgb(153, 14, 158);
-    display: block;
-    width: 65%;
-    height: 100%;
-    margin-right: 2.5%;
-    /* padding: 5px; */
+  float: left;
+  background-color: rgb(153, 14, 158);
+  display: block;
+  width: 65%;
+  height: 100%;
+  margin-right: 2.5%;
+  /* padding: 5px; */
 }
 
 
@@ -41,131 +41,134 @@ a, a:hover, a:click, a:visited {
 
 
 .outline-title {
-    text-align: center;
-    font-size: 30px;
-    background-color: rgb(51, 51, 51);
-    color: white;
+  text-align: center;
+  font-size: 30px;
+  background-color: rgb(51, 51, 51);
+  color: white;
 }
 
 .outline {
-    text-align: center;
-    font-size: 20px;
+  text-align: center;
+  font-size: 20px;
 }
 
 .outline-box {
-    width: 100%;
-    height: 30%;
-    margin-top: 20px;
-    background-color: rgb(34, 135, 148);
-    /* overflow-y: scroll; */
+  width: 100%;
+  margin-top: 20px;
+  background-color: rgb(34, 135, 148);
+  /* overflow-y: scroll; */
 }
 
 .outline-box .icon {
-    display: inline-block;
+  display: inline-block;
 }
 
 .outline-box .icon-group {
-    display: block;
-    white-space: nowrap;
-    margin-top: 10px;
-    background-color: rgb(143, 9, 9);
+  display: block;
+  margin-top: 10px;
+  background-color: rgb(143, 9, 9);
+  text-align: center;
 }
 
 .outline-box .icon-group span {
-    display:block;
+  display: block;
 }
 
 .outline-box .icon-group img {
-    height: 55%;
-    width: auto;
-    padding: 1px;
-    margin: 0 auto;
-    display: block;
+  width: 50px;
+  margin: 0 auto;
 }
 
-.outline-box [class^="icon "] {
-    text-align: center;
-    width: 4vw;
-    height: 4vw;
-    top: 5px;
-    margin: 1vw;
-    font-size: 0.8vw;    
-    background-color: rgb(215, 215, 215);
+.outline-box .icon {
+  text-align: center;
+  width: calc(100% / 6);
+  min-width: 100px;
+  height: 80px;
+  font-size: 1em;
 }
 
+.icon-container {
+  width: 80%;
+  margin: 0px auto;
+  height: 100%;
+  background-color: #CCC;
+}
 
+.icon-container:hover {
+  cursor: pointer;
+  background-color: #AAA;
+}
 
-
-
-
+.icon-container:active {
+  background-color: #999;
+}
 
 .course-page .announcements {
-    width: 100%;
-    overflow-y: visible;
+  width: 100%;
+  overflow-y: visible;
 }
 
 .announcements-title {
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    text-align: center;
-    font-size: 30px;
-    background-color: rgb(51, 51, 51);
-    color: white;
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  font-size: 30px;
+  background-color: rgb(51, 51, 51);
+  color: white;
+}
+
+.announce-header {
+  margin: 0px auto;
+  width: 300px;
 }
 
 .sort-button {
-    color: white;
-    height: 100%;
-    font-size: 18px;
-    width: 80px;
-    text-align: center;
-    float: right;
-    position: relative;
-    background-color: #6d58e4;
-    width: auto;
-    position: relative;
-    
+  color: white;
+  height: 100%;
+  font-size: 18px;
+  width: 80px;
+  text-align: center;
+  float: right;
+  background-color: #6d58e4;
+  vertical-align: middle;
 }
-
 
 .sort-button :active {
-    border-style: none;
+  border-style: none;
 }
 
-
-
-
+.sort-header {
+  line-height: 40px;
+}
 
 .to-do-bar {
-    background-color: #ccd188;
-    display: inline-block;
-    width: 30%;
-    height: 100%;
+  background-color: #ccd188;
+  display: inline-block;
+  width: 30%;
 }
 
 .calendar {
-    margin: 20px auto;
-    width: 92.5%;
-    height: 250px;
-    background-color: #c5aa77;
+  margin: 20px auto;
+  width: 92.5%;
+  height: 250px;
+  background-color: #c5aa77;
 }
 
 .to-do-list {
-    margin: 20px auto;
-    width: 92.5%;
-    display: block;
-    height: 500px;
-    background-color: #c5aa77;
+  margin: 20px auto;
+  width: 92.5%;
+  display: block;
+  height: 500px;
+  background-color: #c5aa77;
 }
 
 .to-do-title {
-    
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    text-align: center;
-    font-size: 30px;
-    background-color: rgb(51, 51, 51);
-    color: white;
+  
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  font-size: 30px;
+  background-color: rgb(51, 51, 51);
+  color: white;
 }
