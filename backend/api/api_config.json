@@ -17,6 +17,32 @@
               }
             }
           ]
+        },
+        {
+          "name": "me",
+          "sub": [
+            {
+              "name": "classes",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/me/Classes"
+              }
+            },
+            {
+              "name": "announcements",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/me/Announcements"
+              }
+            }
+          ],
+          "query": {
+            "method": "get",
+            "auth": true,
+            "dest": "api/authenticated/me/Me"
+          }
         }
       ]
     },
