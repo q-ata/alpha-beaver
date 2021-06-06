@@ -16,7 +16,7 @@ class CacheManager extends Base {
 
   async get(filter, {key = "id", limit = 0}) {
     if (filter === null) {
-      const all = await this.model.find().exec();
+      const all = await this.model.find({}, {_id: 0}).exec();
       this.addCache(all);
       return all.map((item) => new this.Container(this.school, item));
     }
@@ -30,7 +30,7 @@ class CacheManager extends Base {
       filter = {[key]: filter};
     }
     else if (typeof filter[Symbol.iterator] === "function") filter = {[key]: {$in: filter}};
-    const ret = await this.model.find(filter).limit(limit).exec();
+    const ret = await this.model.find(filter, {_id: 0}).limit(limit).exec();
     this.addCache(ret);
     return ret.map((item) => new this.Container(this.school, item));
   }

@@ -4,14 +4,33 @@ import Course from "./Course";
 import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import "../styles/dashboard.css";
+import Cookies from "js-cookie";
+import profileIcon from "../resources/profile.svg";
+import announcementsIcon from "../resources/announcement.svg";
+import coursesIcon from "../resources/courses.svg";
+import calendarIcon from "../resources/calendar.svg";
 
-const getCourses = async () => {
-  const url = new URL("http://159.89.127.1:3000/api/user");
+const getUser = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me");
   const res = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${123}`
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  const obj = await res.json();
+  return obj;
+};
+
+const getCourses = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me/classes");
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
     }
   });
 
@@ -20,14 +39,14 @@ const getCourses = async () => {
 };
 
 
-const getAnnouncements = async () => {
-  const url = new URL("http://159.89.127.1:3000/api/announcements");
+const getAnnouncements = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me/announcements");
 
   const res = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${123}`
+      "Authorization": `Bearer ${token}`
     }
   });
 
@@ -39,12 +58,18 @@ const Dashboard = () => {
 
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
-  
+
   const loadAll = async () => {
-    const classes = await getCourses();
-    const ann = await getAnnouncements();
-    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} img={c.img} />));
-    setAnnounces(ann.map((a) => <Announcement key={a.name} course={a.course} announce={a.announces} date={a.date} />));
+    const token = Cookies.get("auth_token");
+    // TODO: Check for expired or missing token and try to apply refresh token.
+    const u = await getUser(token);
+    console.log(u);
+    const classes = await getCourses(token);
+    console.log(classes);
+    const ann = await getAnnouncements(token);
+    console.log(ann);
+    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} />));
+    setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
   };
   useEffect(() => {
     loadAll();
@@ -61,7 +86,17 @@ const Dashboard = () => {
             <li className="nav-item">
               <button className="nav-item-button">
                 <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
+                  <img src={coursesIcon} alt="" />
+                </div>
+                <div className="nav-item-caption">
+                  Courses
+                </div>
+              </button>
+            </li>
+            <li className="nav-item">
+              <button className="nav-item-button">
+                <div className="nav-item-icon">
+                  <img src={profileIcon} alt="" />
                 </div>
                 <div className="nav-item-caption">
                   Account
@@ -71,20 +106,20 @@ const Dashboard = () => {
             <li className="nav-item">
               <button className="nav-item-button">
                 <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
+                  <img src={calendarIcon} alt="" />
                 </div>
                 <div className="nav-item-caption">
-                  Dashboard
+                  Calendar
                 </div>
               </button>
             </li>
             <li className="nav-item">
               <button className="nav-item-button">
                 <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
+                  <img src={announcementsIcon} alt="" />
                 </div>
                 <div className="nav-item-caption">
-                  Courses
+                  Announcements
                 </div>
               </button>
             </li>

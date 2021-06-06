@@ -12,7 +12,7 @@ a, a:hover, a:click, a:visited {
 }
 
 .dash-page .nav-section {
-  width: 104px;
+  width: 112px;
   overflow-y: auto;
   position: fixed;
   top: 0;
@@ -21,7 +21,7 @@ a, a:hover, a:click, a:visited {
   display: flex;
   flex-direction: column;
   z-index: 999;
-  background-color: rgb(143, 9, 9);;
+  background-color: #aaa;
 }
 
 .dash-page .main-nav {
@@ -29,8 +29,7 @@ a, a:hover, a:click, a:visited {
 }
 
 .dash-page .corner-icon {
-  width: 104px;
-  height: 104px;
+  height: 112px;
   background-image: url("https://pbs.twimg.com/media/Emq4JSRXcAAZD9B.jpg");
   background-repeat: no-repeat;
   background-size: contain;
@@ -54,12 +53,25 @@ a, a:hover, a:click, a:visited {
   width: 100%;
   text-align: center;
   display: block;
-  color: green;
   border-style: none;
   font-size: 0.9rem;
   font-weight: normal;
   line-height: 20px;
   float: left;
+}
+
+.dash-page .nav-item-button:hover {
+  background-color: #888;
+  cursor: pointer;
+}
+
+.dash-page .nav-item-button:active {
+  background-color: #666;
+}
+
+.dash-page .nav-item-icon {
+  width: 90%;
+  margin: auto;
 }
 
 .dash-page .content-wrapper {
@@ -81,7 +93,7 @@ a, a:hover, a:click, a:visited {
 }
 
 .dash-page .content {
-  padding: 24px;
+  padding: 24px 24px 24px 36px;
 }
 
 .dash-page .dashboard {
@@ -124,7 +136,6 @@ a, a:hover, a:click, a:visited {
   height: 50px;
   text-align: center;
   display: block;
-  color: green;
   font-size: 0.9rem;
   font-weight: normal;
   line-height: 20px;
@@ -154,6 +165,7 @@ a, a:hover, a:click, a:visited {
 
 .dash-page .card:hover {
   box-shadow: 6px 6px 6px grey;
+  cursor: pointer;
 }
 
 .dash-page .card-preview-image {
@@ -164,6 +176,7 @@ a, a:hover, a:click, a:visited {
 
 .dash-page .card-info {
   padding: 4px;
+  height: 100%;
 }
 
 .dash-page .card-class-title {
@@ -199,11 +212,12 @@ a, a:hover, a:click, a:visited {
   display: block;
   position: relative;
   box-sizing: border-box;
-  width: 360px;
+  width: 460px;
   padding-left: 20px;
   padding-right: 20px;
   height: 100vh;
 }
+
 @media (max-width: 760px)
 {
   .dash-page .rs-bar {
@@ -232,19 +246,25 @@ a, a:hover, a:click, a:visited {
 
 .dash-page .announce-title {
   padding-top: 8px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
   font-size: 1.2rem;
   display: inline-block;
   width: 100%;
 }
 
-.dash-page .announce-date {
+.dash-page .announce-class, .dash-page .announce-date {
   display: block;
   font-size: 0.9rem;
   font-weight: bold;
   color: grey;
+}
+
+.dash-page .announce-class {
+  float: left;
+}
+
+.dash-page .announce-date {
+  float: right;
 }
 
 .dash-page .announce-content {
@@ -256,7 +276,6 @@ a, a:hover, a:click, a:visited {
   text-overflow: ellipsis;
   word-wrap: break-word;
   overflow: hidden;
-  max-height: 4.8rem;
   line-height: 1.2rem;
   font-size: 0.9rem;
   display: inline-block;
@@ -265,6 +284,7 @@ a, a:hover, a:click, a:visited {
 .dash-page .announce-show-all {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .dash-page .announce-show-all button {
