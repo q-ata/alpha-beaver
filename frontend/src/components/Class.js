@@ -144,15 +144,15 @@ const Class = () => {
             </div>
 
             <div className="middle-section">
+              <div className="icon-group">
+                <div className="icon instructors"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Instructors</span></div></div>
+                <div className="icon contact"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Contact</span></div></div>
+                <div className="icon grades"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Grades</span></div></div>
+                <div className="icon content"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Content</span></div></div>
+                <div className="icon forums"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Forums</span></div></div>
+                <div className="icon classroom"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Classroom</span></div></div>
+              </div>
               <div className="outline-box">
-                  <div className="icon-group">
-                    <div className="icon instructors"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Instructors</span></div></div>
-                    <div className="icon contact"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Contact</span></div></div>
-                    <div className="icon grades"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Grades</span></div></div>
-                    <div className="icon content"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Content</span></div></div>
-                    <div className="icon forums"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Forums</span></div></div>
-                    <div className="icon classroom"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Classroom</span></div></div>
-                  </div>
                   <div className="outline-title">
                     Course Outline
                   </div>
@@ -167,21 +167,26 @@ const Class = () => {
                 <div className="announcements-title">
                   <div className="sort-button">
                     <span className="sort-header">Sort By</span>
+                    <div className="sort-options">
+                      <div className="sort-option"><span>Newest</span></div>
+                      <div className="sort-option"><span>Oldest</span></div>
+                    </div>
                   </div>
                   <div className="announce-header">Announcements</div>
                   </div>
                 </div>
               </div>
-
-                <div className="to-do-bar">
-                  <div className="calendar">
-                  <div className="to-do-title">
-                       <b>Calender</b>
-                    </div>
-                  </div>
-                  <div className="to-do-list">
+                <div className="to-do-wrapper">
+                  <div className="to-do-bar">
+                    <div className="calendar">
                     <div className="to-do-title">
-                       <b>To-Do List</b>
+                        <b>Calender</b>
+                      </div>
+                    </div>
+                    <div className="to-do-list">
+                      <div className="to-do-title">
+                        <b>To-Do List</b>
+                      </div>
                     </div>
                   </div>
                 </div>

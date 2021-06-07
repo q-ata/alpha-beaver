@@ -27,20 +27,17 @@ a, a:hover, a:click, a:visited {
 
 .middle-section {
   float: left;
-  background-color: rgb(153, 14, 158);
-  display: block;
+  background-color: #CCC;
+  border-radius: 8px;
+  border-style: inset;
   width: 65%;
   height: 100%;
-  margin-right: 2.5%;
-  /* padding: 5px; */
+  margin-right: 25px;
+  padding: 25px;
 }
 
-
-
-
-
-
 .outline-title {
+  height: 45px;
   text-align: center;
   font-size: 30px;
   background-color: rgb(51, 51, 51);
@@ -52,34 +49,21 @@ a, a:hover, a:click, a:visited {
   font-size: 20px;
 }
 
-.outline-box {
-  width: 100%;
-  margin-top: 20px;
-  background-color: rgb(34, 135, 148);
-  /* overflow-y: scroll; */
+.icon-group {
+  margin-bottom: 25px;
 }
 
-.outline-box .icon {
-  display: inline-block;
-}
-
-.outline-box .icon-group {
-  display: block;
-  margin-top: 10px;
-  background-color: rgb(143, 9, 9);
-  text-align: center;
-}
-
-.outline-box .icon-group span {
+.icon-group span {
   display: block;
 }
 
-.outline-box .icon-group img {
+.icon-group img {
   width: 50px;
   margin: 0 auto;
 }
 
-.outline-box .icon {
+.icon {
+  display: inline-block;
   text-align: center;
   width: calc(100% / 6);
   min-width: 100px;
@@ -91,7 +75,9 @@ a, a:hover, a:click, a:visited {
   width: 80%;
   margin: 0px auto;
   height: 100%;
-  background-color: #CCC;
+  background-color: #EEE;
+  border-radius: 6px;
+  border-style: outset;
 }
 
 .icon-container:hover {
@@ -101,6 +87,7 @@ a, a:hover, a:click, a:visited {
 
 .icon-container:active {
   background-color: #999;
+  border-style: inset;
 }
 
 .course-page .announcements {
@@ -109,8 +96,7 @@ a, a:hover, a:click, a:visited {
 }
 
 .announcements-title {
-  width: 100%;
-  height: 40px;
+  height: 45px;
   text-align: center;
   font-size: 30px;
   background-color: rgb(51, 51, 51);
@@ -131,44 +117,67 @@ a, a:hover, a:click, a:visited {
   float: right;
   background-color: #6d58e4;
   vertical-align: middle;
-}
-
-.sort-button :active {
-  border-style: none;
+  cursor: pointer;
 }
 
 .sort-header {
-  line-height: 40px;
+  line-height: 45px;
+}
+
+.sort-options {
+  position: absolute;
+  width: 80px;
+}
+
+.sort-option {
+  display: none;
+  padding: 8px;
+  border: 1px solid grey;
+  background-color: white;
+  color: black;
+}
+
+.sort-button:hover .sort-option {
+  display: block;
+}
+
+.sort-option:hover {
+  cursor: pointer;
+  background-color: #AAA;
+}
+
+.to-do-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 25px;
+  background-color: #CCC;
+  border-radius: 8px;
+  border-style: outset;
+  margin-right: 25px;
+  min-width: 100px;
 }
 
 .to-do-bar {
   background-color: #ccd188;
-  display: inline-block;
-  width: 30%;
+  font-size: 1.8em;
+  flex: 0 0 100%;
+  margin: 0 auto;
 }
 
 .calendar {
-  margin: 20px auto;
-  width: 92.5%;
   height: 250px;
   background-color: #c5aa77;
+  flex: 0 0 100%;
 }
 
 .to-do-list {
-  margin: 20px auto;
-  width: 92.5%;
-  display: block;
   height: 500px;
   background-color: #c5aa77;
+  flex: 0 0 100%;
 }
 
 .to-do-title {
-  
-  display: inline-block;
-  width: 100%;
-  height: 40px;
   text-align: center;
-  font-size: 30px;
   background-color: rgb(51, 51, 51);
   color: white;
 }
