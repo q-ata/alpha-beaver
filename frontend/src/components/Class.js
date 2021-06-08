@@ -1,8 +1,10 @@
 /* eslint-disable */
 import React from 'react';
 import {useEffect, useState} from "react";
+import Navigation from "./Navigation";
+import EventCalendar from "./Calendar";
+import ClassNav from "./ClassNav";
 import "../styles/class.css";
-import "../styles/nav-bar.css";
 
 const classInfo = {
     logo: "",   
@@ -73,8 +75,6 @@ const getAnnouncements = async () => {
 }
 */
 
-const tempIcon = "https://static.thenounproject.com/png/205610-200.png";
-
 const Class = () => {
 
   // const [classInfo, setClassInfo] = useState([]);
@@ -100,58 +100,14 @@ const Class = () => {
 
   return (
     <div className="course-page">
-      <header className="nav-section">
-        <div className="main-nav">
-          <div className="corner-icon">
-          </div>
-          <ul className="nav-bar">
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Account
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Dashboard
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Courses
-                </div>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </header>
+      
           <div className="big-box">
             <div className="header">
                {classInfo.title} [{classInfo.courseCode}]
             </div>
-
+            <Navigation />
             <div className="middle-section">
-              <div className="icon-group">
-                <div className="icon instructors"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Instructors</span></div></div>
-                <div className="icon contact"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Contact</span></div></div>
-                <div className="icon grades"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Grades</span></div></div>
-                <div className="icon content"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Content</span></div></div>
-                <div className="icon forums"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Forums</span></div></div>
-                <div className="icon classroom"><div className="icon-container"><img src={tempIcon} align="middle"></img><span>Classroom</span></div></div>
-              </div>
+              <ClassNav />
               <div className="outline-box">
                   <div className="outline-title">
                     Course Outline
@@ -180,12 +136,14 @@ const Class = () => {
                   <div className="to-do-bar">
                     <div className="calendar">
                     <div className="to-do-title">
-                        <b>Calender</b>
-                      </div>
+                      Calender
+                    </div>
+                      <EventCalendar height="350px" fontSize="10px" />
                     </div>
                     <div className="to-do-list">
                       <div className="to-do-title">
-                        <b>To-Do List</b>
+                        {/* TODO: todo list (hehe) */}
+                        To-Do List
                       </div>
                     </div>
                   </div>

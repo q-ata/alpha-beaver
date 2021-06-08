@@ -1,0 +1,108 @@
+{
+  "name": "api",
+  "sub": [
+    {
+      "name": "users",
+      "sub": [
+        {
+          "name": "userID",
+          "path": ":userID",
+          "sub": [
+            {
+              "name": "get",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/User"
+              }
+            }
+          ]
+        },
+        {
+          "name": "me",
+          "sub": [
+            {
+              "name": "classes",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/me/Classes"
+              }
+            },
+            {
+              "name": "announcements",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/me/Announcements"
+              }
+            }
+          ],
+          "query": {
+            "method": "get",
+            "auth": true,
+            "dest": "api/authenticated/me/Me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "classes",
+      "sub": [
+        {
+          "name": "classID",
+          "path": ":classID",
+          "sub": [
+            {
+              "name": "get",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Classes"
+              }
+            },
+            {
+              "name": "announcements",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Announcements"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "query": {
+        "method": "post",
+        "body": {
+          "username": "string",
+          "password": "string",
+          "school": "string"
+        },
+        "dest": "api/public/Login"
+      }
+    },
+    {
+      "name": "register",
+      "query": {
+        "method": "post",
+        "body": {
+          "username" : "string",
+          "password": "string",
+          "school": "string"
+        },
+        "dest": "api/public/Register"
+      }
+    },
+    {
+      "name": "schools",
+      "query": {
+        "method": "get",
+        "dest": "api/public/Schools"
+      }
+    }
+  ]
+}

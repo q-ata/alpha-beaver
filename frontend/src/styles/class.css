@@ -1,4 +1,4 @@
-a, a:hover, a:click, a:visited {
+.course-page a, .course-page a:hover, .course-page a:click, .course-page a:visited {
   border:none;
   outline:none;
   text-decoration:none;
@@ -13,7 +13,7 @@ a, a:hover, a:click, a:visited {
   width: 100%;
 }
 
-.big-box {
+.course-page .big-box {
   display: block;
   width: 100%;
   height: 100%;
@@ -25,7 +25,7 @@ a, a:hover, a:click, a:visited {
   font-size: 30px;
 }
 
-.middle-section {
+.course-page .middle-section {
   float: left;
   background-color: #CCC;
   border-radius: 8px;
@@ -36,7 +36,7 @@ a, a:hover, a:click, a:visited {
   padding: 25px;
 }
 
-.outline-title {
+.course-page .outline-title {
   height: 45px;
   text-align: center;
   font-size: 30px;
@@ -44,50 +44,9 @@ a, a:hover, a:click, a:visited {
   color: white;
 }
 
-.outline {
+.course-page .outline {
   text-align: center;
   font-size: 20px;
-}
-
-.icon-group {
-  margin-bottom: 25px;
-}
-
-.icon-group span {
-  display: block;
-}
-
-.icon-group img {
-  width: 50px;
-  margin: 0 auto;
-}
-
-.icon {
-  display: inline-block;
-  text-align: center;
-  width: calc(100% / 6);
-  min-width: 100px;
-  height: 80px;
-  font-size: 1em;
-}
-
-.icon-container {
-  width: 80%;
-  margin: 0px auto;
-  height: 100%;
-  background-color: #EEE;
-  border-radius: 6px;
-  border-style: outset;
-}
-
-.icon-container:hover {
-  cursor: pointer;
-  background-color: #AAA;
-}
-
-.icon-container:active {
-  background-color: #999;
-  border-style: inset;
 }
 
 .course-page .announcements {
@@ -95,7 +54,7 @@ a, a:hover, a:click, a:visited {
   overflow-y: visible;
 }
 
-.announcements-title {
+.course-page .announcements-title {
   height: 45px;
   text-align: center;
   font-size: 30px;
@@ -103,12 +62,12 @@ a, a:hover, a:click, a:visited {
   color: white;
 }
 
-.announce-header {
+.course-page .announce-header {
   margin: 0px auto;
   width: 300px;
 }
 
-.sort-button {
+.course-page .sort-button {
   color: white;
   height: 100%;
   font-size: 18px;
@@ -120,16 +79,16 @@ a, a:hover, a:click, a:visited {
   cursor: pointer;
 }
 
-.sort-header {
+.course-page .sort-header {
   line-height: 45px;
 }
 
-.sort-options {
+.course-page .sort-options {
   position: absolute;
   width: 80px;
 }
 
-.sort-option {
+.course-page .sort-option {
   display: none;
   padding: 8px;
   border: 1px solid grey;
@@ -137,16 +96,16 @@ a, a:hover, a:click, a:visited {
   color: black;
 }
 
-.sort-button:hover .sort-option {
+.course-page .sort-button:hover .sort-option {
   display: block;
 }
 
-.sort-option:hover {
+.course-page .sort-option:hover {
   cursor: pointer;
   background-color: #AAA;
 }
 
-.to-do-wrapper {
+.course-page .to-do-wrapper {
   display: flex;
   flex-flow: row wrap;
   padding: 25px;
@@ -157,27 +116,24 @@ a, a:hover, a:click, a:visited {
   min-width: 100px;
 }
 
-.to-do-bar {
-  background-color: #ccd188;
-  font-size: 1.8em;
+.course-page .to-do-bar {
   flex: 0 0 100%;
   margin: 0 auto;
 }
 
-.calendar {
-  height: 250px;
-  background-color: #c5aa77;
+.course-page .calendar {
   flex: 0 0 100%;
 }
 
-.to-do-list {
+.course-page .to-do-list {
   height: 500px;
   background-color: #c5aa77;
   flex: 0 0 100%;
 }
 
-.to-do-title {
+.course-page .to-do-title {
   text-align: center;
   background-color: rgb(51, 51, 51);
   color: white;
+  font-size: 26px;
 }

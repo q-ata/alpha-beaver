@@ -2,16 +2,32 @@ import React from "react";
 import {useEffect, useState} from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
+import EventCalendar from "./Calendar";
+import Navigation from "./Navigation";
 import "../styles/dashboard.css";
-import "../styles/nav-bar.css";
+import Cookies from "js-cookie";
 
-const getCourses = async () => {
-  const url = new URL("http://159.89.127.1:3000/api/user");
+const getUser = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me");
   const res = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${123}`
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  const obj = await res.json();
+  return obj;
+};
+
+const getCourses = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me/classes");
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
     }
   });
 
@@ -20,14 +36,14 @@ const getCourses = async () => {
 };
 
 
-const getAnnouncements = async () => {
-  const url = new URL("http://159.89.127.1:3000/api/announcements");
+const getAnnouncements = async (token) => {
+  const url = new URL("http://localhost:8000/api/users/me/announcements");
 
   const res = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${123}`
+      "Authorization": `Bearer ${token}`
     }
   });
 
@@ -39,12 +55,16 @@ const Dashboard = () => {
   
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
-  
+
   const loadAll = async () => {
-    const classes = await getCourses();
-    const ann = await getAnnouncements();
-    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} img={c.img} />));
-    setAnnounces(ann.map((a) => <Announcement key={a.name} course={a.course} announce={a.announces} date={a.date} />));
+    const token = Cookies.get("auth_token");
+    // TODO: Check for expired or missing token and try to apply refresh token.
+    const u = await getUser(token);
+    console.log(u);
+    const classes = await getCourses(token);
+    const ann = await getAnnouncements(token);
+    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} />));
+    setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
   };
   useEffect(() => {
     loadAll();
@@ -53,44 +73,7 @@ const Dashboard = () => {
   return (
 
     <div className="dash-page">
-      <header className="nav-section">
-        <div className="main-nav">
-          <div className="corner-icon">
-          </div>
-          <ul className="nav-bar">
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Account
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Dashboard
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src="https://q.utoronto.ca/images/messages/avatar-50.png" alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Courses
-                </div>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </header>
+      <Navigation />
       <div className="content-wrapper">
         <div className="area-wrapper">
           <div className="content-area">
@@ -114,9 +97,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="rs-bar">
-            <div className="calendar">
-              <img src="https://cdn.vertex42.com/calendars/2021/April-2021-calendar.png" alt="calendar" />
-            </div>
+            <EventCalendar height="350px" fontSize="10px" />
             <div className="announcements">
               <div className="announce-header">
                 <span>Announcements</span>

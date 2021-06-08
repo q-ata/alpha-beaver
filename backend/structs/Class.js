@@ -6,6 +6,7 @@ class Class extends Base {
     this.name = data.name;
     this.background = data.background;
     this.desc = data.desc;
+    this.color = data.color;
   }
 
   async getUsers(filter = null, options = {key: "id"}) {
@@ -32,6 +33,10 @@ class Class extends Base {
 
   async getRole(filter, options = {key: "id"}) {
     return (await this.getUsers(filter, {...options, limit: 1}))[0];
+  }
+
+  async getAnnouncements(filter, options = {limit: 5}) {
+    return await this.school.getAnnouncements({...filter, class: this.id}, options);
   }
   
 }

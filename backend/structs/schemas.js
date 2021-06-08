@@ -33,7 +33,8 @@ const classSchema = new mongoose.Schema({
   id: Number,
   name: String,
   background: String,
-  desc: String
+  desc: String,
+  color: String
 }, {collection: "classes"});
 
 const standingSchema = new mongoose.Schema({
@@ -41,6 +42,13 @@ const standingSchema = new mongoose.Schema({
   class: Number,
   perms: permissionSchema
 }, {collection: "standings"});
+
+const announcementSchema = new mongoose.Schema({
+  class: Number,
+  title: String,
+  content: String,
+  date: Number
+}, {collection: "announcements"});
 
 const accountSchema = new mongoose.Schema({
   username: String,
@@ -62,6 +70,7 @@ module.exports = {
   userSchema,
   classSchema,
   standingSchema,
+  announcementSchema,
   accountSchema,
   counterSchema
 };

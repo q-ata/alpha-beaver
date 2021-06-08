@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Course = ({name, desc, img}) => {
+const Course = ({name, desc, background, color}) => {
   return (
-    <div className="card">
-      <div style={{backgroundImage: img}} className="card-preview-image">
+    <div className="card" onClick={(e) => console.log(e)}>
+      <div style={{backgroundImage: `url("${background}")`}} className="card-preview-image">
       </div>
-      <div className="card-info">
+      <div style={{backgroundColor: `#${color}`}} className="card-info">
         <div className="card-class-title">
           <span>{name}</span>
         </div>
@@ -22,7 +22,8 @@ const Course = ({name, desc, img}) => {
 Course.propTypes = {
   name: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
-  img: PropTypes.string
+  background: PropTypes.string,
+  color: PropTypes.string
 };
 
 export default Course;
