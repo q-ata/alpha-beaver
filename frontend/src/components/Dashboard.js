@@ -3,12 +3,9 @@ import {useEffect, useState} from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
+import Navigation from "./Navigation";
 import "../styles/dashboard.css";
 import Cookies from "js-cookie";
-import profileIcon from "../resources/profile.svg";
-import announcementsIcon from "../resources/announcement.svg";
-import coursesIcon from "../resources/courses.svg";
-import calendarIcon from "../resources/calendar.svg";
 
 const getUser = async (token) => {
   const url = new URL("http://localhost:8000/api/users/me");
@@ -55,7 +52,7 @@ const getAnnouncements = async (token) => {
 };
 
 const Dashboard = () => {
-
+  
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
 
@@ -65,9 +62,7 @@ const Dashboard = () => {
     const u = await getUser(token);
     console.log(u);
     const classes = await getCourses(token);
-    console.log(classes);
     const ann = await getAnnouncements(token);
-    console.log(ann);
     setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} />));
     setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
   };
@@ -78,54 +73,7 @@ const Dashboard = () => {
   return (
 
     <div className="dash-page">
-      <header className="nav-section">
-        <div className="main-nav">
-          <div className="corner-icon">
-          </div>
-          <ul className="nav-bar">
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src={coursesIcon} alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Courses
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src={profileIcon} alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Account
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src={calendarIcon} alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Calendar
-                </div>
-              </button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-item-button">
-                <div className="nav-item-icon">
-                  <img src={announcementsIcon} alt="" />
-                </div>
-                <div className="nav-item-caption">
-                  Announcements
-                </div>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </header>
+      <Navigation />
       <div className="content-wrapper">
         <div className="area-wrapper">
           <div className="content-area">
@@ -149,9 +97,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="rs-bar">
-            <div className="calendar">
-              <EventCalendar />
-            </div>
+            <EventCalendar height="350px" fontSize="10px" />
             <div className="announcements">
               <div className="announce-header">
                 <span>Announcements</span>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import PropTypes from "prop-types";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -8,7 +9,7 @@ import { useEffect, useState } from "react";
 import "../styles/calendar.css";
 
 const locales = {
-  "en-US": require("date-fns/locale/en-US"),
+  "en-US": require("date-fns/locale/en-US")
 };
 
 const localizer = dateFnsLocalizer({
@@ -130,22 +131,22 @@ const events = [
   }
 ];
 
-const eventStyleGetter = () => {
-  const backgroundColor = "#000";
-  const style = {
-    backgroundColor: backgroundColor,
-    padding: "1px",
-    fontSize: "7px"
-  };
-  return {
-    style: style
-  };
-};
-
-const EventCalendar = () => {
+const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => {
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const eventStyleGetter = () => {
+    const backgroundColor = "#000";
+    const style = {
+      backgroundColor: backgroundColor,
+      padding: "1px",
+      fontSize
+    };
+    return {
+      style: style
+    };
+  };
 
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
@@ -168,7 +169,7 @@ const EventCalendar = () => {
   };
 
   return (
-    <div className="calendar" onMouseMove={onmousemove}>
+    <div className="calendar" onMouseMove={onmousemove} style={{width, height}}>
       <Calendar
         localizer={localizer}
         events={events}
@@ -184,7 +185,7 @@ const EventCalendar = () => {
         isOpen ?
           <Popup
             events={
-              events.filter(event =>
+              events.filter((event) =>
                 moment(curDate).isBetween(moment(event.start), moment(event.end), "day", "[]")
               )
             }
@@ -196,6 +197,12 @@ const EventCalendar = () => {
       }
     </div>
   );
+};
+
+EventCalendar.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
+  fontSize: PropTypes.string
 };
 
 export default EventCalendar;
