@@ -1,8 +1,7 @@
 import React from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import PropTypes from "prop-types";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import moment from "moment";
+import { isWithinInterval, format, parse, startOfWeek, getDay } from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
 import { useEffect, useState } from "react";
@@ -43,21 +42,21 @@ const events = [
     "title": "DTS STARTS",
     "id": 3,
     "start": new Date(2021, 5, 15, 0, 0, 0),
-    "end": new Date(2021, 5, 20, 0, 0, 0)
+    "end": new Date(2021, 5, 20, 0, 0, 1)
   },
 
   {
     "title": "DTS ENDS",
     "id": 4,
     "start": new Date(2021, 5, 6, 0, 0, 0),
-    "end": new Date(2021, 5, 15, 0, 0, 0)
+    "end": new Date(2021, 5, 15, 0, 0, 1)
   },
 
   {
     "title": "Some Event",
     "id": 5,
     "start": new Date(2021, 5, 9, 0, 0, 0),
-    "end": new Date(2021, 5, 9, 0, 0, 0)
+    "end": new Date(2021, 5, 9, 0, 0, 1)
   },
   {
     "title": "Conference",
@@ -131,7 +130,7 @@ const events = [
   }
 ];
 
-const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => {
+const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) => {
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -168,8 +167,31 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
     if (date != undefined) changeDate(date);
   };
 
+  const calcDatePosition = (date, position) => {
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const c = document.getElementsByClassName("rbc-date-cell");
+    let mindis=100000;
+    let p;
+    for(let i = 0; i<c.length; i++) {
+      const dayString = format(date, "dd");
+      if(c[i].textContent===dayString) {
+        const targetDate = c[i].getElementsByTagName("A");
+        const boundRect = targetDate[0].getBoundingClientRect();
+        console.log(boundRect);
+        const ydiff = position.y-boundRect.top-window.screen.availHeight+vh;
+        const xdiff = position.x-boundRect.left;
+        const dis = Math.sqrt(Math.pow(ydiff,2) + Math.pow(xdiff,2));
+        if(dis < mindis) {
+          mindis = dis;
+          p = boundRect;
+        }
+      }
+    }
+    return p;
+  };
+
   return (
-    <div className="calendar" onMouseMove={onmousemove} style={{width, height}}>
+    <div className="calendar" onMouseMove={onmousemove} style={{ width, height }}>
       <Calendar
         localizer={localizer}
         events={events}
@@ -186,12 +208,32 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
           <Popup
             events={
               events.filter((event) =>
-                moment(curDate).isBetween(moment(event.start), moment(event.end), "day", "[]")
+                isWithinInterval(curDate, {
+                  start: new Date(
+                    event.start.getFullYear(),
+                    event.start.getMonth(),
+                    event.start.getDate(),
+                    0,
+                    0,
+                    0,
+                    0
+                  ),
+                  end: new Date(
+                    event.end.getFullYear(),
+                    event.end.getMonth(),
+                    event.end.getDate(),
+                    0,
+                    0,
+                    0,
+                    0
+                  )
+                })
               )
             }
             toggle={togglePopup}
             position={position}
             date={curDate}
+            calcDatePosition={calcDatePosition} 
           />
           : null
       }

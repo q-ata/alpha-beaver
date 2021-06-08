@@ -134,12 +134,10 @@ const Class = () => {
               </div>
                 <div className="to-do-wrapper">
                   <div className="to-do-bar">
-                    <div className="calendar">
                     <div className="to-do-title">
                       Calender
                     </div>
                       <EventCalendar height="350px" fontSize="10px" />
-                    </div>
                     <div className="to-do-list">
                       <div className="to-do-title">
                         {/* TODO: todo list (hehe) */}

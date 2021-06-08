@@ -1,6 +1,7 @@
 .calendar {
     font-size: 12px;
     background-color: #EEE;
+    position: relative;
 }
 
 .calendar .modal {
