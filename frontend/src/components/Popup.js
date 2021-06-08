@@ -35,7 +35,8 @@ const Popup = React.memo(({ events, toggle, position, date }) => {
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
   const style = {
     top: boundRect.top,
-    left: boundRect.left - vw + 360 - 105
+    // + rsbar width - popup
+    left: boundRect.left - vw + 460 - 95
   };
 
   useEffect(() => {

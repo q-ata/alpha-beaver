@@ -1,7 +1,6 @@
 import React from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import moment from "moment";
+import { isWithinInterval, format, parse, startOfWeek, getDay } from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
 import { useEffect, useState } from "react";
@@ -42,21 +41,21 @@ const events = [
     "title": "DTS STARTS",
     "id": 3,
     "start": new Date(2021, 5, 15, 0, 0, 0),
-    "end": new Date(2021, 5, 20, 0, 0, 0)
+    "end": new Date(2021, 5, 20, 10, 0, 1)
   },
 
   {
     "title": "DTS ENDS",
     "id": 4,
     "start": new Date(2021, 5, 6, 0, 0, 0),
-    "end": new Date(2021, 5, 15, 0, 0, 0)
+    "end": new Date(2021, 5, 15, 0, 0, 1)
   },
 
   {
     "title": "Some Event",
     "id": 5,
     "start": new Date(2021, 5, 9, 0, 0, 0),
-    "end": new Date(2021, 5, 9, 0, 0, 0)
+    "end": new Date(2021, 5, 9, 0, 0, 1)
   },
   {
     "title": "Conference",
@@ -185,7 +184,25 @@ const EventCalendar = () => {
           <Popup
             events={
               events.filter(event =>
-                moment(curDate).isBetween(moment(event.start), moment(event.end), "day", "[]")
+                isWithinInterval(curDate, {
+                  start: new Date(
+                    event.start.getFullYear(),
+                    event.start.getMonth(),
+                    event.start.getDate(),
+                    0,
+                    0,
+                    0,
+                    0
+                  ), 
+                  end: new Date(
+                    event.end.getFullYear(),
+                    event.end.getMonth(),
+                    event.end.getDate(),
+                    0,
+                    0,
+                    0,
+                    0
+                  ) })
               )
             }
             toggle={togglePopup}
