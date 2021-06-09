@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import "../styles/calendar.css";
 
 const locales = {
-  "en-US": require("date-fns/locale/en-US"),
+  "en-US": require("date-fns/locale/en-US")
 };
 
 const localizer = dateFnsLocalizer({
@@ -129,22 +129,22 @@ const events = [
   }
 ];
 
-const eventStyleGetter = () => {
-  const backgroundColor = "#000";
-  const style = {
-    backgroundColor: backgroundColor,
-    padding: "1px",
-    fontSize: "7px"
-  };
-  return {
-    style: style
-  };
-};
-
-const EventCalendar = () => {
+const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => {
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const eventStyleGetter = () => {
+    const backgroundColor = "#000";
+    const style = {
+      backgroundColor: backgroundColor,
+      padding: "1px",
+      fontSize
+    };
+    return {
+      style: style
+    };
+  };
 
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
@@ -167,7 +167,7 @@ const EventCalendar = () => {
   };
 
   return (
-    <div className="calendar" onMouseMove={onmousemove}>
+    <div className="calendar" onMouseMove={onmousemove} style={{width, height}}>
       <Calendar
         localizer={localizer}
         events={events}
@@ -213,6 +213,12 @@ const EventCalendar = () => {
       }
     </div>
   );
+};
+
+EventCalendar.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
+  fontSize: PropTypes.string
 };
 
 export default EventCalendar;

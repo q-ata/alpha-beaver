@@ -1,0 +1,40 @@
+.class-nav.icon-group {
+  margin-bottom: 25px;
+}
+
+.class-nav.icon-group span {
+  display: block;
+}
+
+.class-nav.icon-group img {
+  width: 50px;
+  margin: 0 auto;
+}
+
+.class-nav .icon {
+  display: inline-block;
+  text-align: center;
+  width: calc(100% / 6);
+  min-width: 100px;
+  height: 80px;
+  font-size: 1em;
+}
+
+.class-nav .icon-container {
+  width: 80%;
+  margin: 0px auto;
+  height: 100%;
+  background-color: #EEE;
+  border-radius: 6px;
+  border-style: outset;
+}
+
+.class-nav .icon-container:hover {
+  cursor: pointer;
+  background-color: #AAA;
+}
+
+.class-nav .icon-container:active {
+  background-color: #999;
+  border-style: inset;
+}

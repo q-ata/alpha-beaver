@@ -1,0 +1,139 @@
+.course-page a, .course-page a:hover, .course-page a:click, .course-page a:visited {
+  border:none;
+  outline:none;
+  text-decoration:none;
+  color:inherit;
+  -webkit-tap-highlight-color: white;
+}
+
+.course-page {
+  display: flex;
+  line-height: 1.5;
+  height: 100%;
+  width: 100%;
+}
+
+.course-page .big-box {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-left: 150px;
+}
+
+.course-page .header {
+  width: 100%;
+  font-size: 30px;
+}
+
+.course-page .middle-section {
+  float: left;
+  background-color: #CCC;
+  border-radius: 8px;
+  border-style: inset;
+  width: 65%;
+  height: 100%;
+  margin-right: 25px;
+  padding: 25px;
+}
+
+.course-page .outline-title {
+  height: 45px;
+  text-align: center;
+  font-size: 30px;
+  background-color: rgb(51, 51, 51);
+  color: white;
+}
+
+.course-page .outline {
+  text-align: center;
+  font-size: 20px;
+}
+
+.course-page .announcements {
+  width: 100%;
+  overflow-y: visible;
+}
+
+.course-page .announcements-title {
+  height: 45px;
+  text-align: center;
+  font-size: 30px;
+  background-color: rgb(51, 51, 51);
+  color: white;
+}
+
+.course-page .announce-header {
+  margin: 0px auto;
+  width: 300px;
+}
+
+.course-page .sort-button {
+  color: white;
+  height: 100%;
+  font-size: 18px;
+  width: 80px;
+  text-align: center;
+  float: right;
+  background-color: #6d58e4;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.course-page .sort-header {
+  line-height: 45px;
+}
+
+.course-page .sort-options {
+  position: absolute;
+  width: 80px;
+}
+
+.course-page .sort-option {
+  display: none;
+  padding: 8px;
+  border: 1px solid grey;
+  background-color: white;
+  color: black;
+}
+
+.course-page .sort-button:hover .sort-option {
+  display: block;
+}
+
+.course-page .sort-option:hover {
+  cursor: pointer;
+  background-color: #AAA;
+}
+
+.course-page .to-do-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 25px;
+  background-color: #CCC;
+  border-radius: 8px;
+  border-style: outset;
+  margin-right: 25px;
+  min-width: 100px;
+}
+
+.course-page .to-do-bar {
+  flex: 0 0 100%;
+  margin: 0 auto;
+}
+
+.course-page .calendar {
+  flex: 0 0 100%;
+}
+
+.course-page .to-do-list {
+  height: 500px;
+  background-color: #c5aa77;
+  flex: 0 0 100%;
+}
+
+.course-page .to-do-title {
+  text-align: center;
+  background-color: rgb(51, 51, 51);
+  color: white;
+  font-size: 26px;
+}
