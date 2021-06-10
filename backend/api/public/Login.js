@@ -11,7 +11,7 @@ const execute = async (req, res) => {
   if (userID === -1) return res.status(401).json(error("Incorrect username or password."));
   logger.debug(`Account credentials validated for school ID ${school.id} named ${school.name}`);
   const jwt = resolver.generateToken(userID, school.id);
-  res.cookie("refresh_token", school.randomString(30), {httpOnly: true, sameSite: "Strict", expires: req.rememberMe ? Date.now() + 1000*60*60*24*365 : 0});
+  res.cookie("refresh_token", school.randomString(30), {httpOnly: true, sameSite: "Strict", expires: req.rememberMe ? Date.now() + 1000*60*60*24*365 : 1000*60*60*24});
   logger.debug(`User authenticated and generated token ${jwt}`);
   res.status(200).json({token: jwt, id: userID});
 };

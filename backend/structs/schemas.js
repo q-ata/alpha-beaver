@@ -50,12 +50,17 @@ const announcementSchema = new mongoose.Schema({
   date: Number
 }, {collection: "announcements"});
 
+const refreshSchema = new mongoose.Schema({
+  token: String,
+  expiry: Number
+});
+
 const accountSchema = new mongoose.Schema({
   username: String,
   password: String,
   id: Number,
   expires: Number,
-  refreshTokens: [String]
+  refreshTokens: [refreshSchema]
 }, {collection: "accounts"});
 
 const counterSchema = new mongoose.Schema({
