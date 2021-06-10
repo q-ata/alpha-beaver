@@ -86,6 +86,17 @@
       }
     },
     {
+      "name": "refresh",
+      "query": {
+        "method": "post",
+        "body": {
+          "user": "number",
+          "school": "string"
+        },
+        "dest": "api/public/Refresh"
+      }
+    },
+    {
       "name": "register",
       "query": {
         "method": "post",
