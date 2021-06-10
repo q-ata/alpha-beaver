@@ -144,10 +144,24 @@ class School extends Base {
     return result.join("");
   }
 
-  async validateRefreshToken(rToken, user) {
-    const res = await this.models.AccountModel.findOne({id: user}, {refreshTokens: 1}).exec();
-    return res.refreshTokens.some((t) => bcrypt.compareSync(rToken, t));
+  async addRefreshToken(rToken, exp, user) {
+    this.models.AccountModel.updateOne({id: user}, {$push: {refreshTokens: {token: bcrypt.hashSync(rToken, 10), expires: exp}}}).exec();
   }
+
+  async validateRefreshToken(rToken, user) {
+    const rTokens = await this.models.AccountModel.findOne({id: user}, {refreshTokens: 1}).exec();
+    let flag = false;
+    for (const token of rTokens.refreshTokens) {
+      if (Date.now() > token.expires) {
+        this.models.AccountModel.updateOne({id: user}, {$pull: {refreshTokens: {token: token.token}}}).exec();
+      }
+      else if (bcrypt.compareSync(rToken, token.token)) {
+        flag = true;
+      }
+    }
+    return flag;
+  }
+
 }
 
 module.exports = School;

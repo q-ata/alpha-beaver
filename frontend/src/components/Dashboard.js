@@ -5,10 +5,6 @@ import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
-import profileIcon from "../resources/profile.svg";
-import announcementsIcon from "../resources/announcement.svg";
-import coursesIcon from "../resources/courses.svg";
-import calendarIcon from "../resources/calendar.svg";
 import client from "./beaverjs";
 
 const Dashboard = () => {

@@ -2,41 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useRef, useEffect } from "react";
 import EventLabel from "./EventLabel";
-import { format } from "date-fns";
 
 const areEqual = () => true;
 
-const calcDatePosition = (date, position) => {
-  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-  const c = document.getElementsByClassName("rbc-date-cell");
-  let mindis=100000;
-  let p;
-  for(let i = 0; i<c.length; i++) {
-    const dayString = format(date, "dd");
-    if(c[i].textContent===dayString) {
-      const boundRect = c[i].getBoundingClientRect();
-      const ydiff = position.y-boundRect.top-window.screen.availHeight+vh;
-      const xdiff = position.x-boundRect.left;
-      const dis = Math.sqrt(Math.pow(ydiff,2) + Math.pow(xdiff,2));
-      if(dis < mindis) {
-        mindis = dis;
-        p = boundRect;
-      }
-    }
-  }
-  return p;
-};
-
-const Popup = React.memo(({ events, toggle, position, date }) => {
+const Popup = React.memo(({ calcDatePosition, events, toggle, position, date }) => {
   const ref = useRef(null);
-
   const boundRect = calcDatePosition(date,position);
 
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const divRect = document.getElementsByClassName("calendar")[0].getBoundingClientRect();
   const style = {
-    top: boundRect.top,
-    // + rsbar width - popup
-    left: boundRect.left - vw + 460 - 95
+    top: `${boundRect.top-divRect.top}px`,
+    left: `${boundRect.left-divRect.left-150}px`
   };
 
   useEffect(() => {
@@ -72,7 +48,8 @@ Popup.propTypes = {
   toggle: PropTypes.func,
   events: PropTypes.array,
   position: PropTypes.object,
-  date: PropTypes.object
+  date: PropTypes.object,
+  calcDatePosition: PropTypes.func
 };
 
 export default Popup;

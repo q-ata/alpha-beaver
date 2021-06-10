@@ -40,7 +40,8 @@ const Login = () => {
           password,
           school: selectedSchool.value.id,
           rememberMe
-        })
+        }),
+        credentials:"include"
       });
       const data = await res.json();
       if (data.error) {
