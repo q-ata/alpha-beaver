@@ -3,11 +3,11 @@
   box-sizing: border-box;
 }
 
-a, a:hover, a:click, a:visited {
-  border:none;
-  outline:none;
-  text-decoration:none;
-  color:inherit;
+.dash-page a, .dash-page a:hover, .dash-page a:click, .dash-page a:visited {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: black;
   -webkit-tap-highlight-color: white;
 }
 
@@ -26,7 +26,7 @@ a, a:hover, a:click, a:visited {
 .dash-page .content-area {
   flex: 1;
   min-width: 1px;
-  z-index: 100;
+  z-index: 50;
 }
 
 .dash-page .content {

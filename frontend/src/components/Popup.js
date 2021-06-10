@@ -1,23 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useRef, useEffect } from "react";
+import {useRef, useEffect} from "react";
 import EventLabel from "./EventLabel";
-import { format } from "date-fns";
+import {format} from "date-fns";
 
 const areEqual = () => true;
 
 const calcDatePosition = (date, position) => {
   const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
   const c = document.getElementsByClassName("rbc-date-cell");
-  let mindis=100000;
+  let mindis = 100000;
   let p;
-  for(let i = 0; i<c.length; i++) {
+  for(let i = 0; i < c.length; i++) {
     const dayString = format(date, "dd");
-    if(c[i].textContent===dayString) {
+    if(c[i].textContent === dayString) {
       const boundRect = c[i].getBoundingClientRect();
-      const ydiff = position.y-boundRect.top-window.screen.availHeight+vh;
-      const xdiff = position.x-boundRect.left;
-      const dis = Math.sqrt(Math.pow(ydiff,2) + Math.pow(xdiff,2));
+      const ydiff = position.y - boundRect.top - window.screen.availHeight + vh;
+      const xdiff = position.x - boundRect.left;
+      const dis = Math.sqrt(Math.pow(ydiff, 2) + Math.pow(xdiff, 2));
       if(dis < mindis) {
         mindis = dis;
         p = boundRect;
@@ -27,10 +27,10 @@ const calcDatePosition = (date, position) => {
   return p;
 };
 
-const Popup = React.memo(({ events, toggle, position, date }) => {
+const Popup = React.memo(({events, toggle, position, date}) => {
   const ref = useRef(null);
 
-  const boundRect = calcDatePosition(date,position);
+  const boundRect = calcDatePosition(date, position);
 
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
   const style = {
@@ -55,7 +55,7 @@ const Popup = React.memo(({ events, toggle, position, date }) => {
     <EventLabel key={event.id} event={event} />
   );
 
-  if (listItems.length === 0) listItems = <EventLabel key={0} event={{ title: "No events." }} />;
+  if (listItems.length === 0) listItems = <EventLabel key={0} event={{title: "No events."}} />;
 
   return (
     <div ref={ref} style={style} className="modal">

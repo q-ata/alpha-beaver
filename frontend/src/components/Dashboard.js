@@ -63,7 +63,7 @@ const Dashboard = () => {
     console.log(u);
     const classes = await getCourses(token);
     const ann = await getAnnouncements(token);
-    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} />));
+    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} cid={c.id} />));
     setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
   };
   useEffect(() => {
