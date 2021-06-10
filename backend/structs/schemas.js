@@ -52,14 +52,13 @@ const announcementSchema = new mongoose.Schema({
 
 const refreshSchema = new mongoose.Schema({
   token: String,
-  expiry: Number
+  expires: Number
 });
 
 const accountSchema = new mongoose.Schema({
   username: String,
   password: String,
   id: Number,
-  expires: Number,
   refreshTokens: [refreshSchema]
 }, {collection: "accounts"});
 
