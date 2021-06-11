@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-const atob = require("atob");
 
 class User {
   constructor(obj) {
@@ -56,22 +55,27 @@ function Client() {
       credentials:"include"
     });
     const obj = await res.json();
-    if(obj.token) {
-      Cookies.set("auth_token", obj.token, {sameSite: "Strict"});
-      token = obj.token;
-    }
     return obj;
   };
 
   const checkToken = async (token) => {
+    if(!token) return {error: true, msg: "JWT missing or invalid."};
     const jwtPayload = parseJWT(token);
     if (Date.now() >= jwtPayload.exp * 1000) {
-      await refresh(jwtPayload);
+      return await refresh(jwtPayload);
+    } else {
+      return {};
     }
   };
 
   const query = async (path) => {
-    await checkToken(token);
+    const update = await checkToken(token);
+    if(update.error) {
+      return update;
+    } else if(update.token) {
+      Cookies.set("auth_token", update.token, {sameSite: "Strict"});
+      token = update.token;
+    }
 
     const url = new URL(path);
     const res = await fetch(url, {
