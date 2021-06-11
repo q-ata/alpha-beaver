@@ -177,7 +177,6 @@ const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) =
       if(c[i].textContent===dayString) {
         const targetDate = c[i].getElementsByTagName("A");
         const boundRect = targetDate[0].getBoundingClientRect();
-        console.log(boundRect);
         const ydiff = position.y-boundRect.top-window.screen.availHeight+vh;
         const xdiff = position.x-boundRect.left;
         const dis = Math.sqrt(Math.pow(ydiff,2) + Math.pow(xdiff,2));

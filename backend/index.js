@@ -39,8 +39,8 @@ global.error = (msg) => {
 };
 logger.setLevel(2);
 
-app.use(cors());
 app.use(cookieParser());
+app.use(cors({origin: true, optionsSuccessStatus: 200, credentials:true}));
 app.use(express.json());
 app.use(express.static(process.env.BUILD_PATH));
 
