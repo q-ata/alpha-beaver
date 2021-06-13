@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   perms: permissionSchema,
-  classes: [Number]
+  classes: [Number],
 }, {collection: "users"});
 
 const classSchema = new mongoose.Schema({
@@ -50,16 +50,11 @@ const announcementSchema = new mongoose.Schema({
   date: Number
 }, {collection: "announcements"});
 
-const refreshSchema = new mongoose.Schema({
-  token: String,
-  expires: Number
-});
-
 const accountSchema = new mongoose.Schema({
   username: String,
   password: String,
   id: Number,
-  refreshTokens: [refreshSchema]
+  refreshToken: String
 }, {collection: "accounts"});
 
 const counterSchema = new mongoose.Schema({

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { format } from "date-fns";
+import {format} from "date-fns";
 
-const EventLabel = ({ event }) => {
+const EventLabel = ({event}) => {
   return (
     <div className="event-container">
       <div className="event-header">{event.title}</div>

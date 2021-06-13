@@ -6,16 +6,12 @@ const execute = async (req, res) => {
 
   const school = req.schools.get(body.school);
   if (!school) return res.status(404).json(error("Invalid school ID provided."));
-  
   const user = await school.getUser(body.user);
   if (!user) return res.status(404).json(error("Invalid user ID provided."));
-  
   if (!req.cookies.refresh_token) return res.status(400).json(error("No refresh token provided."));
   const isValid = await school.validateRefreshToken(req.cookies.refresh_token, body.user);
   if (!isValid) return res.status(403).json(error("Invalid Refresh Token"));
-
   const jwt = resolver.generateToken(body.user, body.school);
-
   logger.debug(`User authenticated and generated token ${jwt}`);
   res.status(200).json({token: jwt});
 };

@@ -1,14 +1,15 @@
 import React from "react";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import {Calendar, dateFnsLocalizer} from "react-big-calendar";
 import PropTypes from "prop-types";
-import { isWithinInterval, format, parse, startOfWeek, getDay } from "date-fns";
+import {isWithinInterval, format, parse, startOfWeek, getDay} from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "../styles/calendar.css";
+import locale from "date-fns/locale/en-US";
 
 const locales = {
-  "en-US": require("date-fns/locale/en-US")
+  "en-US": locale
 };
 
 const localizer = dateFnsLocalizer({
@@ -16,7 +17,7 @@ const localizer = dateFnsLocalizer({
   parse,
   startOfWeek,
   getDay,
-  locales,
+  locales
 });
 
 const formats = {
@@ -130,10 +131,10 @@ const events = [
   }
 ];
 
-const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) => {
+const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => {
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({x: 0, y: 0});
 
   const eventStyleGetter = () => {
     const backgroundColor = "#000";
@@ -170,16 +171,16 @@ const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) =
   const calcDatePosition = (date, position) => {
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     const c = document.getElementsByClassName("rbc-date-cell");
-    let mindis=100000;
+    let mindis = 100000;
     let p;
-    for(let i = 0; i<c.length; i++) {
+    for(let i = 0; i < c.length; i++) {
       const dayString = format(date, "dd");
-      if(c[i].textContent===dayString) {
+      if(c[i].textContent === dayString) {
         const targetDate = c[i].getElementsByTagName("A");
         const boundRect = targetDate[0].getBoundingClientRect();
-        const ydiff = position.y-boundRect.top-window.screen.availHeight+vh;
-        const xdiff = position.x-boundRect.left;
-        const dis = Math.sqrt(Math.pow(ydiff,2) + Math.pow(xdiff,2));
+        const ydiff = position.y - boundRect.top - window.screen.availHeight + vh;
+        const xdiff = position.x - boundRect.left;
+        const dis = Math.sqrt(Math.pow(ydiff, 2) + Math.pow(xdiff, 2));
         if(dis < mindis) {
           mindis = dis;
           p = boundRect;
@@ -190,7 +191,7 @@ const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) =
   };
 
   return (
-    <div className="calendar" onMouseMove={onmousemove} style={{ width, height }}>
+    <div className="calendar" onMouseMove={onmousemove} style={{width, height}}>
       <Calendar
         localizer={localizer}
         events={events}

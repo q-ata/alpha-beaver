@@ -63,8 +63,8 @@ const SchoolSearch = ({url = "http://localhost:8000/api/schools", onChange = () 
         formatOptionLabel={(data) => {
           return (
             <div className="school-option">
-              <span className="school-name-option" dangerouslySetInnerHTML={{ __html: data.label }} />
-              <span className="school-id-option" dangerouslySetInnerHTML={{ __html: `#${data.value.id}` }} />
+              <span className="school-name-option" dangerouslySetInnerHTML={{__html: data.label}} />
+              <span className="school-id-option" dangerouslySetInnerHTML={{__html: `#${data.value.id}`}} />
             </div>
           );
         }}

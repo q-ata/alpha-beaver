@@ -5,23 +5,35 @@ import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
-import client from "./beaverjs";
+import Client from "./beaverjs";
+let client;
+
+const announceStyle = {
+  textOverflow: "ellipsis",
+  wordWrap: "break-word",
+  overflow: "hidden",
+  lineHeight: "1.2rem",
+  fontSize: "0.9rem",
+  display: "inline-block"
+};
 
 const Dashboard = () => {
   
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
+  const [pfp, setPfp] = useState("");
 
   const loadAll = async () => {
-    // TODO: Check for expired or missing token and try to apply refresh token.
+    // TODO: Redo this with .then
+    client = new Client();
     const u = await client.me();
     console.log(u);
+    setPfp(u.pfp);
     const classes = await client.getCourses();
-    console.log(classes);
     const ann = await client.getAnnouncements();
-    console.log(ann);
-    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} />));
-    setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
+    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} cid={c.id} />));
+    // TODO: Make finding the corresponding class more efficient.
+    setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement textStyle={announceStyle} key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
   };
   useEffect(() => {
     loadAll();
@@ -40,7 +52,7 @@ const Dashboard = () => {
                   <h1 className="header"><span>Dashboard</span></h1>
                   <div className="header-actions">
                     <span>
-                      <button></button>
+                      <button style={{backgroundImage: `url("${pfp}")`}}></button>
                     </span>
                   </div>
                 </div>

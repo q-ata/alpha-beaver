@@ -8,6 +8,7 @@ class User {
     this.perms = obj.perms;
     this.classes = obj.classes;
     this.standings = obj.standings;
+    this.pfp = obj.pfp;
   }
 }
 
@@ -59,7 +60,7 @@ function Client() {
   };
 
   const checkToken = async (token) => {
-    if(!token) return {error: true, msg: "JWT missing or invalid."};
+    if (!token) return {error: true, msg: "JWT missing or invalid."};
     const jwtPayload = parseJWT(token);
     if (Date.now() >= jwtPayload.exp * 1000) {
       return await refresh(jwtPayload);
@@ -70,9 +71,9 @@ function Client() {
 
   const query = async (path) => {
     const update = await checkToken(token);
-    if(update.error) {
+    if (update.error) {
       return update;
-    } else if(update.token) {
+    } else if (update.token) {
       Cookies.set("auth_token", update.token, {sameSite: "Strict"});
       token = update.token;
     }
@@ -86,7 +87,6 @@ function Client() {
       },
       credentials:"include"
     });
-
     const obj = await res.json();
     return obj;
   };
@@ -121,8 +121,8 @@ function Client() {
     return classes;
   };
 
-  this.getAnnouncements = async () => {
-    const obj = await query("http://localhost:8000/api/users/me/announcements");
+  this.getAnnouncements = async (classID) => {
+    const obj = await query(`http://localhost:8000/api/${classID ? `classes/${classID}/announcements` : "users/me/announcements"}`);
     if(obj.error) {
       return obj;
     }
@@ -153,4 +153,4 @@ function Client() {
   };
 }
 
-export default new Client();
+export default Client;
