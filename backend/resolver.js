@@ -24,7 +24,7 @@ const resolve = (api, cPath, endpoints) => {
 };
 
 const generateToken = (user, school) => {
-  return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 5});
+  return jwt.sign({user, school}, process.env.SECRET_KEY, {expiresIn: 900});
 };
 
 const validateToken = (token) => {
