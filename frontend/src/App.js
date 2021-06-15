@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import Class from "./components/Class";
+import Upcoming from "./components/Upcoming";
 import "./styles/global.css";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/class" component={Class} /> 
+        <Route exact path="/upcoming" component={Upcoming} />
       </Switch>
     </BrowserRouter>
   );
