@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import EventLabel from "./EventLabel";
+import DateLabel from "./DateLabel";
 import { useHistory } from "react-router-dom";
 import { useRef, useEffect } from "react";
 import Navigation from "./Navigation";
@@ -130,8 +131,14 @@ const Upcoming = () => {
         <h1>Upcoming Events</h1>
         {events.map(event =>
           (h.location.state && event.title === h.location.state.title) ?
-            <EventLabel ref={ref} key={event.id} event={event} selectedEvent={() => { }} /> :
-            <EventLabel key={event.id} event={event} selectedEvent={() => { }} />)
+            <div className="event-wrapper">
+              <DateLabel event={event} />
+              <EventLabel formatString={"LLL d @ p"} ref={ref} key={event.id} event={event} selectedEvent={() => { }} />
+            </div> :
+            <div className="event-wrapper">
+              <DateLabel event={event} />
+              <EventLabel formatString={"LLL d @ p"} key={event.id} event={event} selectedEvent={() => { }} />
+            </div>)
         }
       </div>
     </div>
