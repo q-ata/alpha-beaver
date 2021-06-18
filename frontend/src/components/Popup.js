@@ -1,18 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useRef, useEffect } from "react";
+import {useRef, useEffect} from "react";
 import EventLabel from "./EventLabel";
 
 const areEqual = () => true;
 
-const Popup = React.memo(({ calcDatePosition, events, toggle, position, date }) => {
+const Popup = React.memo(({calcDatePosition, events, toggle, position, date}) => {
   const ref = useRef(null);
-  const boundRect = calcDatePosition(date,position);
+  const boundRect = calcDatePosition(date, position);
 
   const divRect = document.getElementsByClassName("calendar")[0].getBoundingClientRect();
   const style = {
-    top: `${boundRect.top-divRect.top}px`,
-    left: `${boundRect.left-divRect.left-150}px`
+    top: `${boundRect.top - divRect.top}px`,
+    left: `${boundRect.left - divRect.left - 150}px`
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Popup = React.memo(({ calcDatePosition, events, toggle, position, date }) 
     <EventLabel key={event.id} event={event} />
   );
 
-  if (listItems.length === 0) listItems = <EventLabel key={0} event={{ title: "No events." }} />;
+  if (listItems.length === 0) listItems = <EventLabel key={0} event={{title: "No events."}} />;
 
   return (
     <div ref={ref} style={style} className="modal">

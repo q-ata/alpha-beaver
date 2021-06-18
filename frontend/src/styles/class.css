@@ -31,7 +31,6 @@
   border-radius: 8px;
   border-style: inset;
   width: 65%;
-  height: 100%;
   margin-right: 25px;
   padding: 25px;
 }
@@ -45,8 +44,10 @@
 }
 
 .course-page .outline {
-  text-align: center;
   font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 .course-page .announcements {
@@ -65,6 +66,39 @@
 .course-page .announce-header {
   margin: 0px auto;
   width: 300px;
+}
+
+.course-page .announces {
+  list-style: none;
+  padding: 0;
+  color: black;
+}
+
+.course-page .announcement {
+  border-radius: 6px;
+  background-color: #AAA;
+}
+
+.course-page .announce-content {
+  overflow: auto;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.course-page .announce-class {
+  display: none;
+}
+
+.course-page .announce-title-container {
+  text-align: left;
+  font-size: 2em;
+}
+
+.course-page .announce-date {
+  font-size: 16px;
+  float: left;
+  color: #333;
+  padding: 8px;
 }
 
 .course-page .sort-button {
@@ -103,6 +137,10 @@
 .course-page .sort-option:hover {
   cursor: pointer;
   background-color: #AAA;
+}
+
+.course-page .sort-option:active {
+  background-color: #999;
 }
 
 .course-page .to-do-wrapper {

@@ -1,4 +1,5 @@
-import React from "react";
+import {React} from "react";
+import {Link} from "react-router-dom";
 import profileIcon from "../resources/profile.svg";
 import announcementsIcon from "../resources/announcement.svg";
 import coursesIcon from "../resources/courses.svg";
@@ -12,16 +13,18 @@ const Navigation = () => {
         <div className="corner-icon">
         </div>
         <ul className="nav-bar">
-          <li className="nav-item">
-            <button className="nav-item-button">
-              <div className="nav-item-icon">
-                <img src={coursesIcon} alt="" />
-              </div>
-              <div className="nav-item-caption">
-                Courses
-              </div>
-            </button>
-          </li>
+          <Link to="/dashboard">
+            <li className="nav-item">
+              <button className="nav-item-button">
+                <div className="nav-item-icon">
+                  <img src={coursesIcon} alt="" />
+                </div>
+                <div className="nav-item-caption">
+                  Dashboard
+                </div>
+              </button>
+            </li>
+          </Link>
           <li className="nav-item">
             <button className="nav-item-button">
               <div className="nav-item-icon">

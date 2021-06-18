@@ -42,6 +42,10 @@
             }
         ],
         "no-var": "error",
-        "prefer-const": "error"
+        "prefer-const": "error",
+        "comma-dangle": ["error", "never"],
+        "object-curly-spacing": ["error", "never"],
+        "space-infix-ops": ["error", {"int32Hint": false}],
+        "comma-spacing": ["error", {"before": false, "after": true}]
     }
 }
