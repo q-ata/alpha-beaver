@@ -3,11 +3,11 @@
   box-sizing: border-box;
 }
 
-a, a:hover, a:click, a:visited {
-  border:none;
-  outline:none;
-  text-decoration:none;
-  color:inherit;
+.dash-page a, .dash-page a:hover, .dash-page a:click, .dash-page a:visited {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: black;
   -webkit-tap-highlight-color: white;
 }
 
@@ -26,7 +26,7 @@ a, a:hover, a:click, a:visited {
 .dash-page .content-area {
   flex: 1;
   min-width: 1px;
-  z-index: 100;
+  z-index: 50;
 }
 
 .dash-page .content {
@@ -77,7 +77,6 @@ a, a:hover, a:click, a:visited {
   font-weight: normal;
   line-height: 20px;
   border: 1px solid;
-  background-image: url("https://pbs.twimg.com/media/Emq4JSRXcAAZD9B.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   overflow: hidden;
@@ -124,9 +123,8 @@ a, a:hover, a:click, a:visited {
 }
 
 .dash-page .card-desc {
-  font-size: 0.9rem;
-  line-height: 1.4rem;
-  height: 2.8rem;
+  font-size: 14px;
+  height: 80px;
   overflow: hidden;
 }
 
@@ -207,15 +205,6 @@ a, a:hover, a:click, a:visited {
 .dash-page .announce-content {
   border-bottom: 1px solid grey;
   padding-bottom: 4px;
-}
-
-.dash-page .announce-preview {
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  overflow: hidden;
-  line-height: 1.2rem;
-  font-size: 0.9rem;
-  display: inline-block;
 }
 
 .dash-page .announce-show-all {

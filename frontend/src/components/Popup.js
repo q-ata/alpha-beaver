@@ -1,18 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useRef, useEffect } from "react";
+import {useRef, useEffect} from "react";
 import EventLabel from "./EventLabel";
 
 const areEqual = () => true;
 
 const Popup = React.memo(({calcDatePosition, events, toggle, position, date, selectedEvent}) => {
   const ref = useRef(null);
-  const boundRect = calcDatePosition(date,position);
+  const boundRect = calcDatePosition(date, position);
 
   const divRect = document.getElementsByClassName("calendar")[0].getBoundingClientRect();
   const style = {
-    top: `${boundRect.top-divRect.top}px`,
-    left: `${boundRect.left-divRect.left-150}px`
+    top: `${boundRect.top - divRect.top}px`,
+    left: `${boundRect.left - divRect.left - 150}px`
   };
 
   useEffect(() => {

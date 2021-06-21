@@ -8,6 +8,7 @@ class User {
     this.perms = obj.perms;
     this.classes = obj.classes;
     this.standings = obj.standings;
+    this.pfp = obj.pfp;
   }
 }
 

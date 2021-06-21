@@ -13,9 +13,8 @@ const execute = async (req, res) => {
   if (!req.cookies.refresh_token) return res.status(400).json(error("No refresh token provided."));
   const isValid = await school.validateRefreshToken(req.cookies.refresh_token, body.user);
   if (!isValid) return res.status(403).json(error("Invalid Refresh Token"));
-
+  
   const jwt = resolver.generateToken(body.user, body.school);
-
   logger.debug(`User authenticated and generated token ${jwt}`);
   res.status(200).json({token: jwt});
 };
