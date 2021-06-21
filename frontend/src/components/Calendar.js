@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { isWithinInterval, format, parse, startOfWeek, getDay } from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import "../styles/calendar.css";
 
 const locales = {
@@ -134,7 +134,7 @@ const events = [
 const EventCalendar = ({ width = "100%", height = "250px", fontSize = "8px" }) => {
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({x: 0, y: 0});
   
   const h = useHistory();
 

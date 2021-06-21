@@ -15,7 +15,8 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/class" component={Class} /> 
+        <Route exact path="/class"><Redirect to="/login" /></Route>
+        <Route path="/class/:classID" component={Class} />
         <Route exact path="/upcoming" component={Upcoming} />
       </Switch>
     </BrowserRouter>

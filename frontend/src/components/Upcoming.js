@@ -119,7 +119,6 @@ const Upcoming = () => {
   const ref = useRef(null);
 
   useEffect(() => {
-    console.log(ref);
     if (h.location.state && h.location.state.title) ref.current.scrollIntoView({ behavior: "smooth" });
     h.replace("/upcoming");
   }, [ref]);

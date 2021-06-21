@@ -5,12 +5,14 @@ import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
-import client from "./beaverjs";
+import Client from "./beaverjs";
 
 const Dashboard = () => {
   
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
+
+  const client = new Client();
 
   const loadAll = async () => {
     // TODO: Check for expired or missing token and try to apply refresh token.

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { format } from "date-fns";
-import { forwardRef } from "react";
+import {format} from "date-fns";
+import {forwardRef} from "react";
 
 const EventLabel = forwardRef(({ formatString, event, selectedEvent }, ref) => {
 
