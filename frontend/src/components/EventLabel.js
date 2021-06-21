@@ -11,9 +11,9 @@ const EventLabel = forwardRef(({ formatString, event, selectedEvent }, ref) => {
   };
 
   return (
-    <div ref={ref} className="event-container" onClick={selectedEvent}>
+    <div ref={ref} className="event-container" onClick={()=>selectedEvent(event)}>
       <div className="event-header">{event.title}</div>
-      {event.start != null && (event.start.getTime() !== event.end.getTime() ?
+      {event.start != null && (formatDate(event.start, formatString) !== formatDate(event.end, formatString) ?
         <span className="event-time">{formatDate(event.start, formatString)} to {formatDate(event.end, formatString)}</span>
         : <span className="event-time">{formatDate(event.start, formatString)}</span>)}
     </div>
