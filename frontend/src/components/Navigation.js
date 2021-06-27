@@ -35,16 +35,18 @@ const Navigation = () => {
               </div>
             </button>
           </li>
-          <li className="nav-item">
-            <button className="nav-item-button">
-              <div className="nav-item-icon">
-                <img src={calendarIcon} alt="" />
-              </div>
-              <div className="nav-item-caption">
-                Calendar
-              </div>
-            </button>
-          </li>
+          <Link to="/upcoming">
+            <li className="nav-item">
+              <button className="nav-item-button">
+                <div className="nav-item-icon">
+                  <img src={calendarIcon} alt="" />
+                </div>
+                <div className="nav-item-caption">
+                  Upcoming
+                </div>
+              </button>
+            </li>
+          </Link>
           <li className="nav-item">
             <button className="nav-item-button">
               <div className="nav-item-icon">

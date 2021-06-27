@@ -61,7 +61,7 @@ class Client {
     };
 
     const checkToken = async (token) => {
-      if (!token) return { error: true, msg: "JWT missing or invalid." };
+      if (!token) return {error: true, msg: "JWT missing or invalid."};
       const jwtPayload = parseJWT(token);
       if (Date.now() >= jwtPayload.exp * 1000) {
         return await refresh(jwtPayload);
@@ -75,7 +75,7 @@ class Client {
       if (update.error) {
         return update;
       } else if (update.token) {
-        Cookies.set("auth_token", update.token, { sameSite: "Strict" });
+        Cookies.set("auth_token", update.token, {sameSite: "Strict"});
         token = update.token;
       }
 

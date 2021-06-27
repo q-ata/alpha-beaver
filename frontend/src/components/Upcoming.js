@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import EventLabel from "./EventLabel";
 import DateLabel from "./DateLabel";
-import { useHistory } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import {useHistory} from "react-router-dom";
+import {useRef, useEffect} from "react";
 import Navigation from "./Navigation";
 import "../styles/upcoming.css";
 
@@ -119,7 +119,7 @@ const Upcoming = () => {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (h.location.state && h.location.state.title) ref.current.scrollIntoView({ behavior: "smooth" });
+    if (h.location.state && h.location.state.title) ref.current.scrollIntoView({behavior: "smooth"});
     h.replace("/upcoming");
   }, [ref]);
 

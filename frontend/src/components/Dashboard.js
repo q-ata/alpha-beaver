@@ -22,11 +22,9 @@ const Dashboard = () => {
   const [announces, setAnnounces] = useState([]);
   const [pfp, setPfp] = useState("");
 
-  const client = new Client();
-
   const loadAll = async () => {
     // TODO: Redo this with .then
-    client = new Client();
+    const client = new Client();
     const u = await client.me();
     console.log(u);
     setPfp(u.pfp);

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { format } from "date-fns";
+import {format} from "date-fns";
 
-const DateLabel = ({ event }) => {
+const DateLabel = ({event}) => {
   const month = format(event.start, "LLL").toUpperCase();
   const day = format(event.start, "d");
   return (
