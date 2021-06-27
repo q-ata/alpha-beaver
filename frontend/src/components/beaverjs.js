@@ -69,6 +69,11 @@ function Client() {
     }
   };
 
+  this.loadToken = () => {
+    token = Cookies.get("auth_token");
+    return token;
+  };
+
   const query = async (path) => {
     const update = await checkToken(token);
     if (update.error) {

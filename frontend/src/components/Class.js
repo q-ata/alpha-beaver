@@ -6,7 +6,6 @@ import ClassNav from "./ClassNav";
 import Announcement from "./Announcement";
 import "../styles/class.css";
 import Client from "./beaverjs";
-const client = new Client();
 
 const announceStyle = {
   textAlign: "left",
@@ -21,6 +20,7 @@ const Class = ({match}) => {
   const [classInfo, setClassInfo] = useState({});
   
   useEffect(() => {
+    const client = new Client();
     client.getAnnouncements(classID).then(setAnnounces);
     client.getClass(classID).then(setClassInfo);
   }, []);

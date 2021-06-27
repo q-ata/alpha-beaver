@@ -14,7 +14,7 @@ const Announcement = ({textStyle, title, clazz, date, content}) => {
         <div className="announce-title-container">
           <span className="announce-title">{title}</span>
         </div>
-        <span className="announce-class">{clazz}</span><span className="announce-date">{`${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`}</span>
+        <span className="announce-class">{clazz}</span><span className="announce-date">{`${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`}</span><br /><br />
         <Text style={textStyle} className="announce-preview">{content}</Text>
       </div>
     </li>
