@@ -1,20 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {format} from "date-fns";
+import {forwardRef} from "react";
 
-const EventLabel = ({event}) => {
+const EventLabel = forwardRef(({formatString, event, selectedEvent}, ref) => {
+
+  const formatDate = (time, formatString) => {
+    if(!formatString) return format(time, "LLL do");
+    return format(time, formatString);
+  };
+
   return (
-    <div className="event-container">
+    <div ref={ref} className="event-container" onClick={()=>selectedEvent(event)}>
       <div className="event-header">{event.title}</div>
-      {event.start != null && (event.start.getTime() !== event.end.getTime() ?
-        <span className="event-time">{format(event.start, "LLL do")} to {format(event.end, "LLL do")}</span>
-        : <span className="event-time">{format(event.start, "LLL do")}</span>)}
+      {event.start != null && (formatDate(event.start, formatString) !== formatDate(event.end, formatString) ?
+        <span className="event-time">{formatDate(event.start, formatString)} to {formatDate(event.end, formatString)}</span>
+        : <span className="event-time">{formatDate(event.start, formatString)}</span>)}
     </div>
   );
-};
+});
 
 EventLabel.propTypes = {
-  event: PropTypes.object
+  formatString: PropTypes.string,
+  event: PropTypes.object,
+  selectedEvent: PropTypes.func
 };
+
+EventLabel.displayName = "EventLabel";
 
 export default EventLabel;

@@ -6,7 +6,6 @@ import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
 import Client from "./beaverjs";
-let client;
 
 const announceStyle = {
   textOverflow: "ellipsis",
@@ -25,7 +24,7 @@ const Dashboard = () => {
 
   const loadAll = async () => {
     // TODO: Redo this with .then
-    client = new Client();
+    const client = new Client();
     const u = await client.me();
     console.log(u);
     setPfp(u.pfp);
