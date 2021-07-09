@@ -6,13 +6,17 @@ const {
   standingSchema,
   announcementSchema,
   accountSchema,
-  counterSchema
+  counterSchema,
+  moduleSchema,
+  pageSchema
 } = require("./schemas");
 const mongoose = require("mongoose");
 const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
 const ClassCacheManager = require("./ClassCacheManager");
 const AnnouncementCacheManager = require("./AnnouncementCacheManager");
+const ModuleCacheManager = require("./ModuleCacheManager");
+const PageCacheManager = require("./PageCacheManager");
 const Base = require("./Base");
 const bcrypt = require("bcryptjs");
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
@@ -34,6 +38,8 @@ class School extends Base {
     this.roles = new RoleCacheManager(this);
     this.classes = new ClassCacheManager(this);
     this.announcements = new AnnouncementCacheManager(this);
+    this.pages = new PageCacheManager(this);
+    this.content_modules = new ModuleCacheManager(this);
   }
 
   async setConnection() {
@@ -46,7 +52,9 @@ class School extends Base {
       StandingModel: connection.model("StandingModel", standingSchema),
       AnnouncementModel: connection.model("AnnouncementModel", announcementSchema),
       AccountModel: connection.model("AccountModel", accountSchema),
-      CounterModel: connection.model("CounterModel", counterSchema)
+      CounterModel: connection.model("CounterModel", counterSchema),
+      ModuleModel: connection.model("ContentModel", moduleSchema),
+      PageModel: connection.model("PageModel", pageSchema)
     };
 
     this.connection = connection;
@@ -89,6 +97,22 @@ class School extends Base {
 
   async getAnnouncements(filter = null, options) {
     return await this.getItem("announcements", filter, options);
+  }
+
+  async getPages(filter = null, options) {
+    return await this.getItem("pages", filter, options);
+  }
+
+  async getPage(filter, options) {
+    return (await this.getPages(filter, {...options, limit: 1}))[0];
+  }
+
+  async getModules(filter = null, options) {
+    return await this.getItem("content_modules", filter, options);
+  }
+
+  async getModule(filter, options) {
+    return (await this.getModules(filter, {...options, limit: 1}))[0];
   }
 
   async createAccount(username, plaintext, firstName = "", lastName = "") {

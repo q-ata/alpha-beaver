@@ -62,6 +62,20 @@ const counterSchema = new mongoose.Schema({
   next: Number
 }, {collection: "counters"});
 
+const moduleSchema = new mongoose.Schema({
+  id: Number,
+  class: Number,
+  page: Number,
+  type: Number,
+  data: String
+}, {collection: "content_modules"});
+
+const pageSchema = new mongoose.Schema({
+  id: Number,
+  class: Number,
+  modules: [Number]
+}, {collection: "pages"});
+
 module.exports = {
   schoolSchema,
   roleSchema,
@@ -71,5 +85,7 @@ module.exports = {
   standingSchema,
   announcementSchema,
   accountSchema,
-  counterSchema
+  counterSchema,
+  moduleSchema,
+  pageSchema
 };
