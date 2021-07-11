@@ -1,0 +1,124 @@
+.editor .style-button, .editor .size-button, .editor .block-button {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  margin: 6px;
+  border-radius: 6px;
+  border: 1px dashed #AAA;
+}
+
+.editor .style-button:hover, .editor .size-button:hover, .editor .block-button:hover {
+  cursor: pointer;
+  background-color: #BBB;
+}
+
+.editor .style-button svg,
+.editor .size-button svg,
+.editor .block-button svg {
+  font-size: 28px;
+}
+
+.editor .editor-control {
+  background-color: #DDD;
+}
+
+.editor .editor-area {
+  background-color: white;
+  height: 100px;
+  width: 100%;
+  padding: 5px;
+  overflow: auto;
+}
+
+.editor .editor-area p {
+  margin: 0;
+}
+
+.editor h1,
+.editor h2,
+.editor h3,
+.editor h4,
+.editor h5,
+.editor h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+.editor .active {
+  opacity: 1;
+  animation: fade-in 0.5s;
+  animation-timing-function: ease-out;
+}
+
+.editor .inactive {
+  opacity: 0;
+  animation: fade-out 0.3s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.editor .finished-fade-in {
+  display: inline-block;
+}
+
+.editor .finished-fade-out {
+  display: none;
+}
+
+.editor .hide {
+  display: none;
+}
+
+.editor .link-popup {
+  position: absolute;
+  width: 150px;
+  height: 130px;
+  background-color: #EEE;
+  z-index: 100;
+  text-align: center;
+  border: 1px solid #CCC;
+}
+
+.editor .link-popup-display-label,
+.editor .link-popup-link-label {
+  margin: 3px;
+}
+
+.editor .link-popup-display-input,
+.editor .link-popup-link-input {
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.editor .link-popup-submit {
+  display: inline-block;
+  margin-top: 6px;
+  width: 60px;
+  height: 24px;
+  line-height: 24px;
+  background-color: #DDD;
+  border: 1px outset #DDD;
+}
+
+.editor .link-popup-submit:hover {
+  background-color: #CCC;
+  cursor: pointer;
+}
