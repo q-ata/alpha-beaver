@@ -98,7 +98,7 @@ const ContentEditor = () => {
   const renderElement = ({attributes, children, element}) => {
     switch (element.type) {
     case "link":
-      return <a href={element.url} {...attributes}>{children}</a>;
+      return <a href={element.data.href} {...attributes}>{children}</a>;
     case "h1":
       return <h1 {...attributes}>{children}</h1>;
     case "h2":
@@ -167,17 +167,31 @@ const ContentEditor = () => {
           "text": "s"
         },
         {
-          "text": "adla",
+          "text": "a",
           "italic": true
         },
         {
-          "italic": true,
-          "text": "s",
-          "bold": true
+          "type": "link",
+          "data": {"href": "jknflkaldfdsd"},
+          "children": [
+            {
+              "italic": true,
+              "text": "dla"
+            },
+            {
+              "italic": true,
+              "text": "s",
+              "bold": true
+            },
+            {
+              "text": "kd",
+              "bold": true
+            }
+          ]
         },
         {
-          "text": "kdj qw",
-          "bold": true
+          "bold": true,
+          "text": "j qw"
         },
         {
           "text": "a "
@@ -381,7 +395,7 @@ const ContentEditor = () => {
               if ((collapsed && !textValue.length) || !linkValue.length) return;
               const linkElement = {
                 type: "link",
-                url: linkValue,
+                data: {href: linkValue},
                 children: collapsed ? [{text: textValue}] : []
               };
               if (collapsed) {
@@ -431,153 +445,6 @@ const ContentEditor = () => {
     );
   };
 
-  /*
-  [
-  {
-    "type": "p",
-    "children": [
-      {
-        "text": "asdq"
-      },
-      {
-        "text": " wdasjldj",
-        "italic": true
-      },
-      {
-        "text": "as"
-      },
-      {
-        "text": "d asd",
-        "underline": true,
-        "bold": true
-      },
-      {
-        "underline": true,
-        "text": "awss"
-      },
-      {
-        "text": "d qwo daw"
-      },
-      {
-        "text": "opd jaw",
-        "strikethrough": true
-      },
-      {
-        "text": "spod lkas"
-      }
-    ]
-  },
-  {
-    "type": "h1",
-    "children": [
-      {
-        "text": "s"
-      },
-      {
-        "text": "adla",
-        "italic": true
-      },
-      {
-        "italic": true,
-        "text": "s",
-        "bold": true
-      },
-      {
-        "text": "kdj qw",
-        "bold": true
-      },
-      {
-        "text": "a "
-      },
-      {
-        "text": "da",
-        "underline": true
-      },
-      {
-        "text": "s "
-      },
-      {
-        "text": "dq",
-        "italic": true
-      },
-      {
-        "text": "w",
-        "strikethrough": true,
-        "italic": true,
-        "bold": true
-      },
-      {
-        "strikethrough": true,
-        "text": " ea "
-      },
-      {
-        "text": "eas"
-      },
-      {
-        "text": "e",
-        "strikethrough": true
-      },
-      {
-        "strikethrough": true,
-        "text": "a",
-        "underline": true
-      },
-      {
-        "text": "s",
-        "underline": true
-      }
-    ]
-  },
-  {
-    "type": "h5",
-    "children": [
-      {
-        "underline": true,
-        "text": "rka woe"
-      },
-      {
-        "underline": true,
-        "text": " q",
-        "italic": true
-      },
-      {
-        "underline": true,
-        "italic": true,
-        "text": "woej",
-        "strikethrough": true,
-        "bold": true
-      },
-      {
-        "underline": true,
-        "text": "a",
-        "strikethrough": true,
-        "bold": true
-      },
-      {
-        "underline": true,
-        "text": "wo"
-      },
-      {
-        "text": "ed qwjo"
-      },
-      {
-        "text": "q ejaj",
-        "bold": true
-      },
-      {
-        "underline": true,
-        "text": "d alw",
-        "bold": true
-      },
-      {
-        "underline": true,
-        "text": "sd asw"
-      }
-    ]
-  }
-]
-  */
-
   const parseText = (node) => {
     let str;
     str = node.text;
@@ -588,20 +455,16 @@ const ContentEditor = () => {
     return str;
   }
 
-  const parseAll = (nodes, prefix) => {
+  const parseAll = (nodes, prefix, data = {}) => {
     let outputStrings = [];
     let prefixActive = false;
     for (const node of nodes) {
       if (node.type) {
-        if (prefixActive) {
-          outputStrings.push(`</${prefix}>`);
-          prefixActive = false;
-        }
-        outputStrings = outputStrings.concat(parseAll(node.children, node.type));
+        outputStrings = outputStrings.concat(parseAll(node.children, node.type === "link" ? "a" : node.type, node.data || {}));
       }
       else {
         if (!prefixActive) {
-          outputStrings.push(`<${prefix}>`);
+          outputStrings.push(`<${prefix} ${Object.keys(data).map((k) => `${k}=\"${data[k]}\"`).join(" ")}>`);
           prefixActive = true;
         }
         outputStrings.push(parseText(node));
@@ -611,7 +474,7 @@ const ContentEditor = () => {
       outputStrings.push(`</${prefix}>`);
       prefixActive = false;
     }
-    return outputStrings.join("\n");
+    return outputStrings.join("");
   };
 
   useEffect(() => {
@@ -667,7 +530,10 @@ const ContentEditor = () => {
           }} />
         </div>
       </Slate>
-      <div className="submit" onClick={() => console.log(parseAll(content))}>
+      <div className="submit" onClick={() => {
+        // TODO: Make POST request
+        console.log(parseAll(content))
+      }}>
         Submit
       </div>
     </div>

@@ -1,0 +1,29 @@
+.content-modules {
+  background-color: #DDD;
+  border-radius: 8px;
+  border-style: outset;
+}
+
+.content-modules .module-container {
+  padding: 6px;
+  line-height: 1;
+}
+
+.content-modules .content-text {
+  width: 80%;
+  word-wrap: break-word;
+}
+
+.content-modules .content-text h1,
+.content-modules .content-text h2,
+.content-modules .content-text h3,
+.content-modules .content-text p,
+.content-modules .content-text h5,
+.content-modules .content-text h6 {
+  margin: 0;
+}
+
+.content-modules .content-youtube {
+  width: 80%;
+  display: block;
+}

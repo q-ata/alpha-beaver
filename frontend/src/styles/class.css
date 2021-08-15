@@ -15,7 +15,7 @@
 
 .course-page .big-box {
   display: block;
-  width: 100%;
+  width: calc(100% - 150px);
   height: 100%;
   margin-left: 150px;
 }

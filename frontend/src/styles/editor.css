@@ -122,3 +122,18 @@
   background-color: #CCC;
   cursor: pointer;
 }
+
+.editor .submit {
+  padding: 6px;
+  background-color: #CCC;
+  display: inline-block;
+}
+
+.editor .submit:hover {
+  background-color: #BBB;
+  cursor: pointer;
+}
+
+.editor .submit:active {
+  background-color: #AAA;
+}
