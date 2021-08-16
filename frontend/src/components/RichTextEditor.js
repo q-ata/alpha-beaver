@@ -67,7 +67,7 @@ const SMALLER_SIZE = {
   hotkey: isHotkey("ctrl+shift+,")
 };
 
-const ContentEditor = () => {
+const RichTextEditor = ({cb, data}) => {
 
   const [showSizes, setShowSizes] = useState(false);
   const [fadedIn, setFadedIn] = useState(false);
@@ -125,164 +125,7 @@ const ContentEditor = () => {
     return <span {...attributes}>{children}</span>;
   };
 
-  const [content, setContent] = useState([
-    {
-      "type": "p",
-      "children": [
-        {
-          "text": "asdq"
-        },
-        {
-          "text": " wdasjldj",
-          "italic": true
-        },
-        {
-          "text": "as"
-        },
-        {
-          "text": "d asd",
-          "underline": true,
-          "bold": true
-        },
-        {
-          "underline": true,
-          "text": "awss"
-        },
-        {
-          "text": "d qwo daw"
-        },
-        {
-          "text": "opd jaw",
-          "strikethrough": true
-        },
-        {
-          "text": "spod lkas"
-        }
-      ]
-    },
-    {
-      "type": "h1",
-      "children": [
-        {
-          "text": "s"
-        },
-        {
-          "text": "a",
-          "italic": true
-        },
-        {
-          "type": "link",
-          "data": {"href": "jknflkaldfdsd"},
-          "children": [
-            {
-              "italic": true,
-              "text": "dla"
-            },
-            {
-              "italic": true,
-              "text": "s",
-              "bold": true
-            },
-            {
-              "text": "kd",
-              "bold": true
-            }
-          ]
-        },
-        {
-          "bold": true,
-          "text": "j qw"
-        },
-        {
-          "text": "a "
-        },
-        {
-          "text": "da",
-          "underline": true
-        },
-        {
-          "text": "s "
-        },
-        {
-          "text": "dq",
-          "italic": true
-        },
-        {
-          "text": "w",
-          "strikethrough": true,
-          "italic": true,
-          "bold": true
-        },
-        {
-          "strikethrough": true,
-          "text": " ea "
-        },
-        {
-          "text": "eas"
-        },
-        {
-          "text": "e",
-          "strikethrough": true
-        },
-        {
-          "strikethrough": true,
-          "text": "a",
-          "underline": true
-        },
-        {
-          "text": "s",
-          "underline": true
-        }
-      ]
-    },
-    {
-      "type": "h5",
-      "children": [
-        {
-          "underline": true,
-          "text": "rka woe"
-        },
-        {
-          "underline": true,
-          "text": " q",
-          "italic": true
-        },
-        {
-          "underline": true,
-          "italic": true,
-          "text": "woej",
-          "strikethrough": true,
-          "bold": true
-        },
-        {
-          "underline": true,
-          "text": "a",
-          "strikethrough": true,
-          "bold": true
-        },
-        {
-          "underline": true,
-          "text": "wo"
-        },
-        {
-          "text": "ed qwjo"
-        },
-        {
-          "text": "q ejaj",
-          "bold": true
-        },
-        {
-          "underline": true,
-          "text": "d alw",
-          "bold": true
-        },
-        {
-          "underline": true,
-          "text": "sd asw"
-        }
-      ]
-    }
-  ]);
+  const [content, setContent] = useState(data || [{type: "p", children: [{text: ""}]}]);
 
   const isMarkActive = (editor, format) => {
     const marks = Editor.marks(editor);
@@ -494,7 +337,10 @@ const ContentEditor = () => {
 
   return (
     <div className="editor">
-      <Slate editor={editor} value={content} onChange={(c) => setContent(c)}>
+      <Slate editor={editor} value={content} onChange={(c) => {
+        setContent(c);
+        cb(c);
+      }}>
         <div className="editor-control">
           <StyleButton format="bold" icon="bold" />
           <StyleButton format="italic" icon="italic" />
@@ -530,18 +376,12 @@ const ContentEditor = () => {
           }} />
         </div>
       </Slate>
-      <div className="submit" onClick={() => {
-        // TODO: Make POST request
-        console.log(parseAll(content))
-      }}>
-        Submit
-      </div>
     </div>
   );
 
 };
 
-ContentEditor.propTypes = {
+RichTextEditor.propTypes = {
 };
 
-export default ContentEditor;
+export default RichTextEditor;

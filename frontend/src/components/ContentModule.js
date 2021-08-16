@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import {React, useState} from "react";
+import {React, useEffect, useState} from "react";
 import ContentModuleSettings from "./ContentModuleSettings";
 
 const imageSettings = [
@@ -30,45 +30,62 @@ const youtubeSettings = [
 const textSettings = [
   {
     title: "Selectable",
-    type: "toggle",
-    default: true
+    type: "toggle"
   }
 ];
 
-const ContentModule = ({module, all, setter, idx}) => {
-  const RichTextEmbed = ({content}) => {
-    const [selectable, setSelectable] = useState(true);
+// TODO: Separate updateSettings callback from state setting callback to allow for live updates.
+const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => {
+  const RichTextEmbed = ({settings}) => {
+    const [selectable, setSelectable] = useState(!!settings.selectable);
+    textSettings[0].default = selectable;
+    const updater = (val) => {
+      setSelectable(val);
+      updateSettings({selectable: val}, idx);
+    }
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={textSettings} updateSettings={[setSelectable]} modules={all} setter={setter} idx={idx} />
-        <div className="content-text" style={{userSelect: selectable ? "text" : "none"}} dangerouslySetInnerHTML={{__html: content}}></div>
+        <ContentModuleSettings settings={textSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        <div className="content-text" style={{userSelect: selectable ? "text" : "none"}} dangerouslySetInnerHTML={{__html: settings.data}}></div>
       </div>
     );
   };
   
-  const ImageEmbed = ({src, width = "", height = ""}) => {
-    const [source, setSource] = useState(src);
-    const [size, setSize] = useState(80);
+  const ImageEmbed = ({settings}) => {
+    const [source, setSource] = useState(settings.source);
+    const [size, setSize] = useState(settings.size || 80);
     const iSettings = imageSettings.slice(0);
-    iSettings[0].default = src;
+    iSettings[0].default = source;
+    const updater1 = (val) => {
+      setSource(val);
+      updateSettings({source: val, size}, idx);
+    };
+    const updater2 = (val) => {
+      setSize(val);
+      updateSettings({source, size: val}, idx);
+    };
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={iSettings} updateSettings={[setSource, setSize]} modules={all} setter={setter} idx={idx} />
-        <img className="content-image" src={src} width={`${size}%`} height={height} />
+        <ContentModuleSettings settings={iSettings} updateSettings={[updater1, updater2]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        <img className="content-image" src={source} width={`${size}%`} />
       </div>
     );
   };
   
-  const YoutubeEmbed = ({src}) => {
-    const [source, setSource] = useState(src);
+  const YoutubeEmbed = ({settings}) => {
+    const [source, setSource] = useState(settings.source);
     const ySettings = youtubeSettings.slice(0);
-    ySettings[0].default = src;
+    ySettings[0].default = source;
+    const updater = (val) => {
+      setSource(val);
+      updateSettings({source: val}, idx);
+    }
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={youtubeSettings} updateSettings={[setSource]} modules={all} setter={setter} idx={idx} />
+        <ContentModuleSettings settings={youtubeSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
         <iframe
           className="content-youtube"
-          src={src}
+          src={source}
           title="YouTube video player"
           frameBorder="0"
           allow="" // "accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
@@ -81,13 +98,13 @@ const ContentModule = ({module, all, setter, idx}) => {
     let child;
     switch (m.type) {
     case "text":
-      child = <RichTextEmbed content={m.data} modules={all} />
+      child = <RichTextEmbed settings={m.settings} modules={all} />
       break;
     case "image":
-      child = <ImageEmbed src={m.data} modules={all} />
+      child = <ImageEmbed settings={m.settings} modules={all} />
       break;
     case "youtube":
-      child = <YoutubeEmbed src={m.data} modules={all} />
+      child = <YoutubeEmbed settings={m.settings} modules={all} />
       break;
     }
     return child;

@@ -7,6 +7,7 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import AddIcon from "@material-ui/icons/Add";
 import "../styles/module_settings.css";
 
 const TextSetting = ({title, allow, deFault, cb}) => {
@@ -23,8 +24,8 @@ const TextSetting = ({title, allow, deFault, cb}) => {
       <span className="setting-title">{title}</span>
       <input type="text" className="setting-text" value={content} onChange={(e) => {
         if (exp.test(e.target.value[e.target.value.length - 1])) setContent(e.target.value);
-        cb(content);
-      }} />
+      }}
+      onBlur={() => cb(content)} />
     </div>
   );
 };
@@ -59,17 +60,18 @@ const NumberSetting = ({title, min, max, unit, deFault, cb}) => {
             let v;
             if (e.target.value === "" && !(v = 0)) setValue(0);
             else if (!isNaN(v = parseInt(e.target.value))) setValue(v > max ? max : v);
-            cb(v);
           }}
           onBlur={(e) => {
-            if (value < min) setValue(min);
-            else if (value > max) setValue(max);
+            let v = value;
+            if (value < min) v = min;
+            else if (value > max) v = max;
+            setValue(v);
+            cb(v);
           }} />
           <span className="setting-number-unit">{unit}</span>
         </div>
-        <input type="range" min={min} max={max} className="setting-number-slider" value={value} onChange={(e) => {
-          setValue(e.target.valueAsNumber);
-          cb(e.target.valueAsNumber);
+        <input type="range" min={min} max={max} className="setting-number-slider" value={value} onChange={(e) => setValue(e.target.valueAsNumber)} onMouseUp={() => {
+          cb(value);
         }} />
       </div>
     </div>
@@ -77,14 +79,13 @@ const NumberSetting = ({title, min, max, unit, deFault, cb}) => {
 
 };
 
-const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx}) => {
+const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx, inserter}) => {
 
   const [additionalSettings, setAdditionalSettings] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [index, setIndex] = useState(idx);
 
   let swap = (i1, i2) => {
-    console.log(`CALL SWAP ${i1} ${i2}`)
     if (i1 < 0 || i1 >= modules.length || i2 < 0 || i2 >= modules.length) return false;
     const arr = modules.slice(0);
     const a = arr[i1];
@@ -92,7 +93,6 @@ const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx})
     arr[i1] = b;
     arr[i2] = a;
     setter(arr);
-    console.log(`SET SWAP ${i1} ${i2}`)
     return true;
   };
 
@@ -125,9 +125,7 @@ const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx})
       <div className="settings-dropdown" style={{display: showDropdown ? "block" : "none"}}>
         <div className="setting-tooltip" title="Move Up" onClick={() => swap(index, index - 1)}><ArrowUpwardIcon className="default-setting" /></div>
         <div className="setting-tooltip" title="Move Down" onClick={() => swap(index, index + 1)}><ArrowDownwardIcon className="default-setting" /></div>
-        <div className="setting-tooltip" title="Save Settings" onClick={console.log}><CheckIcon className="default-setting" /></div>
-        <div className="setting-tooltip" title="Revert Settings" onClick={console.log}><CloseIcon className="default-setting" /></div>
-        <div className="setting-tooltip" title="Delete Module" onClick={console.log}><DeleteForeverIcon className="default-setting" /></div>
+        <div className="setting-tooltip" title="Insert After" onClick={() => inserter(index)}><AddIcon className="default-setting" /></div>
         {additionalSettings}
       </div>
     </div>

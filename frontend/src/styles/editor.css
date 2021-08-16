@@ -20,11 +20,11 @@
 
 .editor .editor-control {
   background-color: #DDD;
+  width: calc(100% + 10px);
 }
 
 .editor .editor-area {
   background-color: white;
-  height: 100px;
   width: 100%;
   padding: 5px;
   overflow: auto;

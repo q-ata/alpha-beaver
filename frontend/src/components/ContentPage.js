@@ -2,53 +2,70 @@
 
 import {React, useState, useEffect} from "react";
 import PropTypes from "prop-types";
+import {useHistory} from "react-router-dom";
 import Navigation from "./Navigation";
 import EventCalendar from "./Calendar";
 import ClassNav from "./ClassNav";
 import Announcement from "./Announcement";
 import ContentModule from "./ContentModule";
 import "../styles/modules.css";
-// import Client from "./beaverjs";
+import Client from "./beaverjs";
 
-import SettingsIcon from "@material-ui/icons/Settings";
-
-const unparsed = [
-  {
-    type: "text",
-    data: `<p >ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddasdq<i> wdasjldj</i>as<u><b>d asd</b></u><u>awss</u>d qwo daw<s>opd jaw</s>spod lkas</p><h1 >s<i>a</i><a href="jknflkaldfdsd"><i>dla</i><i><b>s</b></i><b>kd</b></a><b>j qw</b>a <u>da</u>s <i>dq</i><s><i><b>w</b></i></s><s> ea </s>eas<s>e</s><s><u>a</u></s><u>s</u></h1><h5 ><u>rka woe</u><u><i> q</i></u><s><u><i><b>woej</b></i></u></s><s><u><b>a</b></u></s><u>wo</u>ed qwjo<b>q ejaj</b><u><b>d alw</b></u><u>sd asw</u></h5>`
-  },
-  {
-    type: "image",
-    data: "https://static.zerochan.net/Nishikino.Maki.full.2735664.jpg"
-  },
-  {
-    type: "youtube",
-    data: "https://www.youtube.com/embed/OURLqqtlaLo"
-  }
-];
-
-const ContentPage = ({className = "Linear Algebra"}) => {
+const ContentPage = ({match}) => {
 
   const [protoMods, setProtoMods] = useState([]);
+  const [changed, setChanged] = useState(false);
+  const [previous, setPrevious] = useState([]);
+  const [classInfo, setClassInfo] = useState({});
+
+  const classID = match.params.classID;
+  const contentID = match.params.contentID;
+  const h = useHistory();
+
+  const setter = (val) => {
+    if (!changed) setPrevious(protoMods.slice(0));
+    setProtoMods(val);
+    setChanged(true);
+  };
+
+  const inserter = (idx) => {
+    // TODO: Lazy, don't use alert.
+    if (changed) return alert("Save or discard your changes first!");
+    h.push(`/content/${classID}/${contentID}/add?insertAfter=${idx}`);
+  };
+
+  const updateSettings = (val, idx) => {
+    // Since settings is a nested property, we need a deep clone. Apparently states are mutable within the same scope.
+    const mods = JSON.parse(JSON.stringify(protoMods));
+    mods[idx].settings = val;
+    if (!changed) setPrevious(protoMods.slice(0));
+    setProtoMods(mods);
+    setChanged(true);
+  };
 
   let idx = 0;
 
   useEffect(() => {
-    // TODO: Fetch modules from server
-    setProtoMods(unparsed);
+    const client = new Client();
+    client.getClass(classID).then(setClassInfo);
+    // TODO: Implement getContentModules method
+    client.getContentModules(classID, contentID).then((res) => {
+      setProtoMods(res);
+      setPrevious(res);
+    })
   }, []);
 
   useEffect(() => {
     for (const vid of document.getElementsByClassName("content-youtube")) {
       vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
     }
-  }, [protoMods]);  
+  }, [protoMods]);
 
   return (
     <div className="course-page">
       <div className="big-box">
         <div className="header">
-          {className}
+          {classInfo.name}
         </div>
         <div className="header">
         </div>
@@ -57,15 +74,20 @@ const ContentPage = ({className = "Linear Algebra"}) => {
           <ClassNav />
           <div className="content-modules">
             {protoMods.map((m) => {
-              const cbs = [
-                (key) => swap(key, key - 1),
-                (key) => swap(key, key + 1),
-                () => {},
-                () => {}
-              ];
-              return <ContentModule module={m} idx={idx++} all={protoMods} setter={setProtoMods} />
+              return <ContentModule module={m} idx={idx++} all={protoMods} setter={setter} inserter={inserter} updateSettings={updateSettings} />
             })}
           </div>
+        </div>
+        <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={() => {
+          // TODO: Make API call to save changes in db
+        }}>
+          Save Changes
+        </div>
+        <div className="changes-popup discard-changes" style={{display: changed ? "block" : "none"}} onClick={() => {
+          setProtoMods(previous.slice(0));
+          setChanged(false);
+        }}>
+          Discard Changes
         </div>
       </div>
     </div>
