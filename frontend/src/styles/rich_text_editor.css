@@ -1,4 +1,4 @@
-.editor .style-button, .editor .size-button, .editor .block-button {
+.rich-text-editor .style-button, .rich-text-editor .size-button, .rich-text-editor .block-button {
   height: 28px;
   width: 28px;
   display: inline-block;
@@ -7,50 +7,50 @@
   border: 1px dashed #AAA;
 }
 
-.editor .style-button:hover, .editor .size-button:hover, .editor .block-button:hover {
+.rich-text-editor .style-button:hover, .rich-text-editor .size-button:hover, .rich-text-editor .block-button:hover {
   cursor: pointer;
   background-color: #BBB;
 }
 
-.editor .style-button svg,
-.editor .size-button svg,
-.editor .block-button svg {
+.rich-text-editor .style-button svg,
+.rich-text-editor .size-button svg,
+.rich-text-editor .block-button svg {
   font-size: 28px;
 }
 
-.editor .editor-control {
+.rich-text-editor .editor-control {
   background-color: #DDD;
   width: calc(100% + 10px);
 }
 
-.editor .editor-area {
+.rich-text-editor .editor-area {
   background-color: white;
   width: 100%;
   padding: 5px;
   overflow: auto;
 }
 
-.editor .editor-area p {
+.rich-text-editor .editor-area p {
   margin: 0;
 }
 
-.editor h1,
-.editor h2,
-.editor h3,
-.editor h4,
-.editor h5,
-.editor h6 {
+.rich-text-editor h1,
+.rich-text-editor h2,
+.rich-text-editor h3,
+.rich-text-editor h4,
+.rich-text-editor h5,
+.rich-text-editor h6 {
   margin: 0;
   font-weight: normal;
 }
 
-.editor .active {
+.rich-text-editor .active {
   opacity: 1;
   animation: fade-in 0.5s;
   animation-timing-function: ease-out;
 }
 
-.editor .inactive {
+.rich-text-editor .inactive {
   opacity: 0;
   animation: fade-out 0.3s;
   animation-timing-function: ease-out;
@@ -74,19 +74,19 @@
   }
 }
 
-.editor .finished-fade-in {
+.rich-text-editor .finished-fade-in {
   display: inline-block;
 }
 
-.editor .finished-fade-out {
+.rich-text-editor .finished-fade-out {
   display: none;
 }
 
-.editor .hide {
+.rich-text-editor .hide {
   display: none;
 }
 
-.editor .link-popup {
+.rich-text-editor .link-popup {
   position: absolute;
   width: 150px;
   height: 130px;
@@ -96,19 +96,19 @@
   border: 1px solid #CCC;
 }
 
-.editor .link-popup-display-label,
-.editor .link-popup-link-label {
+.rich-text-editor .link-popup-display-label,
+.rich-text-editor .link-popup-link-label {
   margin: 3px;
 }
 
-.editor .link-popup-display-input,
-.editor .link-popup-link-input {
+.rich-text-editor .link-popup-display-input,
+.rich-text-editor .link-popup-link-input {
   width: 90%;
   display: block;
   margin: 0 auto;
 }
 
-.editor .link-popup-submit {
+.rich-text-editor .link-popup-submit {
   display: inline-block;
   margin-top: 6px;
   width: 60px;
@@ -118,22 +118,22 @@
   border: 1px outset #DDD;
 }
 
-.editor .link-popup-submit:hover {
+.rich-text-editor .link-popup-submit:hover {
   background-color: #CCC;
   cursor: pointer;
 }
 
-.editor .submit {
+.rich-text-editor .submit {
   padding: 6px;
   background-color: #CCC;
   display: inline-block;
 }
 
-.editor .submit:hover {
+.rich-text-editor .submit:hover {
   background-color: #BBB;
   cursor: pointer;
 }
 
-.editor .submit:active {
+.rich-text-editor .submit:active {
   background-color: #AAA;
 }

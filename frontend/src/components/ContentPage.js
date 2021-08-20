@@ -57,7 +57,8 @@ const ContentPage = ({match}) => {
 
   useEffect(() => {
     for (const vid of document.getElementsByClassName("content-youtube")) {
-      vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
+      console.log(parseInt(vid.offsetWidth * 9 / 16));
+      // vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
     }
   }, [protoMods]);
 

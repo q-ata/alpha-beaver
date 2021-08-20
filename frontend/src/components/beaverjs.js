@@ -178,6 +178,7 @@ function Client() {
       {
         type: "youtube",
         settings: {
+          size: 80,
           source: "https://www.youtube.com/embed/OURLqqtlaLo"
         }
       }

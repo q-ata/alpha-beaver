@@ -12,6 +12,7 @@ import "../styles/modules.css";
 import Client from "./beaverjs";
 
 import RichTextEditor from "./RichTextEditor";
+import ImageEditor from "./ImageEditor";
 
 const RICH_TEXT = 0;
 const IMAGE = 1;
@@ -21,10 +22,16 @@ const ModuleCreator = ({match}) => {
 
   const [className, setClassName] = useState("");
   const [selectedType, setSelectedType] = useState(RICH_TEXT);
-  const [data, setData] = useState(undefined);
+  const [data, setData] = useState({});
+  const dataCb = (val, idx) => {
+    const cpy = Object.assign({}, data);
+    cpy[idx] = val;
+    setData(cpy);
+  }
 
   const editorInterfaces = [
-    <RichTextEditor cb={setData} data={data} />
+    <RichTextEditor cb={dataCb} data={data[RICH_TEXT]} idx={RICH_TEXT} />,
+    <ImageEditor cb={dataCb} data={data[IMAGE]} idx={IMAGE} />
   ]
 
   const classID = match.params.classID;
@@ -66,6 +73,10 @@ const ModuleCreator = ({match}) => {
           </div>
 
           {editorInterfaces[selectedType]}
+
+          <div className="submit-module">
+            Submit
+          </div>
 
         </div>
       </div>

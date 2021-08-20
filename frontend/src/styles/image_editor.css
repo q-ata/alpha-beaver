@@ -1,0 +1,35 @@
+.image-editor {
+  border-bottom: 1px solid black;
+}
+
+.image-editor .not-preview {
+  display: flex;
+}
+
+.image-editor .header {
+  font-size: 24px;
+  margin-right: 12px;
+  width: auto;
+  height: 24px;
+}
+
+.image-editor .source {
+  padding: 6px 4px;
+  font-size: 18px;
+  flex-grow: 100;
+  height: 24px;
+}
+
+.image-editor .image-data {
+  padding: 3px 10px;
+  margin-left: 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+.image-editor .data-header {
+  margin-right: 4px;
+  width: 50px;
+}

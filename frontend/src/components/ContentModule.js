@@ -24,6 +24,14 @@ const youtubeSettings = [
     title: "Source",
     type: "text",
     allow: "."
+  },
+  {
+    title: "Size",
+    type: "number",
+    min: 10,
+    max: 100,
+    unit: "%",
+    default: 80
   }
 ]
 
@@ -41,7 +49,7 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     textSettings[0].default = selectable;
     const updater = (val) => {
       setSelectable(val);
-      updateSettings({selectable: val}, idx);
+      updateSettings({selectable: val, data: settings.data}, idx);
     }
     return (
       <div className="module-container">
@@ -56,6 +64,7 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     const [size, setSize] = useState(settings.size || 80);
     const iSettings = imageSettings.slice(0);
     iSettings[0].default = source;
+    iSettings[1].default = size;
     const updater1 = (val) => {
       setSource(val);
       updateSettings({source: val, size}, idx);
@@ -74,21 +83,32 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
   
   const YoutubeEmbed = ({settings}) => {
     const [source, setSource] = useState(settings.source);
+    const [size, setSize] = useState(settings.size || 80);
+    const [height, setHeight] = useState(100);
     const ySettings = youtubeSettings.slice(0);
     ySettings[0].default = source;
-    const updater = (val) => {
+    ySettings[1].default = settings.size;
+    const updater1 = (val) => {
       setSource(val);
-      updateSettings({source: val}, idx);
+      updateSettings({source: val, size}, idx);
     }
+    const updater2 = (val) => {
+      setSize(val);
+      updateSettings({source, size: val}, idx);
+    }
+    useEffect(() => setHeight(parseInt(document.getElementById(`youtube-module-${idx}`).offsetWidth * 9 / 16)), [size]);
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={youtubeSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        <ContentModuleSettings settings={youtubeSettings} updateSettings={[updater1, updater2]} modules={all} setter={setter} idx={idx} inserter={inserter} />
         <iframe
           className="content-youtube"
           src={source}
           title="YouTube video player"
           frameBorder="0"
           allow="" // "accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
+          id={`youtube-module-${idx}`}
+          width={`${size}%`}
+          height={`${height}px`}
         ></iframe>
       </div>
     );

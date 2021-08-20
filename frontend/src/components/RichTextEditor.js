@@ -4,7 +4,7 @@ import {React, useState, useEffect, useMemo} from "react";
 import {Editor, createEditor, Transforms, Element as SlateElement, Range} from "slate";
 import {Slate, Editable, withReact, useSlate} from "slate-react";
 import {withHistory} from "slate-history";
-import "../styles/editor.css";
+import "../styles/rich_text_editor.css";
 import PropTypes from "prop-types";
 
 import isHotkey from "is-hotkey";
@@ -67,7 +67,7 @@ const SMALLER_SIZE = {
   hotkey: isHotkey("ctrl+shift+,")
 };
 
-const RichTextEditor = ({cb, data}) => {
+const RichTextEditor = ({cb, data, idx}) => {
 
   const [showSizes, setShowSizes] = useState(false);
   const [fadedIn, setFadedIn] = useState(false);
@@ -336,10 +336,10 @@ const RichTextEditor = ({cb, data}) => {
   }, []);
 
   return (
-    <div className="editor">
+    <div className="rich-text-editor">
       <Slate editor={editor} value={content} onChange={(c) => {
         setContent(c);
-        cb(c);
+        cb(c, idx);
       }}>
         <div className="editor-control">
           <StyleButton format="bold" icon="bold" />
