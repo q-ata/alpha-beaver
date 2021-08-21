@@ -26,3 +26,23 @@
 .content-modules .content-youtube {
   display: block;
 }
+
+.course-page .submit-module {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 10px auto;
+  width: 80px;
+  text-align: center;
+  background-color: #BBB;
+}
+
+.course-page .submit-module:hover {
+  cursor: pointer;
+  background-color: #AAA;
+}
+
+.course-page .submit-module:active {
+  cursor: pointer;
+  background-color: #999;
+}

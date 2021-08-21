@@ -13,6 +13,7 @@ import Client from "./beaverjs";
 
 import RichTextEditor from "./RichTextEditor";
 import ImageEditor from "./ImageEditor";
+import YouTubeEditor from "./YouTubeEditor";
 
 const RICH_TEXT = 0;
 const IMAGE = 1;
@@ -31,7 +32,8 @@ const ModuleCreator = ({match}) => {
 
   const editorInterfaces = [
     <RichTextEditor cb={dataCb} data={data[RICH_TEXT]} idx={RICH_TEXT} />,
-    <ImageEditor cb={dataCb} data={data[IMAGE]} idx={IMAGE} />
+    <ImageEditor cb={dataCb} data={data[IMAGE]} idx={IMAGE} />,
+    <YouTubeEditor cb={dataCb} data={data[YOUTUBE_VIDEO]} idx={YOUTUBE_VIDEO} />
   ]
 
   const classID = match.params.classID;
@@ -74,7 +76,10 @@ const ModuleCreator = ({match}) => {
 
           {editorInterfaces[selectedType]}
 
-          <div className="submit-module">
+          <div className="submit-module" onClick={() => {
+            // TODO: Make API call
+            console.log(data);
+          }}>
             Submit
           </div>
 
