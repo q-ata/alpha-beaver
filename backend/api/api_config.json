@@ -68,6 +68,60 @@
                 "auth": true,
                 "dest": "api/authenticated/Announcements"
               }
+            },
+            {
+              "name": "pages",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Pages"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pages",
+      "sub": [
+        {
+          "name": "pageID",
+          "path": ":pageID",
+          "sub": [
+            {
+              "name": "get",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Page"
+              }
+            },
+            {
+              "name": "modules",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Modules"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "modules",
+      "sub": [
+        {
+          "name": "moduleID",
+          "path": ":moduleID",
+          "sub": [
+            {
+              "name": "get",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/Module"
+              }
             }
           ]
         }
