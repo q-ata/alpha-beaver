@@ -26,7 +26,6 @@ const Dashboard = () => {
     // TODO: Redo this with .then
     const client = new Client();
     const u = await client.me();
-    console.log(u);
     setPfp(u.pfp);
     const classes = await client.getCourses();
     const ann = await client.getAnnouncements();

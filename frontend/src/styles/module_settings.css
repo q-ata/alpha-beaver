@@ -1,0 +1,75 @@
+.settings {
+  float: right;
+  position: relative;
+}
+
+.settings .settings-icon {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.settings .settings-icon.settings-inactive {
+  opacity: 0;
+}
+
+.settings .settings-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.settings .settings-icon:hover.settings-inactive {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.settings .settings-dropdown {
+  border: 1px solid;
+  position: absolute;
+  top: 45px;
+  width: 200px;
+  right: 0px;
+}
+
+.settings .default-setting {
+  width: 30px;
+  height: 30px;
+}
+
+.settings .setting-tooltip {
+  display: inline;
+}
+
+.settings .default-setting:hover {
+  background-color: #BBB;
+  cursor: pointer;
+}
+
+.settings .setting-additional {
+  display: flex;
+  line-height: 1.5;
+}
+
+.settings .setting-title, .settings .setting-text {
+  margin: 3px;
+}
+
+.settings .setting-text {
+  flex: 1;
+  width: 100%;
+}
+
+.settings .setting-number-box {
+  width: 50px;
+}
+
+.settings .setting-number-data {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.settings .setting-number-slider {
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+}

@@ -15,7 +15,7 @@
 
 .course-page .big-box {
   display: block;
-  width: 100%;
+  width: calc(100% - 150px);
   height: 100%;
   margin-left: 150px;
 }
@@ -174,4 +174,54 @@
   background-color: rgb(51, 51, 51);
   color: white;
   font-size: 26px;
+}
+
+.course-page .changes-popup {
+  position: fixed;
+  padding: 5px;
+  border: 3px outset;
+  border-radius: 5px;
+  background-color: #CCC;
+  
+}
+
+.course-page .changes-popup:hover {
+  background-color: #BBB;
+  cursor: pointer;
+}
+
+.course-page .changes-popup:active {
+  border-style: inset;
+  background-color: #AAA;
+}
+
+.course-page .save-changes {
+  border-color: #8F8;
+  right: 20px;
+  bottom: 70px;
+}
+
+.course-page .discard-changes {
+  border-color: #F88;
+  right: 20px;
+  bottom: 20px;
+}
+
+.course-page .type-selector-header {
+  font-size: 36px;
+  text-align: center;
+}
+
+.course-page .type-selector-types img {
+  width: 32%;
+  height: 150px;
+  margin: 2px;
+}
+
+.course-page .type-selector-types img:hover {
+  cursor: pointer;
+}
+
+.course-page .type-selector-types .type-selector-selected {
+  border: 2px solid rgb(74, 204, 255);
 }

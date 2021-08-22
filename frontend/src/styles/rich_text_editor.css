@@ -1,0 +1,139 @@
+.rich-text-editor .style-button, .rich-text-editor .size-button, .rich-text-editor .block-button {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  margin: 6px;
+  border-radius: 6px;
+  border: 1px dashed #AAA;
+}
+
+.rich-text-editor .style-button:hover, .rich-text-editor .size-button:hover, .rich-text-editor .block-button:hover {
+  cursor: pointer;
+  background-color: #BBB;
+}
+
+.rich-text-editor .style-button svg,
+.rich-text-editor .size-button svg,
+.rich-text-editor .block-button svg {
+  font-size: 28px;
+}
+
+.rich-text-editor .editor-control {
+  background-color: #DDD;
+  width: calc(100% + 10px);
+}
+
+.rich-text-editor .editor-area {
+  background-color: white;
+  width: 100%;
+  padding: 5px;
+  overflow: auto;
+}
+
+.rich-text-editor .editor-area p {
+  margin: 0;
+}
+
+.rich-text-editor h1,
+.rich-text-editor h2,
+.rich-text-editor h3,
+.rich-text-editor h4,
+.rich-text-editor h5,
+.rich-text-editor h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+.rich-text-editor .active {
+  opacity: 1;
+  animation: fade-in 0.5s;
+  animation-timing-function: ease-out;
+}
+
+.rich-text-editor .inactive {
+  opacity: 0;
+  animation: fade-out 0.3s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.rich-text-editor .finished-fade-in {
+  display: inline-block;
+}
+
+.rich-text-editor .finished-fade-out {
+  display: none;
+}
+
+.rich-text-editor .hide {
+  display: none;
+}
+
+.rich-text-editor .link-popup {
+  position: absolute;
+  width: 150px;
+  height: 130px;
+  background-color: #EEE;
+  z-index: 100;
+  text-align: center;
+  border: 1px solid #CCC;
+}
+
+.rich-text-editor .link-popup-display-label,
+.rich-text-editor .link-popup-link-label {
+  margin: 3px;
+}
+
+.rich-text-editor .link-popup-display-input,
+.rich-text-editor .link-popup-link-input {
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.rich-text-editor .link-popup-submit {
+  display: inline-block;
+  margin-top: 6px;
+  width: 60px;
+  height: 24px;
+  line-height: 24px;
+  background-color: #DDD;
+  border: 1px outset #DDD;
+}
+
+.rich-text-editor .link-popup-submit:hover {
+  background-color: #CCC;
+  cursor: pointer;
+}
+
+.rich-text-editor .submit {
+  padding: 6px;
+  background-color: #CCC;
+  display: inline-block;
+}
+
+.rich-text-editor .submit:hover {
+  background-color: #BBB;
+  cursor: pointer;
+}
+
+.rich-text-editor .submit:active {
+  background-color: #AAA;
+}

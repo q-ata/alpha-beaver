@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Cookies from "js-cookie";
 
 class User {
@@ -152,6 +154,32 @@ class Client {
         new Announcement(a);
       });
       return announcements;
+    };
+
+    this.getContentModules = async (classID, contentID) => {
+      return [
+        {
+          type: "text",
+          settings: {
+            selectable: true,
+            data: `<p >ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddasdq<i> wdasjldj</i>as<u><b>d asd</b></u><u>awss</u>d qwo daw<s>opd jaw</s>spod lkas</p><h1 >s<i>a</i><a href="jknflkaldfdsd"><i>dla</i><i><b>s</b></i><b>kd</b></a><b>j qw</b>a <u>da</u>s <i>dq</i><s><i><b>w</b></i></s><s> ea </s>eas<s>e</s><s><u>a</u></s><u>s</u></h1><h5 ><u>rka woe</u><u><i> q</i></u><s><u><i><b>woej</b></i></u></s><s><u><b>a</b></u></s><u>wo</u>ed qwjo<b>q ejaj</b><u><b>d alw</b></u><u>sd asw</u></h5>`
+          }
+        },
+        {
+          type: "image",
+          settings: {
+            size: 80,
+            source: "https://static.zerochan.net/Nishikino.Maki.full.2735664.jpg"
+          }
+        },
+        {
+          type: "youtube",
+          settings: {
+            size: 80,
+            source: "https://www.youtube.com/embed/OURLqqtlaLo"
+          }
+        }
+      ];
     };
   }
 }
