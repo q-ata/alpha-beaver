@@ -5,7 +5,7 @@ import EventLabel from "./EventLabel";
 
 const areEqual = () => true;
 
-const Popup = React.memo(({calcDatePosition, events, toggle, position, date}) => {
+const Popup = React.memo(({calcDatePosition, events, toggle, position, date, selectedEvent}) => {
   const ref = useRef(null);
   const boundRect = calcDatePosition(date, position);
 
@@ -29,10 +29,10 @@ const Popup = React.memo(({calcDatePosition, events, toggle, position, date}) =>
   }, ["ref"]);
 
   let listItems = events.map(event =>
-    <EventLabel key={event.id} event={event} />
+    <EventLabel key={event.id} event={event} selectedEvent={selectedEvent} />
   );
 
-  if (listItems.length === 0) listItems = <EventLabel key={0} event={{title: "No events."}} />;
+  if (listItems.length === 0) listItems = <EventLabel key={0} event={{title: "No events."}} selectedEvent={selectedEvent} />;
 
   return (
     <div ref={ref} style={style} className="modal">
@@ -49,7 +49,8 @@ Popup.propTypes = {
   events: PropTypes.array,
   position: PropTypes.object,
   date: PropTypes.object,
-  calcDatePosition: PropTypes.func
+  calcDatePosition: PropTypes.func,
+  selectedEvent: PropTypes.func
 };
 
 export default Popup;

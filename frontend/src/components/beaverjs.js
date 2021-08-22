@@ -103,16 +103,7 @@ function Client() {
     const obj = await query(`http://localhost:8000/api/users/${userID}/get`);
     if(obj.error) {
       return obj;
-    }
-    const user = new User(obj);
-    return user;
-  };
-
-  this.me = async () => {
-    const obj = await query("http://localhost:8000/api/users/me");
-    if(obj.error) {
-      return obj;
-    }
+    };
     const user = new User(obj);
     return user;
   };

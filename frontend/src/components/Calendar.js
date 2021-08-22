@@ -5,6 +5,7 @@ import {isWithinInterval, format, parse, startOfWeek, getDay} from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Popup from "./Popup";
 import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import "../styles/calendar.css";
 import locale from "date-fns/locale/en-US";
 
@@ -135,6 +136,8 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
   const [isOpen, changeOpen] = useState(false);
   const [curDate, changeDate] = useState(new Date());
   const [position, setPosition] = useState({x: 0, y: 0});
+  
+  const h = useHistory();
 
   const eventStyleGetter = () => {
     const backgroundColor = "#000";
@@ -166,6 +169,10 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
   const togglePopup = (date) => {
     changeOpen(!isOpen);
     if (date != undefined) changeDate(date);
+  };
+
+  const selectedEvent = (event) => {
+    h.push("/upcoming", {title: event.title});
   };
 
   const calcDatePosition = (date, position) => {
@@ -200,8 +207,9 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
         views={["month"]}
         startAccessor="start"
         endAccessor="end"
-        selectable={true}
+        selectable={false}
         formats={formats}
+        onSelectEvent={selectedEvent}
       />
       {
         isOpen ?
@@ -234,6 +242,7 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
             position={position}
             date={curDate}
             calcDatePosition={calcDatePosition} 
+            selectedEvent={selectedEvent}
           />
           : null
       }
