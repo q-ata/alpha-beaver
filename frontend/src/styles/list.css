@@ -1,0 +1,16 @@
+.list-header {
+    font-size: 25px;
+}
+
+.list-item {
+    width: 100px;
+    padding: 10px;
+}
+
+a {
+    text-decoration: underline;
+}
+
+a:hover {
+    cursor: pointer;
+}
