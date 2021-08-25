@@ -7,6 +7,7 @@ import Class from "./components/Class";
 import ModuleCreator from "./components/ModuleCreator";
 import ContentPage from "./components/ContentPage";
 import Upcoming from "./components/Upcoming";
+import PageList from "./components/PageList";
 import "./styles/global.css";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/class/:classID" component={Class} />
         <Route exact path="/content/:classID/:contentID/view" component={ContentPage} />
         <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />
+        <Route exact path="/content/:classID/all" component={PageList} />
         <Route exact path="/upcoming" component={Upcoming} />
       </Switch>
     </BrowserRouter>
