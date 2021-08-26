@@ -169,7 +169,7 @@ class Client {
         return obj;
       }
       const announcements = obj.announcements.map(a => {
-        new Announcement(a);
+        return new Announcement(a);
       });
       return announcements;
     };
