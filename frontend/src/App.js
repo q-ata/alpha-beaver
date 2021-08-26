@@ -24,6 +24,7 @@ const App = () => {
         <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />
         <Route exact path="/content/:classID/all" component={PageList} />
         <Route exact path="/upcoming" component={Upcoming} />
+        <Route component={Dashboard} />
       </Switch>
     </BrowserRouter>
   );

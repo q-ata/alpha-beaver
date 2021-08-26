@@ -24,8 +24,20 @@ const PageList = ({ match }) => {
 
     useEffect(() => {
         const client = new Client();
-        client.getClass(classID).then(setClassInfo);
-        client.getPageList(classID).then(setList);
+        client.getClass(classID).then((info) => {
+            if (info.error) {
+                h.push("/login");
+            } else {
+                setClassInfo(info);
+            }
+        });
+        client.getPageList(classID).then((pages) => {
+            if (pages.error) {
+                h.push("/login");
+            } else {
+                setList(pages);
+            }
+        });
     }, []);
 
     return (
