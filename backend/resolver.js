@@ -36,7 +36,7 @@ const validateToken = (token) => {
     decoded = jwt.verify(token, privateKey);
   }
   catch (err) {
-    console.log(err);
+    logger.debug(`Failed to authenticate token ${token}`);
     return false;
   }
 

@@ -5,7 +5,16 @@ const execute = async (req, res) => {
     res.status(500).json(error("Internal error."));
     return;
   }
-  const content = await req.school.getModules({page: req.params.pageID});
+  const filter = {class: req.params.classID};
+  if (req.query.moduleID) {
+    const arr = req.query.moduleID.split(",").map(Number);
+    if (arr.some(isNaN)) {
+      res.status(400).json(error("Malformed moduleID filter."));
+      return;
+    }
+    filter.id = {$in: arr};
+  }
+  const content = await req.school.getModules(filter);
   const copy = [];
   content.forEach((c) => copy.push(Object.assign({}, c)));
   copy.forEach((c) => delete c.school);

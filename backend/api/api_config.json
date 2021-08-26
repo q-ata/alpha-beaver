@@ -58,7 +58,7 @@
               "query": {
                 "method": "get",
                 "auth": true,
-                "dest": "api/authenticated/Classes"
+                "dest": "api/authenticated/classes/Classes"
               }
             },
             {
@@ -66,34 +66,19 @@
               "query": {
                 "method": "get",
                 "auth": true,
-                "dest": "api/authenticated/Announcements"
+                "dest": "api/authenticated/classes/Announcements"
               }
             },
             {
-              "name": "pages",
+              "name": "addmodule",
               "query": {
-                "method": "get",
+                "method": "post",
                 "auth": true,
-                "dest": "api/authenticated/Pages"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "pages",
-      "sub": [
-        {
-          "name": "pageID",
-          "path": ":pageID",
-          "sub": [
-            {
-              "name": "get",
-              "query": {
-                "method": "get",
-                "auth": true,
-                "dest": "api/authenticated/Page"
+                "body": {
+                  "type": "integer",
+                  "data": "object"
+                },
+                "dest": "api/authenticated/classes/AddModule"
               }
             },
             {
@@ -101,27 +86,51 @@
               "query": {
                 "method": "get",
                 "auth": true,
-                "dest": "api/authenticated/Modules"
+                "dest": "api/authenticated/classes/Module"
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "modules",
-      "sub": [
-        {
-          "name": "moduleID",
-          "path": ":moduleID",
-          "sub": [
+            },
             {
-              "name": "get",
+              "name": "pages",
               "query": {
                 "method": "get",
                 "auth": true,
-                "dest": "api/authenticated/Module"
-              }
+                "dest": "api/authenticated/classes/pages/Pages"
+              },
+              "sub": [
+                {
+                  "name": "pageID",
+                  "path": ":pageID",
+                  "sub": [
+                    {
+                      "name": "setmodules",
+                      "query": {
+                        "method": "post",
+                        "auth": true,
+                        "body": {
+                          "modules": ["object"]
+                        },
+                        "dest": "api/authenticated/classes/pages/SetPageModules"
+                      }
+                    },
+                    {
+                      "name": "get",
+                      "query": {
+                        "method": "get",
+                        "auth": true,
+                        "dest": "api/authenticated/classes/pages/Page"
+                      }
+                    },
+                    {
+                      "name": "modules",
+                      "query": {
+                        "method": "get",
+                        "auth": true,
+                        "dest": "api/authenticated/classes/pages/Modules"
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

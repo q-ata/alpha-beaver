@@ -19,16 +19,30 @@ const RICH_TEXT = 0;
 const IMAGE = 1;
 const YOUTUBE_VIDEO = 2;
 
+const createDefaultModule = (type, content) => {
+  switch (type) {
+  case RICH_TEXT:
+    return {data: content, selectable: true};
+  case IMAGE:
+    return {source: content, size: 80};
+  case YOUTUBE_VIDEO:
+    return {source: content, size: 80};
+  }
+}
+
 const ModuleCreator = ({match}) => {
 
   const [className, setClassName] = useState("");
   const [selectedType, setSelectedType] = useState(RICH_TEXT);
   const [data, setData] = useState({});
+  const [client, setClient] = useState(undefined);
   const dataCb = (val, idx) => {
     const cpy = Object.assign({}, data);
     cpy[idx] = val;
     setData(cpy);
   }
+
+  const h = useHistory();
 
   const editorInterfaces = [
     <RichTextEditor cb={dataCb} data={data[RICH_TEXT]} idx={RICH_TEXT} />,
@@ -38,9 +52,12 @@ const ModuleCreator = ({match}) => {
 
   const classID = match.params.classID;
   const contentID = match.params.contentID;
+  const insertAfter = new URLSearchParams(location.search).get("insertAfter");
 
   useEffect(() => {
+    // This is valid
     const client = new Client();
+    setClient(client);
     client.getClass(classID).then((res) => setClassName(res.name));
   }, []);
 
@@ -76,9 +93,15 @@ const ModuleCreator = ({match}) => {
 
           {editorInterfaces[selectedType]}
 
-          <div className="submit-module" onClick={() => {
-            // TODO: Make API call
-            console.log(data);
+          <div className="submit-module" onClick={async () => {
+            const content = data[selectedType];
+            if (!content) return;
+            const {id} = await client.addModule(classID, {class: classID, type: selectedType, data: createDefaultModule(selectedType, content)});
+            const page = await client.getPage(classID, contentID);
+            const modules = page.modules;
+            modules.splice(insertAfter, 0, id);
+            client.setPageModules(classID, contentID, modules);
+            h.push(`/content/${classID}/${contentID}/view`);
           }}>
             Submit
           </div>

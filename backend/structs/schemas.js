@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   perms: permissionSchema,
-  classes: [Number],
+  classes: [Number]
 }, {collection: "users"});
 
 const classSchema = new mongoose.Schema({
@@ -65,15 +65,15 @@ const counterSchema = new mongoose.Schema({
 const moduleSchema = new mongoose.Schema({
   id: Number,
   class: Number,
-  page: Number,
   type: Number,
-  data: String
+  data: {}
 }, {collection: "content_modules"});
 
 const pageSchema = new mongoose.Schema({
   id: Number,
   class: Number,
-  modules: [Number]
+  modules: [Number],
+  name: String
 }, {collection: "pages"});
 
 module.exports = {
