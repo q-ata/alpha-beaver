@@ -34,7 +34,6 @@ const PageList = ({ match }) => {
                 h.push("/login");
             } else {
                 setList(pages);
-                if(list.length==0) document.getElementsByClassName("list-header")[0].innerHTML = "No pages found."
             }
         });
     }, []);
@@ -51,7 +50,7 @@ const PageList = ({ match }) => {
                 <div className="middle-section" style={{ width: "calc(100% - 112px)" }}>
                     <ClassNav />
                     <div className="list">
-                        <div className="list-header">Pages.</div>
+                    <div className="list-header">{list.length ? "Pages." : "No pages found."}</div>
                         {list.map((page) => (
                             <div className="list-item">
                                 <a onClick={() => { pageClick(page) }}>
