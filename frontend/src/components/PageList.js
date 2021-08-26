@@ -14,9 +14,7 @@ const PageList = ({ match }) => {
     const h = useHistory();
     const [list, setList] = useState([]);
     const [classInfo, setClassInfo] = useState({});
-
-    //const classID = match.params.classID;
-    const classID = 1;
+    const classID = match.params.classID;
 
     const pageClick = (page) => {
         h.push("/content/" + classID + "/" + page.id + "/view");
@@ -36,6 +34,7 @@ const PageList = ({ match }) => {
                 h.push("/login");
             } else {
                 setList(pages);
+                if(list.length==0) document.getElementsByClassName("list-header")[0].innerHTML = "No pages found."
             }
         });
     }, []);
