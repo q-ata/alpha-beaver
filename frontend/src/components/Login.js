@@ -5,7 +5,7 @@ import "../styles/login.css";
 import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 import SchoolSearch from "./SchoolSearch";
-
+import Client from "./beaverjs";
 
 const Login = () => {
 
@@ -18,6 +18,12 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login";
+    const client = new Client();
+    client.me().then((query) => {
+      if (!query.error) {
+        h.push("/dashboard");
+      }
+    });
   });
 
   const h = useHistory();
@@ -41,7 +47,7 @@ const Login = () => {
           school: selectedSchool.value.id,
           rememberMe
         }),
-        credentials:"include"
+        credentials: "include"
       });
       const data = await res.json();
       if (data.error) {
@@ -51,7 +57,7 @@ const Login = () => {
       }
 
       Cookies.set("auth_token", data.token, {sameSite: "Strict"});
-      
+
       h.push("/dashboard");
     };
     getToken();
@@ -67,9 +73,9 @@ const Login = () => {
 
         <div className="form-section">
           <label htmlFor="username" className="form-label">Username</label>
-          <input type="text" className="form-field" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
+          <input type="text" className="form-field" value={username} onChange={(e) => setUsername(e.target.value)} /> <br />
           <label htmlFor="password" className="form-label">Password</label>
-          <input type="password" className="form-field" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <input type="password" className="form-field" value={password} onChange={(e) => setPassword(e.target.value)} />
           <span className="error-message" style={{display: showError ? "block" : "none"}}>{errorMessage}</span>
           <div className="remember-me">
             <input type="checkbox" className="remember-me-box" onChange={() => setRememberMe(!rememberMe)} />

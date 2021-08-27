@@ -47,11 +47,21 @@ const ContentPage = ({match}) => {
 
   useEffect(() => {
     const client = new Client();
-    client.getClass(classID).then(setClassInfo);
+    client.getClass(classID).then((info) => {
+      if(info.error) {
+        h.push("/login");
+      } else {
+        setClassInfo(info);
+      }
+    });
     // TODO: Implement getContentModules method
     client.getContentModules(classID, contentID).then((res) => {
-      setProtoMods(res);
-      setPrevious(res);
+      if(res.error) {
+        h.push("/login");
+      } else {
+        setProtoMods(res);
+        setPrevious(res);
+      }
     })
   }, []);
 

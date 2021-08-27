@@ -32,6 +32,13 @@ class Class {
   }
 }
 
+class Page {
+  constructor(obj) {
+    this.id = obj.id;
+    this.modules = obj.modules;
+  }
+}
+
 class Client {
   constructor() {
     let token = Cookies.get("auth_token");
@@ -145,13 +152,24 @@ class Client {
       return c;
     };
 
+    this.getPageList = async (classID) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/pages`);
+      if (obj.error) {
+        return obj;
+      }
+      const pages = obj.pages.map(p => {
+        return new Page(p);
+      });
+      return pages;
+    }
+
     this.getAnnouncement = async (classID) => {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/announcements`);
       if (obj.error) {
         return obj;
       }
       const announcements = obj.announcements.map(a => {
-        new Announcement(a);
+        return new Announcement(a);
       });
       return announcements;
     };
