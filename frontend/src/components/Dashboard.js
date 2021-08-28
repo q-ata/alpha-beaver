@@ -1,11 +1,14 @@
+/* eslint-disable */
+
 import React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
 import Client from "./beaverjs";
+import { useHistory } from "react-router-dom";
 
 const announceStyle = {
   textOverflow: "ellipsis",
@@ -17,7 +20,7 @@ const announceStyle = {
 };
 
 const Dashboard = () => {
-  
+  const h = useHistory();
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
   const [pfp, setPfp] = useState("");
@@ -29,14 +32,20 @@ const Dashboard = () => {
     setPfp(u.pfp);
     const classes = await client.getCourses();
     const ann = await client.getAnnouncements();
-    setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} cid={c.id} />));
-    // TODO: Make finding the corresponding class more efficient.
-    setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement textStyle={announceStyle} key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
+    console.log(classes);
+    if (classes.error || ann.error) {
+      h.push("/login");
+    } else {
+      setCourses(classes.map((c) => <Course key={c.name} name={c.name} desc={c.desc} background={c.background} color={c.color} cid={c.id} />));
+      // TODO: Make finding the corresponding class more efficient.
+      setAnnounces(ann.sort((a, b) => b.date - a.date).map((a) => <Announcement textStyle={announceStyle} key={a.date} clazz={classes.find((c) => c.id === a.class).name} title={a.title} date={a.date} content={a.content} />));
+    }
   };
+
   useEffect(() => {
     loadAll();
   }, []);
-  
+
   return (
 
     <div className="dash-page">
@@ -50,7 +59,7 @@ const Dashboard = () => {
                   <h1 className="header"><span>Dashboard</span></h1>
                   <div className="header-actions">
                     <span>
-                      <button style={{backgroundImage: `url("${pfp}")`}}></button>
+                      <button style={{ backgroundImage: `url("${pfp}")` }}></button>
                     </span>
                   </div>
                 </div>
@@ -59,7 +68,7 @@ const Dashboard = () => {
               <div className="cards">
 
                 {courses}
-              
+
               </div>
             </div>
           </div>
@@ -77,7 +86,7 @@ const Dashboard = () => {
               <div className="announce-show-all">
                 <button>Show All</button>
               </div>
-              
+
             </div>
           </div>
         </div>

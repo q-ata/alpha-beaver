@@ -123,6 +123,8 @@ const Upcoming = () => {
     h.replace("/upcoming");
   }, [ref]);
 
+  //TODO: Redirect if not logged in
+
   return (
     <div className="upcoming-page">
       <Navigation />
@@ -130,13 +132,13 @@ const Upcoming = () => {
         <h1>Upcoming Events</h1>
         {events.map(event =>
           (h.location.state && event.title === h.location.state.title) ?
-            <div className="event-wrapper">
+            <div className="event-wrapper" key={event.id}>
               <DateLabel event={event} />
-              <EventLabel formatString={"LLL d @ p"} ref={ref} key={event.id} event={event} selectedEvent={() => { }} />
+              <EventLabel formatString={"LLL d @ p"} ref={ref} event={event} selectedEvent={() => { }} />
             </div> :
-            <div className="event-wrapper">
+            <div className="event-wrapper" key={event.id}>
               <DateLabel event={event} />
-              <EventLabel formatString={"LLL d @ p"} key={event.id} event={event} selectedEvent={() => { }} />
+              <EventLabel formatString={"LLL d @ p"} event={event} selectedEvent={() => { }} />
             </div>)
         }
       </div>

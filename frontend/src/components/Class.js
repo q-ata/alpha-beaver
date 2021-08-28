@@ -6,6 +6,7 @@ import ClassNav from "./ClassNav";
 import Announcement from "./Announcement";
 import "../styles/class.css";
 import Client from "./beaverjs";
+import {useHistory} from "react-router-dom";
 
 const announceStyle = {
   textAlign: "left",
@@ -15,14 +16,27 @@ const announceStyle = {
 };
 
 const Class = ({match}) => {
+  const h = useHistory();
   const classID = match.params.classID;
   const [announces, setAnnounces] = useState([]);
   const [classInfo, setClassInfo] = useState({});
   
   useEffect(() => {
     const client = new Client();
-    client.getAnnouncements(classID).then(setAnnounces);
-    client.getClass(classID).then(setClassInfo);
+    client.getAnnouncement(classID).then((anns) => {
+      if(anns.error) {
+        h.push("/login");
+      } else {
+        setAnnounces(anns);
+      }
+    });
+    client.getClass(classID).then((info) => {
+      if(info.error) {
+        h.push("/login");
+      } else {
+        setClassInfo(info);
+      }
+    });
   }, []);
 
   return (
