@@ -13,6 +13,7 @@ const ContentPage = ({match}) => {
   const [changed, setChanged] = useState(false);
   const [previous, setPrevious] = useState([]);
   const [classInfo, setClassInfo] = useState({});
+  const [client, setClient] = useState(undefined);
 
   const classID = match.params.classID;
   const contentID = match.params.contentID;
@@ -43,6 +44,7 @@ const ContentPage = ({match}) => {
 
   useEffect(() => {
     const client = new Client();
+    setClient(client);
     client.getClass(classID).then(setClassInfo);
     client.getContentModules(classID, contentID).then((res) => {
       setProtoMods(res);
@@ -79,8 +81,10 @@ const ContentPage = ({match}) => {
             })}
           </div>
         </div>
-        <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={() => {
-          // TODO: Make API call to save changes in db
+        <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={async () => {
+          // TODO: This can be optimized by only changing the modules that were updated client side
+          await client.setModules(classID, protoMods);
+          window.location.reload();
         }}>
           Save Changes
         </div>

@@ -37,22 +37,25 @@ const youtubeSettings = [
 const textSettings = [
   {
     title: "Selectable",
-    type: "toggle"
+    type: "toggle",
+    default: true
   }
 ];
 
 // TODO: Separate updateSettings callback from state setting callback to allow for live updates.
 const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => {
   const RichTextEmbed = ({settings}) => {
-    const [selectable, setSelectable] = useState(!!settings.selectable);
-    textSettings[0].default = selectable;
+    const [selectable, setSelectable] = useState(settings.selectable);
+    // Need a deep clone or else multiple modules of same type will overlap settings objects
+    const tSettings = JSON.parse(JSON.stringify(textSettings));
+    tSettings[0].default = selectable;
     const updater = (val) => {
       setSelectable(val);
       updateSettings({selectable: val, data: settings.data}, idx);
     };
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={textSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        <ContentModuleSettings settings={tSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
         <div className="content-text" style={{userSelect: selectable ? "text" : "none"}} dangerouslySetInnerHTML={{__html: settings.data}}></div>
       </div>
     );
@@ -67,7 +70,7 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
   const ImageEmbed = ({settings}) => {
     const [source, setSource] = useState(settings.source);
     const [size, setSize] = useState(settings.size || 80);
-    const iSettings = imageSettings.slice(0);
+    const iSettings = JSON.parse(JSON.stringify(imageSettings));
     iSettings[0].default = source;
     iSettings[1].default = size;
     const updater1 = (val) => {
@@ -96,7 +99,7 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     const [source, setSource] = useState(settings.source);
     const [size, setSize] = useState(settings.size || 80);
     const [height, setHeight] = useState(100);
-    const ySettings = youtubeSettings.slice(0);
+    const ySettings = JSON.parse(JSON.stringify(youtubeSettings));
     ySettings[0].default = source;
     ySettings[1].default = settings.size;
     const updater1 = (val) => {

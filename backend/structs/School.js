@@ -125,11 +125,25 @@ class School extends Base {
   async addModule(mod) {
     const data = await this.models.CounterModel.findOne({collec: "content_modules"}, {next: 1}).exec();
     const id = data.next;
-    // TODO: Apply this optimization wherever we can throughout the codebase
+    // TODO: Apply this promise optimization wherever we can throughout the codebase
     const p1 = this.models.ModuleModel.create({id, class: mod.class, type: mod.type, data: mod.data});
+    // TODO: There is a specialized increment oeprator we can use here
     const p2 = this.models.CounterModel.updateOne({collec: "content_modules"}, {next: id + 1}).exec();
     await Promise.all([p1, p2]);
     return id;
+  }
+
+  async setModules(modules) {
+    // Assume data has been sanitized and is valid.
+    const writes = modules.map((m) => {
+      return {
+        updateOne: {
+          "filter": {id: m.id},
+          "update": m
+        }
+      };
+    });
+    return this.models.ModuleModel.bulkWrite(writes);
   }
 
   async createAccount(username, plaintext, firstName = "", lastName = "") {

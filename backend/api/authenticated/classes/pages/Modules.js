@@ -7,10 +7,12 @@ const execute = async (req, res) => {
   }
   
   const {modules} = await req.school.getPage(req.params.pageID);
+  const posMap = {};
+  modules.forEach((m, idx) => posMap[m] = idx);
   const filter = {id: {$in: modules}};
   const content = await req.school.getModules(filter);
   const copy = [];
-  content.forEach((c) => copy.push(Object.assign({}, c)));
+  content.forEach((c) => copy[posMap[c.id]] = c);
   copy.forEach((c) => delete c.school);
   res.status(200).json({content_modules: copy});
 };

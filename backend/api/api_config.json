@@ -82,6 +82,23 @@
               }
             },
             {
+              "name": "setmodules",
+              "query": {
+                "method": "post",
+                "auth": true,
+                "body": {
+                  "modules": [
+                    {
+                      "id": "integer",
+                      "type": "integer",
+                      "data": "object"
+                    }
+                  ]
+                },
+                "dest": "api/authenticated/classes/SetModule"
+              }
+            },
+            {
               "name": "modules",
               "query": {
                 "method": "get",

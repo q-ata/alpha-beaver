@@ -36,7 +36,6 @@ class Module {
   constructor(obj) {
     this.id = obj.id;
     this.class = obj.class;
-    this.page = obj.page;
     this.type = obj.type;
     this.data = obj.data;
   }
@@ -198,6 +197,11 @@ class Client {
 
     this.setPageModules = async (classID, pageID, modules) => {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/pages/${pageID}/setmodules`, {method: "POST", body: {modules}});
+      return obj;
+    };
+
+    this.setModules = async (classID, modules) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/setmodules`, {method: "POST", body: {modules}});
       return obj;
     };
   }
