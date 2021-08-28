@@ -1,6 +1,5 @@
-/* eslint-disable */
-
 import {React, useEffect, useState} from "react";
+import PropTypes from "prop-types";
 import ContentModuleSettings from "./ContentModuleSettings";
 
 const imageSettings = [
@@ -33,36 +32,45 @@ const youtubeSettings = [
     unit: "%",
     default: 80
   }
-]
+];
 
 const textSettings = [
   {
     title: "Selectable",
-    type: "toggle"
+    type: "toggle",
+    default: true
   }
 ];
 
 // TODO: Separate updateSettings callback from state setting callback to allow for live updates.
 const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => {
   const RichTextEmbed = ({settings}) => {
-    const [selectable, setSelectable] = useState(!!settings.selectable);
-    textSettings[0].default = selectable;
+    const [selectable, setSelectable] = useState(settings.selectable);
+    // Need a deep clone or else multiple modules of same type will overlap settings objects
+    const tSettings = JSON.parse(JSON.stringify(textSettings));
+    tSettings[0].default = selectable;
     const updater = (val) => {
       setSelectable(val);
       updateSettings({selectable: val, data: settings.data}, idx);
-    }
+    };
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={textSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        <ContentModuleSettings settings={tSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
         <div className="content-text" style={{userSelect: selectable ? "text" : "none"}} dangerouslySetInnerHTML={{__html: settings.data}}></div>
       </div>
     );
+  };
+  RichTextEmbed.propTypes = {
+    settings: PropTypes.shape({
+      selectable: PropTypes.bool,
+      data: PropTypes.string
+    })
   };
   
   const ImageEmbed = ({settings}) => {
     const [source, setSource] = useState(settings.source);
     const [size, setSize] = useState(settings.size || 80);
-    const iSettings = imageSettings.slice(0);
+    const iSettings = JSON.parse(JSON.stringify(imageSettings));
     iSettings[0].default = source;
     iSettings[1].default = size;
     const updater1 = (val) => {
@@ -80,22 +88,28 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
       </div>
     );
   };
+  ImageEmbed.propTypes = {
+    settings: PropTypes.shape({
+      source: PropTypes.string,
+      size: PropTypes.number
+    })
+  };
   
   const YoutubeEmbed = ({settings}) => {
     const [source, setSource] = useState(settings.source);
     const [size, setSize] = useState(settings.size || 80);
     const [height, setHeight] = useState(100);
-    const ySettings = youtubeSettings.slice(0);
+    const ySettings = JSON.parse(JSON.stringify(youtubeSettings));
     ySettings[0].default = source;
     ySettings[1].default = settings.size;
     const updater1 = (val) => {
       setSource(val);
       updateSettings({source: val, size}, idx);
-    }
+    };
     const updater2 = (val) => {
       setSize(val);
       updateSettings({source, size: val}, idx);
-    }
+    };
     useEffect(() => setHeight(parseInt(document.getElementById(`youtube-module-${idx}`).offsetWidth * 9 / 16)), [size]);
     return (
       <div className="module-container">
@@ -113,23 +127,28 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
       </div>
     );
   };
+  YoutubeEmbed.propTypes = {
+    settings: PropTypes.shape({
+      source: PropTypes.string,
+      size: PropTypes.number
+    })
+  };
 
   const parseModule = (m) => {
     let child;
     switch (m.type) {
-    case "text":
-      child = <RichTextEmbed settings={m.settings} modules={all} />
+    case 0:
+      child = <RichTextEmbed settings={m.data} modules={all} />;
       break;
-    case "image":
-      child = <ImageEmbed settings={m.settings} modules={all} />
+    case 1:
+      child = <ImageEmbed settings={m.data} modules={all} />;
       break;
-    case "youtube":
-      child = <YoutubeEmbed settings={m.settings} modules={all} />
+    case 2:
+      child = <YoutubeEmbed settings={m.data} modules={all} />;
       break;
     }
     return child;
   };
-
   const parsedModule = parseModule(module);
   return parsedModule;
 };

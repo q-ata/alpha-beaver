@@ -5,6 +5,7 @@ class Page extends Base {
     this.id = data.id;
     this.class = data.class;
     this.modules = data.modules;
+    this.name = data.name;
   }
 }
 

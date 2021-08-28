@@ -339,7 +339,7 @@ const RichTextEditor = ({cb, data, idx}) => {
     <div className="rich-text-editor">
       <Slate editor={editor} value={content} onChange={(c) => {
         setContent(c);
-        cb(c, idx);
+        cb(parseAll(c, ""), idx);
       }}>
         <div className="editor-control">
           <StyleButton format="bold" icon="bold" />

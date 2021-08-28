@@ -32,10 +32,21 @@ class Class {
   }
 }
 
+class Module {
+  constructor(obj) {
+    this.id = obj.id;
+    this.class = obj.class;
+    this.type = obj.type;
+    this.data = obj.data;
+  }
+}
+
 class Page {
   constructor(obj) {
     this.id = obj.id;
+    this.class = obj.class;
     this.modules = obj.modules;
+    this.name = obj.name;
   }
 }
 
@@ -79,7 +90,7 @@ class Client {
       }
     };
 
-    const query = async (path) => {
+    const query = async (path, options = {}) => {
       const update = await checkToken(token);
       if (update.error) {
         return update;
@@ -89,14 +100,16 @@ class Client {
       }
 
       const url = new URL(path);
-      const res = await fetch(url, {
-        method: "GET",
+      const param = {
+        method: options.method || "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
         credentials: "include"
-      });
+      };
+      if (options.body) param.body = JSON.stringify(options.body);
+      const res = await fetch(url, param);
 
       const obj = await res.json();
       return obj;
@@ -175,29 +188,32 @@ class Client {
     };
 
     this.getContentModules = async (classID, contentID) => {
-      return [
-        {
-          type: "text",
-          settings: {
-            selectable: true,
-            data: `<p >ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddasdq<i> wdasjldj</i>as<u><b>d asd</b></u><u>awss</u>d qwo daw<s>opd jaw</s>spod lkas</p><h1 >s<i>a</i><a href="jknflkaldfdsd"><i>dla</i><i><b>s</b></i><b>kd</b></a><b>j qw</b>a <u>da</u>s <i>dq</i><s><i><b>w</b></i></s><s> ea </s>eas<s>e</s><s><u>a</u></s><u>s</u></h1><h5 ><u>rka woe</u><u><i> q</i></u><s><u><i><b>woej</b></i></u></s><s><u><b>a</b></u></s><u>wo</u>ed qwjo<b>q ejaj</b><u><b>d alw</b></u><u>sd asw</u></h5>`
-          }
-        },
-        {
-          type: "image",
-          settings: {
-            size: 80,
-            source: "https://static.zerochan.net/Nishikino.Maki.full.2735664.jpg"
-          }
-        },
-        {
-          type: "youtube",
-          settings: {
-            size: 80,
-            source: "https://www.youtube.com/embed/OURLqqtlaLo"
-          }
-        }
-      ];
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/pages/${contentID}/modules`);
+      if (obj.error) {
+        return obj;
+      }
+      return obj.content_modules.map((e) => new Module(e));
+    };
+
+    this.addModule = async (classID, module) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/addmodule`, {method: "POST", body: module});
+      return obj;
+    };
+
+    this.getPage = async (classID, pageID) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/pages/${pageID}/get`);
+      if (obj.error) return obj;
+      return new Page(obj);
+    };
+
+    this.setPageModules = async (classID, pageID, modules) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/pages/${pageID}/setmodules`, {method: "POST", body: {modules}});
+      return obj;
+    };
+
+    this.setModules = async (classID, modules) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/setmodules`, {method: "POST", body: {modules}});
+      return obj;
     };
   }
 }

@@ -107,12 +107,43 @@ class School extends Base {
     return (await this.getPages(filter, {...options, limit: 1}))[0];
   }
 
+  async setPage(pageID, value) {
+    const res = await this.models.PageModel.updateOne({id: pageID}, value).exec();
+    // Since this is an update operation we must invalidate the cache
+    this.getPage(pageID, {force: true});
+    return res;
+  }
+
   async getModules(filter = null, options) {
     return await this.getItem("content_modules", filter, options);
   }
 
   async getModule(filter, options) {
     return (await this.getModules(filter, {...options, limit: 1}))[0];
+  }
+
+  async addModule(mod) {
+    const data = await this.models.CounterModel.findOne({collec: "content_modules"}, {next: 1}).exec();
+    const id = data.next;
+    // TODO: Apply this promise optimization wherever we can throughout the codebase
+    const p1 = this.models.ModuleModel.create({id, class: mod.class, type: mod.type, data: mod.data});
+    // TODO: There is a specialized increment oeprator we can use here
+    const p2 = this.models.CounterModel.updateOne({collec: "content_modules"}, {next: id + 1}).exec();
+    await Promise.all([p1, p2]);
+    return id;
+  }
+
+  async setModules(modules) {
+    // Assume data has been sanitized and is valid.
+    const writes = modules.map((m) => {
+      return {
+        updateOne: {
+          "filter": {id: m.id},
+          "update": m
+        }
+      };
+    });
+    return this.models.ModuleModel.bulkWrite(writes);
   }
 
   async createAccount(username, plaintext, firstName = "", lastName = "") {

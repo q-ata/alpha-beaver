@@ -5,9 +5,11 @@ const execute = async (req, res) => {
     res.status(500).json(error("Internal error."));
     return;
   }
-  const content = await req.school.getModule(req.params.moduleID);
-  delete content.school;
-  res.status(200).json(content);
+  const pages = await req.school.getPages({class: req.params.classID});
+  const copy = [];
+  pages.forEach((c) => copy.push({name: c.name, id: c.id, modules: c.modules}));
+  copy.forEach((c) => delete c.school);
+  res.status(200).json({pages: copy});
 };
 
 module.exports = execute;

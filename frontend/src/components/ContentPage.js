@@ -1,15 +1,11 @@
-/* eslint-disable */
-
 import {React, useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 import Navigation from "./Navigation";
-import EventCalendar from "./Calendar";
-import ClassNav from "./ClassNav";
-import Announcement from "./Announcement";
 import ContentModule from "./ContentModule";
-import "../styles/modules.css";
+import ClassNav from "./ClassNav";
 import Client from "./beaverjs";
+import "../styles/modules.css";
 
 const ContentPage = ({match}) => {
 
@@ -17,6 +13,7 @@ const ContentPage = ({match}) => {
   const [changed, setChanged] = useState(false);
   const [previous, setPrevious] = useState([]);
   const [classInfo, setClassInfo] = useState({});
+  const [client, setClient] = useState(undefined);
 
   const classID = match.params.classID;
   const contentID = match.params.contentID;
@@ -37,40 +34,34 @@ const ContentPage = ({match}) => {
   const updateSettings = (val, idx) => {
     // Since settings is a nested property, we need a deep clone. Apparently states are mutable within the same scope.
     const mods = JSON.parse(JSON.stringify(protoMods));
-    mods[idx].settings = val;
+    mods[idx].data = val;
     if (!changed) setPrevious(protoMods.slice(0));
     setProtoMods(mods);
     setChanged(true);
   };
 
-  let idx = 0;
+  let idx = -1;
 
   useEffect(() => {
     const client = new Client();
+    setClient(client);
     client.getClass(classID).then((info) => {
-      if(info.error) {
-        h.push("/login");
-      } else {
-        setClassInfo(info);
-      }
+      if (info.error) h.push("/login");
+      else setClassInfo(info);
     });
-    // TODO: Implement getContentModules method
     client.getContentModules(classID, contentID).then((res) => {
-      if(res.error) {
-        h.push("/login");
-      } else {
+      if (res.error) h.push("/login");
+      else {
         setProtoMods(res);
         setPrevious(res);
       }
-    })
+    });
+    window.addEventListener("resize", () => {
+      for (const vid of document.getElementsByClassName("content-youtube")) {
+        vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
+      }
+    });
   }, []);
-
-  useEffect(() => {
-    for (const vid of document.getElementsByClassName("content-youtube")) {
-      console.log(parseInt(vid.offsetWidth * 9 / 16));
-      // vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
-    }
-  }, [protoMods]);
 
   return (
     <div className="course-page">
@@ -85,12 +76,21 @@ const ContentPage = ({match}) => {
           <ClassNav />
           <div className="content-modules">
             {protoMods.map((m) => {
-              return <ContentModule module={m} idx={idx++} all={protoMods} setter={setter} inserter={inserter} updateSettings={updateSettings} />
+              idx++;
+              return <ContentModule key={idx}
+                module={m}
+                idx={idx}
+                all={protoMods}
+                setter={setter}
+                inserter={inserter}
+                updateSettings={updateSettings} />;
             })}
           </div>
         </div>
-        <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={() => {
-          // TODO: Make API call to save changes in db
+        <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={async () => {
+          // TODO: This can be optimized by only changing the modules that were updated client side
+          await client.setModules(classID, protoMods);
+          window.location.reload();
         }}>
           Save Changes
         </div>
@@ -106,7 +106,7 @@ const ContentPage = ({match}) => {
 };
 
 ContentPage.propTypes = {
-  // match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired
 };
 
 export default ContentPage;
