@@ -70,6 +70,19 @@
               }
             },
             {
+              "name": "addannouncement",
+              "query": {
+                "method": "post",
+                "auth": true,
+                "body": {
+                  "title": "string",
+                  "content": "string",
+                  "date": "number"
+                },
+                "dest": "api/authenticated/classes/AddAnnouncement"
+              }
+            },
+            {
               "name": "addmodule",
               "query": {
                 "method": "post",

@@ -99,6 +99,11 @@ class School extends Base {
     return await this.getItem("announcements", filter, options);
   }
 
+  async addAnnouncement(ann) {
+    const res = await this.models.AnnouncementModel.create({class: ann.classID, title: ann.title, content: ann.content, date: ann.date});
+    return res;
+  }
+
   async getPages(filter = null, options) {
     return await this.getItem("pages", filter, options);
   }

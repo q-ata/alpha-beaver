@@ -66,6 +66,9 @@ const Class = ({match}) => {
                   </div>
                 </div>
               </div>
+              <div className="add-button" onClick={() => h.push("/content/" + classID + "/announcements/add")}>
+                <span className="add-header">+</span>
+              </div>
               <div className="announce-header">Announcements</div>
             </div>
             <ul className="announces">

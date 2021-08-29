@@ -187,6 +187,11 @@ class Client {
       return announcements;
     };
 
+    this.addAnnouncement = async (classID, ann) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/addannouncement`, {method: "POST", body: ann});
+      return obj;
+    }
+
     this.getContentModules = async (classID, contentID) => {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/pages/${contentID}/modules`);
       if (obj.error) {
