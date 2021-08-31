@@ -9,6 +9,7 @@ const config = require("./config.json");
 process.env = {...process.env, ...config.env};
 process.env.BUILD_PATH = path.join(__dirname, "..", "frontend", "build");
 const School = require("./structs/School");
+const Permissions = require("./structs/Permissions");
 const app = express();
 global.logger = {
   level: 1,
@@ -70,7 +71,17 @@ resolver.resolve(api, "", allEndpoints);
 app.use("/api", schoolMapper);
 for (const ep of allEndpoints) {
   if (ep.auth) app.use(ep.path, authenticator);
-  app[ep.method](ep.path, ep.func);
+  app[ep.method](ep.path, async (req, res) => {
+    if (ep.perms !== undefined) {
+      const resolvedGlobalPerms = await req.school.getGlobalPermissions(req.user);
+      let resolvedClassPerms;
+      if (req.params.classID) resolvedClassPerms = await req.school.getClassPermissions(req.user, req.params.classID);
+      else resolvedClassPerms = new Permissions(0);
+      const aggPerms = new Permissions(resolvedGlobalPerms.binPerms | resolvedClassPerms.binPerms);
+      if (!aggPerms.has(ep.perms)) return res.status(403).json(error("Missing permissions."));
+    }
+    ep.func(req, res);
+  });
   logger.def(`Created endpoint ${ep.method.toUpperCase()} ${ep.path}`);
 }
 

@@ -1,4 +1,5 @@
 const Base = require("./Base");
+
 class Role extends Base {
   constructor(school, data) {
     super(school);
