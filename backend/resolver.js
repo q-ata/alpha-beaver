@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const Permissions = require("./structs/Permissions");
 
 class Endpoint {
   constructor(method, path, func) {
@@ -14,6 +15,7 @@ const resolve = (api, cPath, endpoints) => {
     const ep = new Endpoint(api.query.method, path, require(`./${api.query.dest}`));
     if (api.query.method === "post") ep.body = api.query.body;
     if (api.query.auth) ep.auth = true;
+    if (api.query.perms !== undefined) ep.perms = new Permissions(api.query.perms);
     endpoints.push(ep);
   }
   if (api.sub) {
