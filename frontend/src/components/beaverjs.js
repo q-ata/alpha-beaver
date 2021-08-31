@@ -23,6 +23,16 @@ class Announcement {
   }
 }
 
+class Event {
+  constructor(obj) {
+    this.class = obj.class;
+    this.title = obj.title;
+    this.content = obj.content;
+    this.start = new Date(obj.start);
+    this.end = new Date(obj.end);
+  }
+}
+
 class Class {
   constructor(obj) {
     this.id = obj.id;
@@ -156,6 +166,17 @@ class Client {
       return announcements;
     };
 
+    this.getEvents = async () => {
+      const obj = await query("http://localhost:8000/api/users/me/events");
+      if (obj.error) {
+        return obj;
+      }
+      const events = obj.events.map(a => {
+        return new Event(a);
+      });
+      return events;
+    }
+
     this.getClass = async (classID) => {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/get`);
       if (obj.error) {
@@ -189,6 +210,11 @@ class Client {
 
     this.addAnnouncement = async (classID, ann) => {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/addannouncement`, {method: "POST", body: ann});
+      return obj;
+    }
+
+    this.addEvent = async (classID, event) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/addevent`, {method: "POST", body: event});
       return obj;
     }
 

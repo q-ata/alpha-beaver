@@ -9,6 +9,7 @@ import ContentPage from "./components/ContentPage";
 import Upcoming from "./components/Upcoming";
 import PageList from "./components/PageList";
 import AddAnnouncement from "./components/AnnouncementCreate";
+import AddEvent from "./components/EventCreate";
 import "./styles/global.css";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/class"><Redirect to="/login" /></Route>
         <Route path="/class/:classID" component={Class} />
+        <Route exact path="/content/:classID/events/add" component={AddEvent} />
         <Route exact path="/content/:classID/announcements/add" component={AddAnnouncement} />
         <Route exact path="/content/:classID/:contentID/view" component={ContentPage} />
         <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />

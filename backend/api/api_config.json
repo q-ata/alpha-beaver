@@ -36,6 +36,14 @@
                 "auth": true,
                 "dest": "api/authenticated/me/Announcements"
               }
+            },
+            {
+              "name": "events",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/me/Events"
+              }
             }
           ],
           "query": {
@@ -80,6 +88,20 @@
                   "date": "number"
                 },
                 "dest": "api/authenticated/classes/AddAnnouncement"
+              }
+            },
+            {
+              "name": "addevent",
+              "query": {
+                "method": "post",
+                "auth": true,
+                "body": {
+                  "title": "string",
+                  "content": "string",
+                  "start": "number",
+                  "end": "number"
+                },
+                "dest": "api/authenticated/classes/AddEvent"
               }
             },
             {

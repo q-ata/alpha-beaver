@@ -8,7 +8,8 @@ const {
   accountSchema,
   counterSchema,
   moduleSchema,
-  pageSchema
+  pageSchema,
+  eventSchema
 } = require("./schemas");
 const mongoose = require("mongoose");
 const UserCacheManager = require("./UserCacheManager");
@@ -17,6 +18,7 @@ const ClassCacheManager = require("./ClassCacheManager");
 const AnnouncementCacheManager = require("./AnnouncementCacheManager");
 const ModuleCacheManager = require("./ModuleCacheManager");
 const PageCacheManager = require("./PageCacheManager");
+const EventCacheManager = require("./EventCacheManager");
 const Base = require("./Base");
 const bcrypt = require("bcryptjs");
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
@@ -40,6 +42,7 @@ class School extends Base {
     this.announcements = new AnnouncementCacheManager(this);
     this.pages = new PageCacheManager(this);
     this.content_modules = new ModuleCacheManager(this);
+    this.events = new EventCacheManager(this);
   }
 
   async setConnection() {
@@ -54,7 +57,8 @@ class School extends Base {
       AccountModel: connection.model("AccountModel", accountSchema),
       CounterModel: connection.model("CounterModel", counterSchema),
       ModuleModel: connection.model("ContentModel", moduleSchema),
-      PageModel: connection.model("PageModel", pageSchema)
+      PageModel: connection.model("PageModel", pageSchema),
+      EventModel: connection.model("EventModel", eventSchema)
     };
 
     this.connection = connection;
@@ -101,6 +105,18 @@ class School extends Base {
 
   async addAnnouncement(ann) {
     const res = await this.models.AnnouncementModel.create({class: ann.classID, title: ann.title, content: ann.content, date: ann.date});
+    return res;
+  }
+
+  async getEvents(filter = null, options) {
+    return await this.getItem("events", filter, options);
+  }
+
+  async addEvent(event) {
+    const res = await this.models.EventModel.create({
+      class: event.classID, title: event.title, content: event.content, 
+      allDay: event.allDay, start: event.start, end: event.end
+    });
     return res;
   }
 
