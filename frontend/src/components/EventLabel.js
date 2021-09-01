@@ -23,6 +23,7 @@ const EventLabel = forwardRef(({formatString, event, selectedEvent}, ref) => {
 EventLabel.propTypes = {
   formatString: PropTypes.string,
   event: PropTypes.object,
+  course: PropTypes.object,
   selectedEvent: PropTypes.func
 };
 

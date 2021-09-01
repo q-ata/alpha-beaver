@@ -10,7 +10,7 @@
     border-color: #DFDEDE;
 }
 
-.upcoming-page .content-wrapper > *:nth-child(2) {
+.upcoming-page .content-wrapper .events>*:nth-child(3) {
     border-top: 2px;
     border-style: solid;
     border-top-left-radius: 5px;
@@ -18,7 +18,7 @@
     border-color: #DFDEDE;
 }
 
-.upcoming-page .content-wrapper > *:last-child {
+.upcoming-page .content-wrapper .events>*:last-child {
     border-bottom: 2px;
     border-style: solid;
     border-bottom-left-radius: 5px;
@@ -38,8 +38,8 @@
 .upcoming-page .event-container {
     padding: 7px;
     margin-bottom: 5px;
-    width:calc(80% - 50px); 
-    display:inline-block;
+    width: calc(80% - 150px);
+    display: inline-block;
 }
 
 .upcoming-page .event-header {
@@ -54,13 +54,72 @@
 }
 
 .upcoming-page .date-container {
-    width:50px;
-    display:inline-block;
-    text-align:center;
+    width: 50px;
+    display: inline-block;
+    text-align: center;
+}
+
+.upcoming-page .class-container {
+    width: 100px;
+    display: inline-block;
+    text-align: center;
 }
 
 .upcoming-page .date-day {
     font-weight: 800;
     font-size: 20px;
     color: #FF605C;
+}
+
+.upcoming-page .sort-button {
+    color: white;
+    height: 40px;
+    font-size: 18px;
+    width: 120px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #6d58e4;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.upcoming-page .sort-options {
+    width: calc(80vw - 150px);
+    position: absolute;
+    top: 0;
+    left: 120px;
+    line-height: 0;
+    vertical-align: top;
+    text-align: left;
+}
+
+.upcoming-page .sort-option {
+    display: none;
+    border: 1px solid grey;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    width: auto;
+    max-width: 300px;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 8px;
+    padding-right: 8px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.upcoming-page .sort-button:hover .sort-option {
+    display: inline-block;
+}
+
+.upcoming-page .sort-option:hover {
+    cursor: pointer;
+    background-color: #AAA;
+}
+
+.upcoming-page .sort-option:active {
+    background-color: #999;
 }

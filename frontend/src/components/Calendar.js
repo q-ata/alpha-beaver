@@ -31,6 +31,7 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
   const [curDate, changeDate] = useState(new Date());
   const [position, setPosition] = useState({x: 0, y: 0});
   const [events, setEvents] = useState([]);
+  const [classes, setClasses] = useState([]);
   
   const h = useHistory();
 
@@ -49,7 +50,17 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
   const loadEvents = async () => {
     const client = new Client();
     const events = await client.getEvents();
-    setEvents(events);
+    if(events.error) {
+      h.push("/login");
+    } else {
+      setEvents(events);
+    }
+    const classes = await client.getCourses();
+    if(classes.error) {
+      h.push("/login");
+    } else {
+      setClasses(classes);
+    }
   };
 
   useEffect(() => {
@@ -140,6 +151,7 @@ const EventCalendar = ({width = "100%", height = "250px", fontSize = "8px"}) => 
                 })
               )
             }
+            classes={classes} 
             toggle={togglePopup}
             position={position}
             date={curDate}
