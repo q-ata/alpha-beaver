@@ -1,9 +1,9 @@
 import {React} from "react";
 import {Link} from "react-router-dom";
-import profileIcon from "../resources/profile.svg";
-import announcementsIcon from "../resources/announcement.svg";
-import coursesIcon from "../resources/courses.svg";
-import calendarIcon from "../resources/calendar.svg";
+import AnnouncementIcon from "@material-ui/icons/Announcement";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import EventIcon from "@material-ui/icons/Event";
 import "../styles/navigation.css";
 
 const Navigation = () => {
@@ -17,7 +17,7 @@ const Navigation = () => {
             <li className="nav-item">
               <button className="nav-item-button">
                 <div className="nav-item-icon">
-                  <img src={coursesIcon} alt="" />
+                  <DashboardIcon />
                 </div>
                 <div className="nav-item-caption">
                   Dashboard
@@ -25,21 +25,11 @@ const Navigation = () => {
               </button>
             </li>
           </Link>
-          <li className="nav-item">
-            <button className="nav-item-button">
-              <div className="nav-item-icon">
-                <img src={profileIcon} alt="" />
-              </div>
-              <div className="nav-item-caption">
-                Account
-              </div>
-            </button>
-          </li>
           <Link to="/upcoming">
             <li className="nav-item">
               <button className="nav-item-button">
                 <div className="nav-item-icon">
-                  <img src={calendarIcon} alt="" />
+                  <EventIcon />
                 </div>
                 <div className="nav-item-caption">
                   Upcoming
@@ -47,16 +37,30 @@ const Navigation = () => {
               </button>
             </li>
           </Link>
-          <li className="nav-item">
-            <button className="nav-item-button">
-              <div className="nav-item-icon">
-                <img src={announcementsIcon} alt="" />
-              </div>
-              <div className="nav-item-caption">
-                Announcements
-              </div>
-            </button>
-          </li>
+          <Link to="/">
+            <li className="nav-item">
+              <button className="nav-item-button">
+                <div className="nav-item-icon">
+                  <AnnouncementIcon />
+                </div>
+                <div className="nav-item-caption">
+                  Announcements
+                </div>
+              </button>
+            </li>
+          </Link>
+          <Link to="/">
+            <li className="nav-item">
+              <button className="nav-item-button">
+                <div className="nav-item-icon">
+                  <AccountBoxIcon />
+                </div>
+                <div className="nav-item-caption">
+                  Account
+                </div>
+              </button>
+            </li>
+          </Link>
         </ul>
       </div>
     </header>

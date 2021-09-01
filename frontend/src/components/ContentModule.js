@@ -43,7 +43,7 @@ const textSettings = [
 ];
 
 // TODO: Separate updateSettings callback from state setting callback to allow for live updates.
-const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => {
+const ContentModule = ({module, all, setter, idx, inserter, updateSettings, canEdit}) => {
   const RichTextEmbed = ({settings}) => {
     const [selectable, setSelectable] = useState(settings.selectable);
     // Need a deep clone or else multiple modules of same type will overlap settings objects
@@ -55,7 +55,11 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     };
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={tSettings} updateSettings={[updater]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        {canEdit && <ContentModuleSettings settings={tSettings}
+          updateSettings={[updater]}
+          modules={all} setter={setter}
+          idx={idx}
+          inserter={inserter} />}
         <div className="content-text" style={{userSelect: selectable ? "text" : "none"}} dangerouslySetInnerHTML={{__html: settings.data}}></div>
       </div>
     );
@@ -83,7 +87,11 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     };
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={iSettings} updateSettings={[updater1, updater2]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        {canEdit && <ContentModuleSettings settings={iSettings}
+          updateSettings={[updater1, updater2]}
+          modules={all} setter={setter}
+          idx={idx}
+          inserter={inserter} />}
         <img className="content-image" src={source} width={`${size}%`} />
       </div>
     );
@@ -113,7 +121,12 @@ const ContentModule = ({module, all, setter, idx, inserter, updateSettings}) => 
     useEffect(() => setHeight(parseInt(document.getElementById(`youtube-module-${idx}`).offsetWidth * 9 / 16)), [size]);
     return (
       <div className="module-container">
-        <ContentModuleSettings settings={youtubeSettings} updateSettings={[updater1, updater2]} modules={all} setter={setter} idx={idx} inserter={inserter} />
+        {canEdit && <ContentModuleSettings settings={youtubeSettings}
+          updateSettings={[updater1, updater2]}
+          modules={all}
+          setter={setter}
+          idx={idx}
+          inserter={inserter} />}
         <iframe
           className="content-youtube"
           src={source}

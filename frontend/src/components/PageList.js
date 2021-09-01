@@ -48,7 +48,7 @@ const PageList = ({ match }) => {
                 </div>
                 <Navigation />
                 <div className="middle-section" style={{ width: "calc(100% - 112px)" }}>
-                    <ClassNav />
+                    <ClassNav classID={classID} />
                     <div className="list">
                     <div className="list-header">{list.length ? "Pages." : "No pages found."}</div>
                         {list.map((page) => (

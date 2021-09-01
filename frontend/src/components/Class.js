@@ -47,7 +47,7 @@ const Class = ({match}) => {
         </div>
         <Navigation />
         <div className="middle-section">
-          <ClassNav />
+          <ClassNav classID={classID} />
           <div className="outline-box">
             <div className="outline-title">Course Outline</div>
             <div className="outline">{classInfo.desc}</div>

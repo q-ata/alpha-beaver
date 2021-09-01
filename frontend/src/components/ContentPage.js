@@ -14,6 +14,7 @@ const ContentPage = ({match}) => {
   const [previous, setPrevious] = useState([]);
   const [classInfo, setClassInfo] = useState({});
   const [client, setClient] = useState(undefined);
+  const [canEdit, setCanEdit] = useState(false);
 
   const classID = match.params.classID;
   const contentID = match.params.contentID;
@@ -56,6 +57,9 @@ const ContentPage = ({match}) => {
         setPrevious(res);
       }
     });
+    client.getClassPermissions(classID).then((perms) => {
+      setCanEdit(perms.has("MANAGE_CONTENT"));
+    });
     window.addEventListener("resize", () => {
       for (const vid of document.getElementsByClassName("content-youtube")) {
         vid.style.height = `${parseInt(vid.offsetWidth * 9 / 16)}px`;
@@ -73,7 +77,7 @@ const ContentPage = ({match}) => {
         </div>
         <Navigation />
         <div className="middle-section" style={{width: "calc(100% - 112px)"}}>
-          <ClassNav />
+          <ClassNav classID={classID} />
           <div className="content-modules">
             {protoMods.map((m) => {
               idx++;
@@ -83,13 +87,14 @@ const ContentPage = ({match}) => {
                 all={protoMods}
                 setter={setter}
                 inserter={inserter}
-                updateSettings={updateSettings} />;
+                updateSettings={updateSettings}
+                canEdit={canEdit} />;
             })}
           </div>
         </div>
         <div className="changes-popup save-changes" style={{display: changed ? "block" : "none"}} onClick={async () => {
           // TODO: This can be optimized by only changing the modules that were updated client side
-          await client.setModules(classID, protoMods);
+          await Promise.all([client.setModules(classID, protoMods), client.setPageModules(classID, contentID, protoMods.map((m) => m.id))]);
           window.location.reload();
         }}>
           Save Changes

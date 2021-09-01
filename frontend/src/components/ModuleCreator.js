@@ -71,7 +71,7 @@ const ModuleCreator = ({match}) => {
         </div>
         <Navigation />
         <div className="middle-section" style={{width: "calc(100% - 112px)"}}>
-          <ClassNav />
+          <ClassNav classID={classID} />
           
           <div className="type-selector">
             <div className="type-selector-header">
