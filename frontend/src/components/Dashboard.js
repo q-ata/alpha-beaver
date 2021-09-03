@@ -1,14 +1,12 @@
-/* eslint-disable */
-
 import React from "react";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Course from "./Course";
 import Announcement from "./Announcement";
 import EventCalendar from "./Calendar";
 import Navigation from "./Navigation";
 import "../styles/dashboard.css";
 import Client from "./beaverjs";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const announceStyle = {
   textOverflow: "ellipsis",
@@ -32,7 +30,6 @@ const Dashboard = () => {
     setPfp(u.pfp);
     const classes = await client.getCourses();
     const ann = await client.getAnnouncements();
-    console.log(classes);
     if (classes.error || ann.error) {
       h.push("/login");
     } else {
@@ -59,7 +56,7 @@ const Dashboard = () => {
                   <h1 className="header"><span>Dashboard</span></h1>
                   <div className="header-actions">
                     <span>
-                      <button style={{ backgroundImage: `url("${pfp}")` }}></button>
+                      <button style={{backgroundImage: `url("${pfp}")`}}></button>
                     </span>
                   </div>
                 </div>

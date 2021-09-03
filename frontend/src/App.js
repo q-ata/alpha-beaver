@@ -8,6 +8,7 @@ import ModuleCreator from "./components/ModuleCreator";
 import ContentPage from "./components/ContentPage";
 import Upcoming from "./components/Upcoming";
 import PageList from "./components/PageList";
+import Submit from "./components/Submit";
 import "./styles/global.css";
 
 const App = () => {
@@ -19,7 +20,8 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/class"><Redirect to="/login" /></Route>
-        <Route path="/class/:classID" component={Class} />
+        <Route exact path="/class/:classID" component={Class} />
+        <Route exact path="/class/:classID/submit" component={Submit} />
         <Route exact path="/content/:classID/:contentID/view" component={ContentPage} />
         <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />
         <Route exact path="/content/:classID/all" component={PageList} />
