@@ -22,8 +22,9 @@ const Upcoming = () => {
     if (events.error) {
       h.push("/login");
     } else {
-      await setEvents(events);
-      setStore(events);
+      const curEvents = events.filter(e => e.end >= Date.now());
+      await setEvents(curEvents);
+      setStore(curEvents);
     }
     const classes = await client.getCourses();
     if (classes.error) {
@@ -42,7 +43,7 @@ const Upcoming = () => {
     h.replace("/upcoming");
   }, [ref]);
 
-  //TODO: consider alternate solution for eventlabel when classes are not yet defined
+  //TODO: optimize getting course details from id?
 
   return (
     <div className="upcoming-page">
@@ -62,17 +63,20 @@ const Upcoming = () => {
           </div>
         </div>
         <div className="events">
-          {events.map(event =>
+          {events.length != 0 ? (events.map(event =>
             (h.location.state && event.title === h.location.state.title) ?
               <div className="event-wrapper">
                 <DateLabel event={event} />
-                <EventLabel formatString={"LLL d @ p"} ref={ref} course={classes.filter(c => c.id === event.class)[0]} event={event} selectedEvent={() => { }} />
+                <ClassLabel course={classes.filter(c => c.id === event.class)[0]} />
+                <EventLabel formatString={"LLL d @ p"} ref={ref} event={event} selectedEvent={() => { }} />
               </div> :
               <div className="event-wrapper">
                 <DateLabel event={event} />
                 <ClassLabel course={classes.filter(c => c.id === event.class)[0]} />
-                <EventLabel formatString={"LLL d @ p"} course={classes.filter(c => c.id === event.class)[0]} event={event} selectedEvent={() => { }} />
-              </div>)
+                <EventLabel formatString={"LLL d @ p"} event={event} selectedEvent={() => { }} />
+              </div>)) 
+            : 
+            (<div className="no-events">No events.</div>)
           }
         </div>
       </div>

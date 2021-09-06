@@ -43,7 +43,7 @@ const EventCreate = ({match}) => {
     const end = new Date(endTime).getTime();
     console.log(start);
     console.log(end);
-    if(start < end) {
+    if(start > end) {
       setErrorMessage("Start date cannot be after end date.");
       setShowError(true);
       return;
@@ -66,6 +66,7 @@ const EventCreate = ({match}) => {
 
       //replace later
       alert("Event successfully created.");
+      h.push("/content/" + classID + "/events/add");
     };
     query();
   };

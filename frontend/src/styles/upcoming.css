@@ -71,6 +71,12 @@
     color: #FF605C;
 }
 
+.upcoming-page .no-events {
+    padding: 7px;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
 .upcoming-page .sort-button {
     color: white;
     height: 40px;
