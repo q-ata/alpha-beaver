@@ -11,6 +11,7 @@ const {
   pageSchema,
   eventSchema
 } = require("./schemas");
+
 const mongoose = require("mongoose");
 const UserCacheManager = require("./UserCacheManager");
 const RoleCacheManager = require("./RoleCacheManager");
@@ -19,6 +20,8 @@ const AnnouncementCacheManager = require("./AnnouncementCacheManager");
 const ModuleCacheManager = require("./ModuleCacheManager");
 const PageCacheManager = require("./PageCacheManager");
 const EventCacheManager = require("./EventCacheManager");
+const StandingCacheManager = require("./StandingCacheManager");
+const Permissions = require("./Permissions");
 const Base = require("./Base");
 const bcrypt = require("bcryptjs");
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
@@ -43,6 +46,7 @@ class School extends Base {
     this.pages = new PageCacheManager(this);
     this.content_modules = new ModuleCacheManager(this);
     this.events = new EventCacheManager(this);
+    this.standings = new StandingCacheManager(this);
   }
 
   async setConnection() {
@@ -118,6 +122,12 @@ class School extends Base {
       allDay: event.allDay, start: event.start, end: event.end
     });
     return res;
+  async getStandings(filter = null, options) {
+    return await this.getItem("standings", filter, options);
+  }
+
+  async getStanding(filter, options) {
+    return (await this.getStandings(filter, {...options, limit: 1}))[0];
   }
 
   async getPages(filter = null, options) {
@@ -141,6 +151,20 @@ class School extends Base {
 
   async getModule(filter, options) {
     return (await this.getModules(filter, {...options, limit: 1}))[0];
+  }
+
+  async getGlobalPermissions(userID, options) {
+    const user = await this.getUser(userID, options);
+    const roles = await this.getRoles(user.perms.roles, options);
+    // console.log(user, roles);
+    return new Permissions(roles.reduce((a, b) => a.perms | b.perms, 0) | user.perms.overrides);
+  }
+
+  async getClassPermissions(userID, classID, options) {
+    const standing = await this.getStanding({user: userID, class: classID}, options);
+    if (!standing) return new Permissions(0);
+    const roles = await this.getRoles(standing.perms.roles, options);
+    return new Permissions(roles.reduce((a, b) => a.perms | b.perms, 0) | standing.perms.overrides); 
   }
 
   async addModule(mod) {

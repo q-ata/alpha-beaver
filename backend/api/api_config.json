@@ -15,6 +15,14 @@
                 "auth": true,
                 "dest": "api/authenticated/User"
               }
+            },
+            {
+              "name": "permissions",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/GlobalPermissions"
+              }
             }
           ]
         },
@@ -102,6 +110,11 @@
                   "end": "number"
                 },
                 "dest": "api/authenticated/classes/AddEvent"
+              "name": "permissions",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/classes/ClassPermissions"
               }
             },
             {
@@ -109,6 +122,7 @@
               "query": {
                 "method": "post",
                 "auth": true,
+                "perms": ["MANAGE_CONTENT"],
                 "body": {
                   "type": "integer",
                   "data": "object"
@@ -121,6 +135,7 @@
               "query": {
                 "method": "post",
                 "auth": true,
+                "perms": ["MANAGE_CONTENT"],
                 "body": {
                   "modules": [
                     {
@@ -158,6 +173,7 @@
                       "query": {
                         "method": "post",
                         "auth": true,
+                        "perms": ["MANAGE_CONTENT"],
                         "body": {
                           "modules": ["object"]
                         },

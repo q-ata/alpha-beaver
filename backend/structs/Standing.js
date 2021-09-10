@@ -1,12 +1,14 @@
+const AggregatedPermissions = require("./AggregatedPermissions");
 const Base = require("./Base");
-class Role extends Base {
-  constructor(data, school) {
+
+class Standing extends Base {
+  constructor(school, data) {
     super(school);
-    this.perms = data.perms;
+    this.perms = new AggregatedPermissions(data.perms);
     this.user = data.user;
     this.class = data.class;
     this.assessments = data.assessments;
   }
 }
 
-module.exports = Role;
+module.exports = Standing;
