@@ -27,7 +27,7 @@ const AnnouncementCreate = ({match}) => {
     });
   }, []);
 
-  const submitAnnouncement = (e) => {
+  const submitAnnouncement = async (e) => {
     e.preventDefault();
     if (!title) {
       setErrorMessage("No title provided.");
@@ -55,7 +55,8 @@ const AnnouncementCreate = ({match}) => {
         return;
       }
     };
-    query();
+    await query();
+    h.push(`/class/${classID}`);
   };
 
   return (

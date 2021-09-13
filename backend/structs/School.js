@@ -122,6 +122,8 @@ class School extends Base {
       allDay: event.allDay, start: event.start, end: event.end
     });
     return res;
+  }
+  
   async getStandings(filter = null, options) {
     return await this.getItem("standings", filter, options);
   }

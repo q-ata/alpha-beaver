@@ -110,6 +110,9 @@
                   "end": "number"
                 },
                 "dest": "api/authenticated/classes/AddEvent"
+              }
+            },
+            {
               "name": "permissions",
               "query": {
                 "method": "get",

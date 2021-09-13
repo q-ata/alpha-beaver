@@ -72,7 +72,7 @@ const Class = ({match}) => {
               <div className="announce-header">Announcements</div>
             </div>
             <ul className="announces">
-              {announces.map((a) => <Announcement key={a.date} textStyle={announceStyle} title={a.title} clazz={classID} date={a.date} content={a.content} />)}
+              {announces.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} textStyle={announceStyle} title={a.title} clazz={classID} date={a.date} content={a.content} />)}
             </ul>
           </div>
         </div>
