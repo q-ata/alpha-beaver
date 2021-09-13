@@ -161,6 +161,27 @@ class Page {
   }
 }
 
+class Assignment {
+  constructor(obj) {
+    this.id = obj.id;
+    this.class = obj.class;
+    this.title = obj.title;
+    this.desc = obj.desc;
+    this.due = obj.due;
+  }
+}
+
+class Grade {
+  constructor(data) {
+    this.assignment = data.assignment;
+    this.student = data.student;
+    this.grader = data.grader;
+    this.score = data.score;
+    this.feedback = data.feedback;
+    this.class = data.class;
+  }
+}
+
 class Client {
   constructor() {
     let token = Cookies.get("auth_token");
@@ -219,9 +240,13 @@ class Client {
         },
         credentials: "include"
       };
-      if (options.body) param.body = JSON.stringify(options.body);
+      const hasJson = Object.prototype.hasOwnProperty.call(options, "json");
+      if (options.body && (!hasJson || options.json)) param.body = JSON.stringify(options.body);
+      if (hasJson && !options.json) {
+        param.body = options.body;
+        delete param.headers["Content-Type"];
+      }
       const res = await fetch(url, param);
-
       const obj = await res.json();
       return obj;
     };
@@ -326,6 +351,26 @@ class Client {
       const obj = await query(`http://localhost:8000/api/classes/${classID}/setmodules`, {method: "POST", body: {modules}});
       return obj;
     };
+
+    this.getAssignments = async (classID) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/assignments`);
+      if (obj.error) return obj;
+      return obj.assignments.map((o) => new Assignment(o));
+    };
+
+    this.submitAssignment = async (classID, assignID, files) => {
+      const formData = new FormData();
+      console.log(files);
+      files.forEach((f) => formData.append("submissions", f));
+      query(`http://localhost:8000/api/classes/${classID}/submit?assignID=${assignID}`, {method: "POST", body: formData, json: false});
+    };
+
+    this.getGrades = async (classID) => {
+      const obj = await query(`http://localhost:8000/api/classes/${classID}/grades`);
+      if (obj.error) return obj;
+      return obj.grades.map((o) => new Grade(o));
+    };
+
 
     this.getClassPermissions = async (userID, classID) => {
       const url = classID ? `http://localhost:8000/api/classes/${classID}/permissions?userID=${userID}` : `http://localhost:8000/api/classes/${userID}/permissions`;

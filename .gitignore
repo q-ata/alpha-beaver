@@ -11,3 +11,5 @@ backend/package-lock.json
 node_modules
 package-lock.json
 .vscode
+
+backend/uploads

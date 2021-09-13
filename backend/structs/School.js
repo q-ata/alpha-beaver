@@ -8,7 +8,10 @@ const {
   accountSchema,
   counterSchema,
   moduleSchema,
-  pageSchema
+  pageSchema,
+  assignSchema,
+  submitSchema,
+  gradeSchema
 } = require("./schemas");
 
 const mongoose = require("mongoose");
@@ -19,8 +22,11 @@ const AnnouncementCacheManager = require("./AnnouncementCacheManager");
 const ModuleCacheManager = require("./ModuleCacheManager");
 const PageCacheManager = require("./PageCacheManager");
 const StandingCacheManager = require("./StandingCacheManager");
+const AssignmentCacheManager = require("./AssignmentCacheManager");
+const GradeCacheManager = require("./GradeCacheManager");
 const Permissions = require("./Permissions");
 const Base = require("./Base");
+const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+{}:>?<;,./[]-=|";
 
@@ -44,6 +50,8 @@ class School extends Base {
     this.pages = new PageCacheManager(this);
     this.content_modules = new ModuleCacheManager(this);
     this.standings = new StandingCacheManager(this);
+    this.assignments = new AssignmentCacheManager(this);
+    this.grades = new GradeCacheManager(this);
   }
 
   async setConnection() {
@@ -58,7 +66,10 @@ class School extends Base {
       AccountModel: connection.model("AccountModel", accountSchema),
       CounterModel: connection.model("CounterModel", counterSchema),
       ModuleModel: connection.model("ContentModel", moduleSchema),
-      PageModel: connection.model("PageModel", pageSchema)
+      PageModel: connection.model("PageModel", pageSchema),
+      AssignmentModel: connection.model("AssignmentModel", assignSchema),
+      SubmissionModel: connection.model("SubmissionModel", submitSchema),
+      GradeModel: connection.model("GradeModel", gradeSchema)
     };
 
     this.connection = connection;
@@ -132,6 +143,45 @@ class School extends Base {
 
   async getModule(filter, options) {
     return (await this.getModules(filter, {...options, limit: 1}))[0];
+  }
+
+  async getAssignments(filter = null, options) {
+    return await this.getItem("assignments", filter, options);
+  }
+
+  async getAssignment(filter, options) {
+    return (await this.getAssignments(filter, {...options, limit: 1}))[0];
+  }
+
+  async getGrades(filter = null, options) {
+    return await this.getItem("grades", filter, options);
+  }
+
+  async getGrade(filter, options) {
+    return (await this.getGrades(filter, {...options, limit: 1}))[0];
+  }
+
+  async addSubmissions(assignment, author, submissions) {
+    if (!Array.isArray(submissions)) return this.addSubmissions([submissions]);
+    const res = await this.models.SubmissionModel.find({assignment, author}).exec();
+    for (const r of res) fs.unlink(`./uploads/${r.hash}`, () => {});
+    await this.models.SubmissionModel.deleteMany({_id: res.map((r) => r._id)}).exec();
+    const data = await this.models.CounterModel.findOne({collec: "submissions"}, {next: 1}).exec();
+    let id = data.next;
+    const promises = [];
+    const ids = [];
+    for (const submit of submissions) {
+      ids.push(id);
+      promises.push(this.models.SubmissionModel.create({
+        id: id++, 
+        assignment,
+        author,
+        ...submit
+      }));
+    }
+    promises.push(this.models.CounterModel.updateOne({collec: "submissions"}, {next: id + 1}).exec());
+    await Promise.all(promises);
+    return ids;
   }
 
   async getGlobalPermissions(userID, options) {

@@ -76,6 +76,33 @@ const pageSchema = new mongoose.Schema({
   name: String
 }, {collection: "pages"});
 
+const assignSchema = new mongoose.Schema({
+  id: Number,
+  class: Number,
+  title: String,
+  desc: String,
+  due: Number
+}, {collection: "assignments"});
+
+const submitSchema = new mongoose.Schema({
+  id: Number,
+  assignment: Number,
+  class: Number,
+  hash: String,
+  type: String,
+  name: String,
+  author: Number
+}, {collection: "submissions"});
+
+const gradeSchema = new mongoose.Schema({
+  assignment: Number,
+  student: Number,
+  grader: Number,
+  score: Number,
+  feedback: String,
+  class: Number
+}, {collection: "grades"});
+
 module.exports = {
   schoolSchema,
   roleSchema,
@@ -87,5 +114,8 @@ module.exports = {
   accountSchema,
   counterSchema,
   moduleSchema,
-  pageSchema
+  pageSchema,
+  assignSchema,
+  submitSchema,
+  gradeSchema
 };

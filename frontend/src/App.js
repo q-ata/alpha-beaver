@@ -9,6 +9,7 @@ import ContentPage from "./components/ContentPage";
 import Upcoming from "./components/Upcoming";
 import PageList from "./components/PageList";
 import Submit from "./components/Submit";
+import Grades from "./components/Grades";
 import "./styles/global.css";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Route exact path="/class"><Redirect to="/login" /></Route>
         <Route exact path="/class/:classID" component={Class} />
         <Route exact path="/class/:classID/submit" component={Submit} />
+        <Route exact path="/class/:classID/grades" component={Grades} />
         <Route exact path="/content/:classID/:contentID/view" component={ContentPage} />
         <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />
         <Route exact path="/content/:classID/all" component={PageList} />
