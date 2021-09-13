@@ -1,11 +1,8 @@
-/* eslint-disable */
-
 import {React, useEffect, useState} from "react";
+import PropTypes from "prop-types";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import AddIcon from "@material-ui/icons/Add";
 import "../styles/module_settings.css";
@@ -29,6 +26,12 @@ const TextSetting = ({title, allow, deFault, cb}) => {
     </div>
   );
 };
+TextSetting.propTypes = {
+  title: PropTypes.string.isRequired,
+  allow: PropTypes.string.isRequired,
+  deFault: PropTypes.string,
+  cb: PropTypes.func.isRequired
+};
 
 const ToggleSetting = ({title, deFault, cb}) => {
 
@@ -37,7 +40,7 @@ const ToggleSetting = ({title, deFault, cb}) => {
   return (
     <div className="setting-additional">
       <span className="setting-title">{title}</span>
-      <input type="checkbox" className="setting-toggle" defaultChecked={deFault} onChange={(e) => {
+      <input type="checkbox" className="setting-toggle" defaultChecked={deFault} onChange={() => {
         const newValue = !value;
         setValue(newValue);
         cb(newValue);
@@ -45,6 +48,11 @@ const ToggleSetting = ({title, deFault, cb}) => {
     </div>
   );
 
+};
+ToggleSetting.propTypes = {
+  title: PropTypes.string.isRequired,
+  deFault: PropTypes.bool,
+  cb: PropTypes.func.isRequired
 };
 
 const NumberSetting = ({title, min, max, unit, deFault, cb}) => {
@@ -61,7 +69,7 @@ const NumberSetting = ({title, min, max, unit, deFault, cb}) => {
             if (e.target.value === "" && !(v = 0)) setValue(0);
             else if (!isNaN(v = parseInt(e.target.value))) setValue(v > max ? max : v);
           }}
-          onBlur={(e) => {
+          onBlur={() => {
             let v = value;
             if (value < min) v = min;
             else if (value > max) v = max;
@@ -78,20 +86,35 @@ const NumberSetting = ({title, min, max, unit, deFault, cb}) => {
   );
 
 };
+NumberSetting.propTypes = {
+  title: PropTypes.string.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  unit: PropTypes.string.isRequired,
+  deFault: PropTypes.number,
+  cb: PropTypes.func.isRequired
+};
 
 const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx, inserter}) => {
 
   const [additionalSettings, setAdditionalSettings] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [index, setIndex] = useState(idx);
+  const [index] = useState(idx);
 
-  let swap = (i1, i2) => {
+  const swap = (i1, i2) => {
     if (i1 < 0 || i1 >= modules.length || i2 < 0 || i2 >= modules.length) return false;
     const arr = modules.slice(0);
     const a = arr[i1];
     const b = arr[i2];
     arr[i1] = b;
     arr[i2] = a;
+    setter(arr);
+    return true;
+  };
+
+  const deleter = (i) => {
+    const arr = modules.slice(0);
+    arr.splice(i, 1);
     setter(arr);
     return true;
   };
@@ -103,13 +126,13 @@ const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx, 
       let input;
       switch (setting.type) {
       case "text":
-        input = <TextSetting title={setting.title} allow={setting.allow} deFault={setting.default} cb={updateSettings[idx++]} />
+        input = <TextSetting title={setting.title} allow={setting.allow} deFault={setting.default} cb={updateSettings[idx++]} />;
         break;
       case "toggle":
-        input = <ToggleSetting title={setting.title} deFault={setting.default} cb={updateSettings[idx++]} />
+        input = <ToggleSetting title={setting.title} deFault={setting.default} cb={updateSettings[idx++]} />;
         break;
       case "number":
-        input = <NumberSetting title={setting.title} min={setting.min} max={setting.max} unit={setting.unit} deFault={setting.default} cb={updateSettings[idx++]} />
+        input = <NumberSetting title={setting.title} min={setting.min} max={setting.max} unit={setting.unit} deFault={setting.default} cb={updateSettings[idx++]} />;
         break;
       }
       addSettings.push(input);
@@ -126,10 +149,19 @@ const ContentModuleSettings = ({settings, updateSettings, modules, setter, idx, 
         <div className="setting-tooltip" title="Move Up" onClick={() => swap(index, index - 1)}><ArrowUpwardIcon className="default-setting" /></div>
         <div className="setting-tooltip" title="Move Down" onClick={() => swap(index, index + 1)}><ArrowDownwardIcon className="default-setting" /></div>
         <div className="setting-tooltip" title="Insert After" onClick={() => inserter(index)}><AddIcon className="default-setting" /></div>
+        <div className="setting-tooltip" title="Delete Forever" onClick={() => deleter(index)}><DeleteForeverIcon className="default-setting" /></div>
         {additionalSettings}
       </div>
     </div>
-  )
+  );
+};
+ContentModuleSettings.propTypes = {
+  settings: PropTypes.array.isRequired,
+  updateSettings: PropTypes.array.isRequired,
+  modules: PropTypes.array.isRequired,
+  setter: PropTypes.func.isRequired,
+  idx: PropTypes.number.isRequired,
+  inserter: PropTypes.func.isRequired
 };
 
 export default ContentModuleSettings;

@@ -17,7 +17,7 @@
 
 .nav-section .corner-icon {
   height: 112px;
-  background-image: url("https://pbs.twimg.com/media/Emq4JSRXcAAZD9B.jpg");
+  background-image: url("https://qata.gay/files/beaver.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   overflow: hidden;
@@ -27,6 +27,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow: hidden;
 }
 
 .nav-section .nav-item:hover {
@@ -34,7 +35,8 @@
 }
 
 .nav-section .nav-item-button {
-  padding: 0.5rem;
+  height: 112px;
+  padding: 2px;
   background: transparent;
   outline: none;
   width: 100%;
@@ -56,7 +58,8 @@
   background-color: #666;
 }
 
-.nav-section .nav-item-icon {
-  width: 90%;
+.nav-section .nav-item-icon svg {
+  width: 72px;
+  height: 72px;
   margin: auto;
 }

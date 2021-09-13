@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const multer = require("multer")({dest: "./uploads"});
 const path = require("path");
 require("colors");
 const resolver = require("./resolver");
@@ -71,7 +72,7 @@ resolver.resolve(api, "", allEndpoints);
 app.use("/api", schoolMapper);
 for (const ep of allEndpoints) {
   if (ep.auth) app.use(ep.path, authenticator);
-  app[ep.method](ep.path, async (req, res) => {
+  const cb = async (req, res) => {
     if (ep.perms !== undefined) {
       const resolvedGlobalPerms = await req.school.getGlobalPermissions(req.user);
       let resolvedClassPerms;
@@ -81,7 +82,9 @@ for (const ep of allEndpoints) {
       if (!aggPerms.has(ep.perms)) return res.status(403).json(error("Missing permissions."));
     }
     ep.func(req, res);
-  });
+  };
+  if (ep.fields) app[ep.method](ep.path, multer.fields(ep.fields), cb);
+  else app[ep.method](ep.path, cb);
   logger.def(`Created endpoint ${ep.method.toUpperCase()} ${ep.path}`);
 }
 

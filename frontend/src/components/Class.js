@@ -27,7 +27,7 @@ const Class = ({match}) => {
       if(anns.error) {
         h.push("/login");
       } else {
-        setAnnounces(anns);
+        setAnnounces(anns.sort((a, b) => Number(b.date) - Number(a.date)));
       }
     });
     client.getClass(classID).then((info) => {
@@ -47,7 +47,7 @@ const Class = ({match}) => {
         </div>
         <Navigation />
         <div className="middle-section">
-          <ClassNav />
+          <ClassNav classID={classID} />
           <div className="outline-box">
             <div className="outline-title">Course Outline</div>
             <div className="outline">{classInfo.desc}</div>
@@ -66,13 +66,13 @@ const Class = ({match}) => {
                   </div>
                 </div>
               </div>
-              <div className="add-button" onClick={() => h.push("/content/" + classID + "/announcements/add")}>
+              <div className="add-button" onClick={() => h.push("/class/" + classID + "/announcements/add")}>
                 <span className="add-header">+</span>
               </div>
               <div className="announce-header">Announcements</div>
             </div>
             <ul className="announces">
-              {announces.sort((a, b) => b.date - a.date).map((a) => <Announcement key={a.date} textStyle={announceStyle} title={a.title} clazz={classID} date={a.date} content={a.content} />)}
+              {announces.map((a) => <Announcement key={a.date} textStyle={announceStyle} title={a.title} clazz={classID} date={a.date} content={a.content} />)}
             </ul>
           </div>
         </div>

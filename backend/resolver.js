@@ -16,6 +16,7 @@ const resolve = (api, cPath, endpoints) => {
     if (api.query.method === "post") ep.body = api.query.body;
     if (api.query.auth) ep.auth = true;
     if (api.query.perms !== undefined) ep.perms = new Permissions(api.query.perms);
+    if (api.query.fields) ep.fields = api.query.fields;
     endpoints.push(ep);
   }
   if (api.sub) {

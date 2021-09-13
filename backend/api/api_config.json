@@ -86,6 +86,31 @@
               }
             },
             {
+              "name": "assignments",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/classes/Assignments"
+              }
+            },
+            {
+              "name": "submit",
+              "query": {
+                "method": "post",
+                "auth": true,
+                "dest": "api/authenticated/classes/Submit",
+                "fields": [{"name": "submissions"}]
+              }
+            },
+            {
+              "name": "grades",
+              "query": {
+                "method": "get",
+                "auth": true,
+                "dest": "api/authenticated/classes/Grades"
+              }
+            },
+            {
               "name": "addannouncement",
               "query": {
                 "method": "post",

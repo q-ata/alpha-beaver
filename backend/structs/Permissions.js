@@ -70,7 +70,7 @@ class Permissions {
     }
     else if (Array.isArray(perms)) {
       // Takes in an array of strings as the permission names
-      return (this.binPerms & or(perms.map(s => Permissions[s]))) === perms;
+      return (this.binPerms & Permissions.or(perms.map(s => Permissions[s]))) === perms;
     }
     else {
       console.error(`Invalid permission check: ${JSON.stringify(perms)}`);
@@ -102,7 +102,7 @@ class Permissions {
     }
     else {
       // Takes in an array of strings as the permission names
-      return this.binPerms ^= or(perms.map(s => Permissions[s]));
+      return this.binPerms ^= Permissions.or(perms.map(s => Permissions[s]));
     }
   }
 

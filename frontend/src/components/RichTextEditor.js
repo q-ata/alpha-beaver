@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import {React, useState, useEffect, useMemo} from "react";
 import {Editor, createEditor, Transforms, Element as SlateElement, Range} from "slate";
 import {Slate, Editable, withReact, useSlate} from "slate-react";
@@ -296,7 +294,7 @@ const RichTextEditor = ({cb, data, idx}) => {
     if (node.underline) str = `<u>${str}</u>`;
     if (node.strikethrough) str = `<s>${str}</s>`;
     return str;
-  }
+  };
 
   const parseAll = (nodes, prefix, data = {}) => {
     let outputStrings = [];
@@ -307,7 +305,7 @@ const RichTextEditor = ({cb, data, idx}) => {
       }
       else {
         if (!prefixActive) {
-          outputStrings.push(`<${prefix} ${Object.keys(data).map((k) => `${k}=\"${data[k]}\"`).join(" ")}>`);
+          outputStrings.push(`<${prefix} ${Object.keys(data).map((k) => `${k}="${data[k]}"`).join(" ")}>`);
           prefixActive = true;
         }
         outputStrings.push(parseText(node));
@@ -382,6 +380,9 @@ const RichTextEditor = ({cb, data, idx}) => {
 };
 
 RichTextEditor.propTypes = {
+  cb: PropTypes.func.isRequired,
+  data: PropTypes.string.isRequired,
+  idx: PropTypes.number.isRequired
 };
 
 export default RichTextEditor;
