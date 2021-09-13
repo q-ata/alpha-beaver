@@ -1,13 +1,8 @@
-/* eslint-disable */
-
 import {React, useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 import Navigation from "./Navigation";
-import EventCalendar from "./Calendar";
 import ClassNav from "./ClassNav";
-import Announcement from "./Announcement";
-import ContentModule from "./ContentModule";
 import "../styles/modules.css";
 import Client from "./beaverjs";
 
@@ -28,7 +23,7 @@ const createDefaultModule = (type, content) => {
   case YOUTUBE_VIDEO:
     return {source: content, size: 80};
   }
-}
+};
 
 const ModuleCreator = ({match}) => {
 
@@ -40,15 +35,15 @@ const ModuleCreator = ({match}) => {
     const cpy = Object.assign({}, data);
     cpy[idx] = val;
     setData(cpy);
-  }
+  };
 
   const h = useHistory();
 
   const editorInterfaces = [
-    <RichTextEditor cb={dataCb} data={data[RICH_TEXT]} idx={RICH_TEXT} />,
-    <ImageEditor cb={dataCb} data={data[IMAGE]} idx={IMAGE} />,
-    <YouTubeEditor cb={dataCb} data={data[YOUTUBE_VIDEO]} idx={YOUTUBE_VIDEO} />
-  ]
+    <RichTextEditor key={0} cb={dataCb} data={data[RICH_TEXT]} idx={RICH_TEXT} />,
+    <ImageEditor key={1} cb={dataCb} data={data[IMAGE]} idx={IMAGE} />,
+    <YouTubeEditor key={2} cb={dataCb} data={data[YOUTUBE_VIDEO]} idx={YOUTUBE_VIDEO} />
+  ];
 
   const classID = match.params.classID;
   const contentID = match.params.contentID;
@@ -86,7 +81,7 @@ const ModuleCreator = ({match}) => {
                 setSelectedType(IMAGE);
               }}/>
               <img className={`${selectedType === YOUTUBE_VIDEO ? "type-selector-selected" : ""}`} src="https://qata.gay/files/youtube_video.png" onClick={() => {
-                setSelectedType(YOUTUBE_VIDEO)
+                setSelectedType(YOUTUBE_VIDEO);
               }}/>
             </div>
           </div>
@@ -99,9 +94,9 @@ const ModuleCreator = ({match}) => {
             const {id} = await client.addModule(classID, {class: classID, type: selectedType, data: createDefaultModule(selectedType, content)});
             const page = await client.getPage(classID, contentID);
             const modules = page.modules;
-            modules.splice(insertAfter, 0, id);
+            modules.splice(insertAfter + 1, 0, id);
             client.setPageModules(classID, contentID, modules);
-            h.push(`/content/${classID}/${contentID}/view`);
+            h.push(`/class/${classID}/${contentID}/view`);
           }}>
             Submit
           </div>
@@ -113,7 +108,7 @@ const ModuleCreator = ({match}) => {
 };
 
 ModuleCreator.propTypes = {
-  // match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired
 };
 
 export default ModuleCreator;

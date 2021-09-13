@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import {React, useEffect, useState} from "react";
 import "../styles/image_editor.css";
 import PropTypes from "prop-types";
@@ -54,6 +52,9 @@ const ImageEditor = ({cb, data = "", idx}) => {
 };
 
 ImageEditor.propTypes = {
+  cb: PropTypes.func.isRequired,
+  data: PropTypes.string.isRequired,
+  idx: PropTypes.number.isRequired
 };
 
 export default ImageEditor;

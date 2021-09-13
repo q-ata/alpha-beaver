@@ -101,6 +101,23 @@
   padding: 8px;
 }
 
+
+.course-page .add-button {
+  color: white;
+  height: 100%;
+  font-size: 30px;
+  width: 40px;
+  text-align: center;
+  float: right;
+  background-color: red;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.course-page .add-header {
+  line-height: 45px;
+}
+
 .course-page .sort-button {
   color: white;
   height: 100%;

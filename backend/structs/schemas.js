@@ -103,6 +103,15 @@ const gradeSchema = new mongoose.Schema({
   class: Number
 }, {collection: "grades"});
 
+const eventSchema = new mongoose.Schema({
+  class: Number,
+  title: String,
+  content: String,
+  allDay: Boolean,
+  start: Number,
+  end: Number
+}, {collection: "events"});
+
 module.exports = {
   schoolSchema,
   roleSchema,
@@ -117,5 +126,6 @@ module.exports = {
   pageSchema,
   assignSchema,
   submitSchema,
-  gradeSchema
+  gradeSchema,
+  eventSchema
 };

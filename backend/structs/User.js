@@ -26,6 +26,11 @@ class User extends Base {
     return announces;
   }
 
+  async getEvents({limit = 8}) {
+    const events = await this.school.getEvents({class: {$in: this.classes}}, {limit});
+    return events;
+  }
+
 }
 
 module.exports = User;

@@ -29,7 +29,7 @@ const ContentPage = ({match}) => {
   const inserter = (idx) => {
     // TODO: Lazy, don't use alert.
     if (changed) return alert("Save or discard your changes first!");
-    h.push(`/content/${classID}/${contentID}/add?insertAfter=${idx}`);
+    h.push(`/class/${classID}/${contentID}/add?insertAfter=${idx}`);
   };
 
   const updateSettings = (val, idx) => {

@@ -5,7 +5,7 @@ import EventLabel from "./EventLabel";
 
 const areEqual = () => true;
 
-const Popup = React.memo(({calcDatePosition, events, toggle, position, date, selectedEvent}) => {
+const Popup = React.memo(({calcDatePosition, classes, events, toggle, position, date, selectedEvent}) => {
   const ref = useRef(null);
   const boundRect = calcDatePosition(date, position);
   const calElems = document.getElementsByClassName("calendar");
@@ -29,7 +29,7 @@ const Popup = React.memo(({calcDatePosition, events, toggle, position, date, sel
   }, ["ref"]);
 
   let listItems = events.map(event =>
-    <EventLabel key={event.id} event={event} selectedEvent={selectedEvent} />
+    <EventLabel key={event.id} course={classes.filter(c=>c.id === event.class)[0]} event={event} selectedEvent={selectedEvent} />
   );
 
   if (listItems.length === 0) listItems = <EventLabel key={0} event={{title: "No events."}} selectedEvent={selectedEvent} />;
@@ -50,7 +50,8 @@ Popup.propTypes = {
   position: PropTypes.object,
   date: PropTypes.object,
   calcDatePosition: PropTypes.func,
-  selectedEvent: PropTypes.func
+  selectedEvent: PropTypes.func,
+  classes: PropTypes.array
 };
 
 export default Popup;

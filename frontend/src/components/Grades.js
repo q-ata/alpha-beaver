@@ -1,18 +1,8 @@
-/* eslint-disable */
-
 import {React, useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import Navigation from "./Navigation";
-import EventCalendar from "./Calendar";
 import ClassNav from "./ClassNav";
-import Announcement from "./Announcement";
 import Client from "./beaverjs";
-import {useHistory} from "react-router-dom";
-import Select from "react-select";
-import AddIcon from "@material-ui/icons/Add";
-import ImageIcon from "@material-ui/icons/Image";
-import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import "../styles/grades.css";
 
 const Grade = ({assignment, score, feedback}) => {
@@ -35,6 +25,11 @@ const Grade = ({assignment, score, feedback}) => {
       </div>
     </div>
   );
+};
+Grade.propTypes = {
+  assignment: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  feedback: PropTypes.string.isRequired
 };
 
 const Grades = ({match}) => {
@@ -82,8 +77,8 @@ const Grades = ({match}) => {
         <div className="middle-section" style={{width: "calc(100% - 112px)"}}>
           <ClassNav classID={classID} />
           <div className="grades">
-            {grades.map((g) => {
-              return <Grade assignment={g.assignment.title} score={g.score} feedback={g.feedback} />;
+            {grades.map((g, i) => {
+              return <Grade key={i} assignment={g.assignment.title} score={g.score} feedback={g.feedback} />;
             })}
           </div>
         </div>

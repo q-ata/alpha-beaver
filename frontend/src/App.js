@@ -10,6 +10,8 @@ import Upcoming from "./components/Upcoming";
 import PageList from "./components/PageList";
 import Submit from "./components/Submit";
 import Grades from "./components/Grades";
+import AddAnnouncement from "./components/AnnouncementCreate";
+import AddEvent from "./components/EventCreate";
 import "./styles/global.css";
 
 const App = () => {
@@ -24,9 +26,12 @@ const App = () => {
         <Route exact path="/class/:classID" component={Class} />
         <Route exact path="/class/:classID/submit" component={Submit} />
         <Route exact path="/class/:classID/grades" component={Grades} />
-        <Route exact path="/content/:classID/:contentID/view" component={ContentPage} />
-        <Route exact path="/content/:classID/:contentID/add" component={ModuleCreator} />
-        <Route exact path="/content/:classID/all" component={PageList} />
+        <Route exact path="/class/:classID/events/add" component={AddEvent} />
+        <Route exact path="/class/:classID/announcements/add" component={AddAnnouncement} />
+        <Route exact path="/class/:classID/:contentID/view" component={ContentPage} />
+        <Route exact path="/class/:classID/:contentID/add" component={ModuleCreator} />
+        <Route exact path="/class/:classID/content" component={PageList} />
+        <Route path="/class/:classID" component={Class} />
         <Route exact path="/upcoming" component={Upcoming} />
         <Route><Redirect to="/dashboard" /></Route>
       </Switch>

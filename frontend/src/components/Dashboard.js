@@ -22,7 +22,6 @@ const Dashboard = () => {
   const [courses, setCourses] = useState([]);
   const [announces, setAnnounces] = useState([]);
   const [pfp, setPfp] = useState("");
-
   const loadAll = async () => {
     // TODO: Redo this with .then
     const client = new Client();

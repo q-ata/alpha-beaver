@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import {React, useState} from "react";
 import "../styles/image_editor.css";
 import PropTypes from "prop-types";
@@ -25,7 +23,7 @@ const YouTubeEditor = ({cb, data = "", idx}) => {
         */}
       </div>
       <div className="preview">
-      <iframe
+        <iframe
           className="content-youtube"
           src={source}
           title="YouTube video player"
@@ -39,6 +37,9 @@ const YouTubeEditor = ({cb, data = "", idx}) => {
 };
 
 YouTubeEditor.propTypes = {
+  cb: PropTypes.func.isRequired,
+  data: PropTypes.string.isRequired,
+  idx: PropTypes.number.isRequired
 };
 
 export default YouTubeEditor;

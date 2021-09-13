@@ -27,7 +27,7 @@ const Class = ({match}) => {
       if(anns.error) {
         h.push("/login");
       } else {
-        setAnnounces(anns);
+        setAnnounces(anns.sort((a, b) => Number(b.date) - Number(a.date)));
       }
     });
     client.getClass(classID).then((info) => {
@@ -65,6 +65,9 @@ const Class = ({match}) => {
                     <span>Oldest</span>
                   </div>
                 </div>
+              </div>
+              <div className="add-button" onClick={() => h.push("/class/" + classID + "/announcements/add")}>
+                <span className="add-header">+</span>
               </div>
               <div className="announce-header">Announcements</div>
             </div>
