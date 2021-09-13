@@ -2,145 +2,83 @@ import React from "react";
 import PropTypes from "prop-types";
 import EventLabel from "./EventLabel";
 import DateLabel from "./DateLabel";
+import ClassLabel from "./ClassLabel";
 import {useHistory} from "react-router-dom";
-import {useRef, useEffect} from "react";
+import {useRef, useEffect, useState} from "react";
 import Navigation from "./Navigation";
+import Client from "./beaverjs";
 import "../styles/upcoming.css";
-
-const events = [
-  {
-    "title": "All Day Event very long title",
-    "id": 1,
-    "allDay": true,
-    "start": new Date(2021, 4, 1),
-    "end": new Date(2021, 4, 1)
-  },
-  {
-    "title": "Long Event",
-    "id": 2,
-    "start": new Date(2021, 4, 7),
-    "end": new Date(2021, 4, 10, 0, 0, 1)
-  },
-
-  {
-    "title": "DTS STARTS",
-    "id": 3,
-    "start": new Date(2021, 5, 15, 0, 0, 0),
-    "end": new Date(2021, 5, 20, 0, 0, 1)
-  },
-
-  {
-    "title": "DTS ENDS",
-    "id": 4,
-    "start": new Date(2021, 5, 6, 0, 0, 0),
-    "end": new Date(2021, 5, 15, 0, 0, 1)
-  },
-
-  {
-    "title": "Some Event",
-    "id": 5,
-    "start": new Date(2021, 5, 9, 0, 0, 0),
-    "end": new Date(2021, 5, 9, 0, 0, 1)
-  },
-  {
-    "title": "Conference",
-    "id": 6,
-    "start": new Date(2021, 5, 11),
-    "end": new Date(2021, 5, 15),
-    desc: "Big conference for important people"
-  },
-  {
-    "title": "Meeting",
-    "id": 7,
-    "start": new Date(2021, 5, 12, 10, 50, 0, 0),
-    "end": new Date(2021, 5, 12, 12, 50, 0, 0),
-    desc: "Pre-meeting meeting, to prepare for the meeting"
-  },
-  {
-    "title": "Lunch",
-    "id": 8,
-    "start": new Date(2021, 5, 12, 12, 0, 0, 0),
-    "end": new Date(2021, 5, 12, 15, 0, 0, 0),
-    desc: "Power lunch"
-  },
-  {
-    "title": "Meeting",
-    "id": 9,
-    "start": new Date(2021, 5, 12, 14, 0, 0, 0),
-    "end": new Date(2021, 5, 12, 15, 0, 0, 0)
-  },
-  {
-    "title": "Happy Hour",
-    "id": 10,
-    "start": new Date(2021, 5, 12, 17, 0, 0, 0),
-    "end": new Date(2021, 5, 12, 17, 50, 0, 0),
-    desc: "Most important meal of the day"
-  },
-  {
-    "title": "Dinner",
-    "id": 11,
-    "start": new Date(2021, 5, 12, 20, 0, 0, 0),
-    "end": new Date(2021, 5, 12, 21, 0, 0, 0)
-  },
-  {
-    "title": "Birthday Party",
-    "id": 12,
-    "start": new Date(2021, 5, 15, 7, 0, 0),
-    "end": new Date(2021, 5, 15, 10, 50, 0)
-  },
-  {
-    "title": "Birthday Party 2",
-    "id": 13,
-    "start": new Date(2021, 5, 15, 7, 0, 0),
-    "end": new Date(2021, 5, 15, 10, 50, 0)
-  },
-  {
-    "title": "Birthday Party 5",
-    "id": 14,
-    "start": new Date(2021, 5, 15, 7, 0, 0),
-    "end": new Date(2021, 5, 15, 10, 50, 0)
-  },
-  {
-    "title": "Late Night Event",
-    "id": 15,
-    "start": new Date(2021, 5, 17, 19, 50, 0),
-    "end": new Date(2021, 5, 18, 2, 0, 0)
-  },
-  {
-    "title": "Multi-day Event",
-    "id": 16,
-    "start": new Date(2021, 5, 20, 19, 50, 0),
-    "end": new Date(2021, 5, 22, 2, 0, 0)
-  }
-];
 
 const Upcoming = () => {
   const h = useHistory();
   const ref = useRef(null);
+  const [events, setEvents] = useState([]);
+  const [eventStore, setStore] = useState([]);
+  const [classes, setClasses] = useState([]);
+
+  const loadEvents = async () => {
+    const client = new Client();
+    const events = await client.getEvents();
+    if (events.error) {
+      h.push("/login");
+    } else {
+      const curEvents = events.filter(e => e.end >= Date.now());
+      await setEvents(curEvents);
+      setStore(curEvents);
+    }
+    const classes = await client.getCourses();
+    if (classes.error) {
+      h.push("/login");
+    } else {
+      await setClasses(classes);
+    }
+  };
 
   useEffect(() => {
-    if (h.location.state && h.location.state.title) ref.current.scrollIntoView({behavior: "smooth"});
+    loadEvents();
+  }, []);
+
+  useEffect(() => {
+    if (h.location.state && h.location.state.title && ref.current) ref.current.scrollIntoView({behavior: "smooth"});
     h.replace("/upcoming");
   }, [ref]);
 
-  //TODO: Redirect if not logged in
+  //TODO: optimize getting course details from id?
 
   return (
     <div className="upcoming-page">
       <Navigation />
       <div className="content-wrapper">
         <h1>Upcoming Events</h1>
-        {events.map(event =>
-          (h.location.state && event.title === h.location.state.title) ?
-            <div className="event-wrapper" key={event.id}>
-              <DateLabel event={event} />
-              <EventLabel formatString={"LLL d @ p"} ref={ref} event={event} selectedEvent={() => { }} />
-            </div> :
-            <div className="event-wrapper" key={event.id}>
-              <DateLabel event={event} />
-              <EventLabel formatString={"LLL d @ p"} event={event} selectedEvent={() => { }} />
-            </div>)
-        }
+        <div className="sort-button">Filter by class
+          <div className="sort-options">
+            <div key={"none"} className="sort-option" onClick={() => setEvents(eventStore)}>
+              <span>{"None"}</span>
+            </div>
+            {classes.map(c => (
+              <div key={c.name} className="sort-option" onClick={() => setEvents(eventStore.filter(event => event.class === c.id))}>
+                <span>{c.name}</span>
+              </div>)
+            )}
+          </div>
+        </div>
+        <div className="events">
+          {events.length != 0 ? (events.map(event =>
+            (h.location.state && event.title === h.location.state.title) ?
+              <div className="event-wrapper">
+                <DateLabel event={event} />
+                <ClassLabel course={classes.filter(c => c.id === event.class)[0]} />
+                <EventLabel formatString={"LLL d @ p"} ref={ref} event={event} selectedEvent={() => { }} />
+              </div> :
+              <div className="event-wrapper">
+                <DateLabel event={event} />
+                <ClassLabel course={classes.filter(c => c.id === event.class)[0]} />
+                <EventLabel formatString={"LLL d @ p"} event={event} selectedEvent={() => { }} />
+              </div>)) 
+            : 
+            (<div className="no-events">No events.</div>)
+          }
+        </div>
       </div>
     </div>
   );

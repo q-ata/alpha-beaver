@@ -76,6 +76,15 @@ const pageSchema = new mongoose.Schema({
   name: String
 }, {collection: "pages"});
 
+const eventSchema = new mongoose.Schema({
+  class: Number,
+  title: String,
+  content: String,
+  allDay: Boolean,
+  start: Number,
+  end: Number
+}, {collection: "events"});
+
 module.exports = {
   schoolSchema,
   roleSchema,
@@ -87,5 +96,6 @@ module.exports = {
   accountSchema,
   counterSchema,
   moduleSchema,
-  pageSchema
+  pageSchema,
+  eventSchema
 };
